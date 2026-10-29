@@ -214,7 +214,7 @@ body.picking .sheet svg{cursor:crosshair}
 .ov-blk{fill:transparent;stroke:#7d8899;stroke-width:1;stroke-dasharray:3 3;opacity:.7}
 .ov-blk:hover{stroke:#2457d6;opacity:1}
 .ov-unit{stroke:none}
-.ov-el{stroke-width:1.5}
+.ov-el{stroke-width:1.2}
 .ov-sel{fill:rgb(36 87 214 / .16);stroke:#2457d6;stroke-width:1}
 .ov-selbox{fill:none;stroke:#2457d6;stroke-width:1.5;stroke-dasharray:5 3}
 .ov-drag{fill:rgb(36 87 214 / .08);stroke:#2457d6;stroke-width:1;stroke-dasharray:4 2}
@@ -226,7 +226,8 @@ body.picking .sheet svg{cursor:crosshair}
 .etext{position:absolute;z-index:6;font:inherit;border:1.5px solid var(--accent);background:var(--panel);color:var(--fg);padding:1px 4px;border-radius:3px}
 body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stroke-width:4;stroke-dasharray:none;rx:3}
 .ov-badge text{font:600 10px var(--mono);fill:#fff}
-.ov-focus{stroke-width:3}
+.ov-focus{stroke-width:3.5;filter:drop-shadow(0 0 2px rgb(0 0 0 / .25))}
+.ov-picked{stroke-width:2.5}
 .ov-link2 line{stroke-width:1.5;stroke-dasharray:4 3;opacity:.85}
 .ov-cont{opacity:.85}
 
@@ -433,6 +434,8 @@ body.zooming .sheet svg:active{cursor:crosshair}
 #colTool.on{background:color-mix(in srgb,var(--accent) 15%,var(--panel));border-color:var(--accent)}
 #colTool{align-self:flex-start;width:auto;padding:3px 10px;font-size:12px}
 .colbar .need{font-size:12px;line-height:1.4}
+.csec .colbar{padding:8px 0 0;border:0}.csec.scoll .sbody{display:none}
+#colMake{width:100%;font-size:12px;display:flex;justify-content:center;gap:6px}#colMake kbd{font:600 9px var(--mono);opacity:.6}
 .cknote{font-size:12px;line-height:1.45;color:var(--muted);background:color-mix(in srgb,var(--accent) 6%,var(--panel));border:1px solid var(--line);border-radius:6px;padding:7px 9px;margin-bottom:8px}
 .beta{font:600 10px var(--mono,monospace);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:2px}
 .mvwrap{position:fixed;inset:0;background:rgb(0 0 0 / .35);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -522,8 +525,8 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <div class="sel-info" id="selInfo">Nothing selected.</div>
         <div class="target" id="target" hidden><span>Adding into <b id="targetName"></b></span><button class="btn" id="targetClear" title="Add new tags at the top level instead">Top level</button></div>
         <div class="tbody">
-        <button type="button" class="optbar" id="tagOptsBtn" aria-expanded="false" aria-controls="tagOpts" title="Tag each item separately, and where new tags go in the list"><span>Tagging options</span><svg class="car" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="tagopts" id="tagOpts" hidden><label class="each" for="eachChk"><input type="checkbox" id="eachChk"> Tag each item separately <span class="chip" style="padding:0 5px">Option + key</span></label>
+        <button type="button" class="optbar" id="tagOptsBtn" aria-expanded="true" aria-controls="tagOpts" title="Tag each item separately, and where new tags go in the list"><span>Tagging options</span><svg class="car" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="tagopts" id="tagOpts"><label class="each" for="eachChk"><input type="checkbox" id="eachChk"> Tag each item separately <span class="chip" style="padding:0 5px">Option + key</span></label>
         <label class="each placerow" for="placeSel" title="Page order: new tags slot in left to right, top to bottom, on the page or in their column. Order made: new tags go to the end of their page's tags.">New tags go <select id="placeSel" class="langsel"><option value="pos">in page order</option><option value="end">in the order you make them</option></select></label></div>
         <div class="tags" id="tagBtns"></div>
         <div class="field ltrow" id="cellRow" hidden><b style="font:600 11px var(--mono)" id="cellTag">TD</b> <label>Col span <input type="number" min="1" max="99" id="cellCs" style="width:46px"></label> <label>Row span <input type="number" min="1" max="999" id="cellRs" style="width:46px"></label> <label id="cellScL">Scope <select id="cellSc" class="langsel"><option value="">None</option><option>Column</option><option>Row</option><option>Both</option></select></label></div>
@@ -538,8 +541,11 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <div class="sellinks" id="selActs"></div>
         </div>
       </div>
+      <div class="sec csec" id="colSec" hidden>
+        <h2 class="tsec-h" id="csecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="csecCar">▾</span>Columns</span><button type="button" class="gear" id="cpopBtn" aria-pressed="false" title="Pop out the column tools" aria-label="Pop out column tools">⧉</button></h2>
+        <div class="sbody"><button type="button" class="btn" id="colMake" title="Keep the selected tags together in the Tags list (N)">▥ Create column from selection <kbd>N</kbd></button><div class="colbar" id="colbar" hidden></div></div>
+      </div>
       <div class="order-head"><div class="sec" style="padding:0;border:0"><h2 class="tsec-h" id="osecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="osecCar">▾</span>Structure and reading order <span id="orderCount"></span></span></h2></div><div class="seg" role="group" aria-label="List view"><button type="button" class="on" data-v="tags" aria-pressed="true">Tags</button><button type="button" data-v="content" aria-pressed="false" title="Objects in the order they are drawn on export">Content order</button></div><div class="walk" role="group" aria-label="Walk reading order"><label class="each" for="skipArt" id="skipArtL" hidden><input type="checkbox" id="skipArt"> Skip artifacts</label></div><div class="ohint" id="ohint"></div></div>
-      <div class="colbar" id="colbar" hidden></div>
       <div class="crumbs lcrumbs" id="lcrumbs" hidden></div>
       <div class="order" id="order"></div>
       <div class="foot" id="foot"></div>
@@ -942,8 +948,11 @@ function partOrder(g){ const k = g.kids;
     if (capAbove && img && nodeBox(capAbove) && nodeBox(img) && nodeBox(capAbove).pg === nodeBox(img).pg && nodeBox(capAbove).b[1] >= nodeBox(img).b[3] - 2){ g.kids = [capAbove, ...k.filter(n => n !== capAbove)]; } } }
 
 /* place a new node relative to the focused node */
+/* a new tag only goes inside the selected group when its content sits in that group's area; anywhere else it goes by page position */
+function nearGroup(g, node){ const nb = nodeBox(node); if (!nb) return true; const us = allUnits(g).map(id => S.units.get(id)).filter(u => u?.bbox && u.page === nb.pg); if (!us.length) return false;
+  const gb = us.reduce((a, u) => union(a, u.bbox), null), m = 14, b = nb.b; return b[0] < gb[2] + m && b[2] > gb[0] - m && b[1] < gb[3] + m && b[3] > gb[1] - m; }
 function place(node){
-  const chain = S.focus ? chainOf(S.focus) : null;
+  const fg = S.focus && findNode(S.focus)?.n; const chain = fg && nearGroup(fg, node) ? chainOf(S.focus) : null;
   if (!chain){ insertByPos(S.tree, node); if (FOCUS_NEW.has(node.tag)) S.focus = node.id; return; }
   const last = chain.length - 1;
   if (accepts(chain[last].tag, node.tag)){ insertByPos(chain[last].kids, node); return; }
@@ -1112,7 +1121,7 @@ function drawOverlay(pi){
     const cl = clusters(us, allU); const pad = grp ? 4 : 2; const on = S.focus === n.id || S.rows.has(n.id);
     const fillO = grp ? 0.06 : us.some(u => u.kind !== "text") ? 0.07 : 0;
     const rs = cl.map(c => { const [x, y, w, h] = vrect(c.b, vp); return [x - pad, y - pad, w + pad * 2, h + pad * 2]; });
-    rs.forEach(([x, y, w, h]) => mk("rect", { class:"ov-el" + (S.focus === n.id ? " ov-focus" : ""), x, y, width:w, height:h, rx:grp ? 4 : 2, stroke:col, fill:col, "fill-opacity":fillO }, gEl));
+    rs.forEach(([x, y, w, h]) => mk("rect", { class:"ov-el" + (S.focus === n.id ? " ov-focus" : S.rows.has(n.id) ? " ov-picked" : ""), x, y, width:w, height:h, rx:grp ? 4 : 2, stroke:col, fill:col, "fill-opacity":fillO }, gEl));
     if (on) for (let k = 1; k < rs.length; k++){ const [a, b] = edgePts(rs[k - 1], rs[k]); if (!a) continue; const g = mk("g", { class:"ov-link2" }, gEl);
       mk("line", { x1:a[0], y1:a[1], x2:b[0], y2:b[1], stroke:col }, g); mk("circle", { cx:a[0], cy:a[1], r:3, fill:col }, g); mk("circle", { cx:b[0], cy:b[1], r:3, fill:col }, g); }
     /* a tag that runs onto other pages says so */
@@ -1214,7 +1223,7 @@ function selBox(){ const us = selIds().map(id => S.units.get(id)).filter(u => u?
 /* a column needs two or more items: tags, or separate pieces of untagged content */
 function selItemsN(){ const ids = selIds(); if (!ids.length) return 0; indexUnits(); const loose = ids.filter(id => !nodeOfUnit.has(id) && S.units.get(id)?.bbox);
   return pickedTop().length + (loose.length ? itemsOf(loose).length : 0); }
-const colSelBox = () => selItemsN() >= 2 ? selBox() : null;
+const colSelBox = () => selBox();
 function addColumn(where){ const b = colSelBox(); if (!b) return; const all = (S.opts.columns ||= []); const used = new Set(all.filter(c => c.page === b.page).map(c => c.name)); let k = 1; while (used.has(`Column ${k}`)) k++; const col = { id:Date.now().toString(36), name:`Column ${k}`, ...b };
   const mine = all.filter(c => c.page === b.page); if (where === "before" && mine.length) all.splice(all.indexOf(mine[0]), 0, col); else all.push(col);
   after(); toast(`Made ${col.name} on page ${b.page + 1}. Its tags now stay together.`); }
@@ -1249,12 +1258,13 @@ function groupColumns(){ if (!(S.opts?.columns || []).length) return;
 /* the columns the selection sits in */
 function selCols(){ const us = selIds().map(id => S.units.get(id)).filter(u => u?.bbox); return (S.opts?.columns || []).filter(c => us.some(u => u.page === c.page && inside(c.rect, (u.bbox[0] + u.bbox[2]) / 2, (u.bbox[1] + u.bbox[3]) / 2, 2))); }
 const colName = (c, i) => c.name || `Column ${i + 1}`; /* the name stays with the column; its place in the order is shown separately */
-function renderColBar(){ const bar = $("colbar"); const sb = colSelBox(); const hit = selCols(); if (!sb && !hit.length){ bar.hidden = true; return; }
-  const pg = hit[0]?.page ?? sb.page; const cs = pageCols(pg); bar.hidden = false;
-  bar.innerHTML = `<div class="colhead"><span class="sub">Columns · page ${pg + 1}</span>${sb ? `<button type="button" class="btn" id="colMake">▥ Create column from selection</button>` : ""}</div>
+function renderColBar(){ const bar = $("colbar"); const sb = colSelBox(); const hit = selCols(); $("colSec").hidden = !S.pages.length; $("colMake").disabled = !sb;
+  const pg = hit[0]?.page ?? sb?.page ?? S.cur; const cs = S.pages.length ? pageCols(pg) : [];
+  if (!cs.length){ bar.hidden = false; bar.innerHTML = `<div class="need">Select the content of one column on the page, then Create column. Its tags stay together in the Tags list.</div>`; return; } bar.hidden = false;
+  bar.innerHTML = `<div class="colhead"><span class="sub">Page ${pg + 1}</span></div>
     ${cs.length ? `<div class="need">Each column's tags stay together, in this order. Drag a pill to reorder, double-click to rename. In the Tags list, drag a tag out of a column or into another one.</div>
     <div class="colchips" id="colChips">${cs.map((c, i) => `<span class="colchip${hit.includes(c) ? " on" : ""}" data-id="${c.id}"><span class="grip" aria-hidden="true">⠿</span><b class="cord">${i + 1}</b><span class="cname">${esc(colName(c, i))}</span><button type="button" class="x" data-id="${c.id}" title="Remove this column" aria-label="Remove ${esc(colName(c, i))}">×</button></span>`).join("")}</div>` : ""}`;
-  $("colMake")?.addEventListener("click", () => addColumn("after"));
+
   bar.querySelectorAll(".colchip .x").forEach(x => x.addEventListener("click", e => { e.stopPropagation(); removeColumn(x.dataset.id); }));
   bar.querySelectorAll(".colchip").forEach(chip => chip.addEventListener("dblclick", e => { if (e.target.closest(".x")) return; const nm = chip.querySelector(".cname"); if (!nm) return; const c = cs.find(x => x.id === chip.dataset.id); const inp = document.createElement("input"); inp.className = "cedit"; inp.value = colName(c, cs.indexOf(c)); nm.replaceWith(inp); inp.focus(); inp.select();
     const done = ok => { if (ok){ const v = inp.value.trim(); if (v) c.name = v; after(); } else renderColBar(); };
@@ -1935,20 +1945,20 @@ function buildTable(){
 
 /* ---------- structure editing ---------- */
 function pickedNodes(){ return flat().filter(r => S.rows.has(r.n.id)); }
-/* after wrapping or combining, nothing stays selected, so the next thing you pick starts fresh */
-const done = () => { S.rows.clear(); S.sel.clear(); S.focus = null; S.trange = null; };
+/* after wrapping or combining, the new group is selected; its outline is drawn heavier so it stands out */
+const done = (n, cells) => { S.rows = new Set([n.id]); S.focus = n.id; if (cells) S.sel = new Set(allUnits(n)); };
 function wrapRows(tag){
   const nodes = pickedTop();
   if (tag === "L" && nodes.length && nodes.every(m => m.tag === "LI")){ const f0 = findNode(nodes[0].id); const arr = kidsOf(f0.p);
     if (f0.p?.tag === "L"){ const i = arr.indexOf(nodes[0]); const prev = arr[i - 1];
-      if (prev?.tag === "LI" && !nodes.includes(prev)){ nodes.forEach(detach); const sub = subListOf(prev); sub.kids.push(...nodes); prune(); done(); S.open.add(prev.id); after(); toast("Made a sub-list inside the item above. Set its list type below."); return; }
+      if (prev?.tag === "LI" && !nodes.includes(prev)){ nodes.forEach(detach); const sub = subListOf(prev); sub.kids.push(...nodes); prune(); done(sub); S.open.add(prev.id); after(); toast("Made a sub-list inside the item above. Set its list type below."); return; }
       if (nodes.length === arr.filter(k => k.tag === "LI").length){ toast("These items are already a list."); return; } } }
   if (!nodes.length && tag === "Figure" && selIds().length){ applyTag("Image"); if (pickedTop().length === 1 && pickedTop()[0].tag === "Image") wrapRows("Figure"); return; }
   if (!nodes.length){ const untagged = selIds().length; toast(untagged ? "Tag the selected content first, or use Build from selection." : "Select tagged items on the page, or rows in the list."); return; }
   const f0 = findNode(nodes[0].id); const arr = kidsOf(f0.p); const g = mkNode(tag);
   arr.splice(arr.indexOf(nodes[0]), 0, g); nodes.forEach(detach); g.kids = nodes; partOrder(g); prune();
   if (tag === "Figure"){ const im = nodes.find(n => n.tag === "Image"); if (im?.place){ g.place = im.place; delete im.place; } }
-  done(); after();
+  done(g); after();
 }
 function unwrapRows(){
   const picked = pickedNodes().filter(r => r.n.kids.length); if (!picked.length){ toast("Select a group row to ungroup it."); return; }
@@ -1973,18 +1983,18 @@ function mergeRows(){
     const [first, ...rest] = nodes;
     first.rowspan = rowsOf.size; first.colspan = Math.max(...[...rowsOf.values()].map(cs => cs.reduce((a, c) => a + (c.colspan || 1), 0)));
     for (const c of rest){ first.units.push(...c.units); first.kids.push(...c.kids); detach(c); }
-    first.units.sort(bySeq); done(); after();
+    first.units.sort(bySeq); done(first, true); after();
     toast(`Merged into one cell spanning ${first.colspan} column${first.colspan > 1 ? "s" : ""} and ${first.rowspan} row${first.rowspan > 1 ? "s" : ""}.`); return;
   }
   const picked = nodes.map(n => ({ n, p:findNode(n.id).p }));
-  const parent = picked[0].p; if (picked.some(r => r.p !== parent)){ for (const r of picked.slice(1)){ joinInto(picked[0].n, r.n); detach(r.n); } prune(); done(); after(); toast(`Combined ${nodes.length} tags into one ${picked[0].n.tag}.`); return; }
+  const parent = picked[0].p; if (picked.some(r => r.p !== parent)){ for (const r of picked.slice(1)){ joinInto(picked[0].n, r.n); detach(r.n); } prune(); done(picked[0].n); after(); toast(`Combined ${nodes.length} tags into one ${picked[0].n.tag}.`); return; }
   const [first, ...rest] = picked.map(r => r.n); const arr = kidsOf(parent);
   if (first.tag === "TR" && rest.every(n => n.tag === "TR")){
     for (const r of rest){ r.kids.forEach((cell, i) => { const t = first.kids[i]; if (t){ t.units.push(...cell.units); t.kids.push(...cell.kids); t.units.sort(bySeq); } else first.kids.push(cell); }); arr.splice(arr.indexOf(r), 1); }
   } else {
     for (const r of rest){ joinInto(first, r); arr.splice(arr.indexOf(r), 1); }
   }
-  done(); after(); toast(`Combined ${nodes.length} tags into one ${first.tag}.`);
+  done(first); after(); toast(`Combined ${nodes.length} tags into one ${first.tag}.`);
 }
 /* list items nest as a sub-list in the item above: LI > LBody > L > LI */
 function subListOf(li){ let body = li.kids.find(k => k.tag === "LBody"); if (!body){ body = mkNode("LBody"); li.kids.push(body); }
@@ -3784,18 +3794,27 @@ function renderFields(){
 const tsec = () => $("tsecH").closest(".sec");
 const setTsec = c => { tsec().classList.toggle("tcoll", c); $("tsecCar").textContent = c ? "▸" : "▾"; $("tsecH").setAttribute("aria-expanded", !c); try { localStorage.setItem("pts:tcoll", c ? "1" : ""); } catch {} };
 $("tsecH").addEventListener("click", e => { if (e.target.closest(".gear") || tsec().dataset.dragged){ delete tsec().dataset.dragged; return; } setTsec(!tsec().classList.contains("tcoll")); });
-/* pop the tag buttons out into a panel you can drag anywhere; the spot is remembered in this browser */
-function setPop(on, pos){ const sec = tsec(); sec.classList.toggle("floating", on); $("popBtn").classList.toggle("on", on); $("popBtn").setAttribute("aria-pressed", on); $("popBtn").title = on ? "Put the tag buttons back in the sidebar" : "Pop out the tag buttons so you can move them next to your work";
-  if (on){ const p = pos || { x:Math.max(8, innerWidth - 760), y:120 }; sec.style.left = Math.min(p.x, innerWidth - 120) + "px"; sec.style.top = Math.min(Math.max(8, p.y), innerHeight - 60) + "px"; } else { sec.style.left = sec.style.top = ""; }
-  try { localStorage.setItem("pts:pop", on ? JSON.stringify(pos || { x:parseFloat(sec.style.left), y:parseFloat(sec.style.top) }) : ""); } catch {} }
-$("popBtn").addEventListener("click", e => { e.stopPropagation(); setPop(!tsec().classList.contains("floating")); });
-$("popBtn").addEventListener("keydown", e => e.stopPropagation());
-$("tsecH").addEventListener("pointerdown", e => { const sec = tsec(); if (!sec.classList.contains("floating") || e.target.closest(".gear") || e.button !== 0) return;
-  const r = sec.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY; let moved = false; $("tsecH").setPointerCapture(e.pointerId);
-  const mv = ev => { if (!moved && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 4) return; moved = true; sec.style.left = Math.min(innerWidth - 80, Math.max(0, r.left + ev.clientX - x0)) + "px"; sec.style.top = Math.min(innerHeight - 40, Math.max(0, r.top + ev.clientY - y0)) + "px"; };
-  const up = () => { $("tsecH").removeEventListener("pointermove", mv); $("tsecH").removeEventListener("pointerup", up); if (moved){ sec.dataset.dragged = "1"; try { localStorage.setItem("pts:pop", JSON.stringify({ x:parseFloat(sec.style.left), y:parseFloat(sec.style.top) })); } catch {} } };
-  $("tsecH").addEventListener("pointermove", mv); $("tsecH").addEventListener("pointerup", up); });
-try { const pp = localStorage.getItem("pts:pop"); if (pp) setPop(true, JSON.parse(pp)); } catch {}
+/* pop a sidebar section out into a panel you can drag anywhere; where it sits is remembered in this browser */
+function makePop(sec, head, btn, key, what, dx = 0){
+  const set = (on, pos) => { sec.classList.toggle("floating", on); btn.classList.toggle("on", on); btn.setAttribute("aria-pressed", on); btn.title = on ? `Put the ${what} back in the sidebar` : `Pop out the ${what} so you can move them next to your work`;
+    if (on){ const p = pos || { x:Math.max(8, innerWidth - 760 - dx), y:120 }; sec.style.left = Math.min(p.x, innerWidth - 120) + "px"; sec.style.top = Math.min(Math.max(8, p.y), innerHeight - 60) + "px"; } else sec.style.left = sec.style.top = "";
+    try { localStorage.setItem(key, on ? JSON.stringify({ x:parseFloat(sec.style.left), y:parseFloat(sec.style.top) }) : ""); } catch {} };
+  btn.addEventListener("click", e => { e.stopPropagation(); set(!sec.classList.contains("floating")); }); btn.addEventListener("keydown", e => e.stopPropagation());
+  head.addEventListener("pointerdown", e => { if (!sec.classList.contains("floating") || e.target.closest(".gear") || e.button !== 0) return;
+    const r = sec.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY; let moved = false; head.setPointerCapture(e.pointerId);
+    const mv = ev => { if (!moved && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 4) return; moved = true; sec.style.left = Math.min(innerWidth - 80, Math.max(0, r.left + ev.clientX - x0)) + "px"; sec.style.top = Math.min(innerHeight - 40, Math.max(0, r.top + ev.clientY - y0)) + "px"; };
+    const up = () => { head.removeEventListener("pointermove", mv); head.removeEventListener("pointerup", up); if (moved){ sec.dataset.dragged = "1"; try { localStorage.setItem(key, JSON.stringify({ x:parseFloat(sec.style.left), y:parseFloat(sec.style.top) })); } catch {} } };
+    head.addEventListener("pointermove", mv); head.addEventListener("pointerup", up); });
+  try { const pp = localStorage.getItem(key); if (pp) set(true, JSON.parse(pp)); } catch {}
+}
+makePop(tsec(), $("tsecH"), $("popBtn"), "pts:pop", "tag buttons");
+makePop($("colSec"), $("csecH"), $("cpopBtn"), "pts:cpop", "column tools", 380);
+/* Columns section folds open and closed like the others */
+const setCsec = c => { $("colSec").classList.toggle("scoll", c); $("csecCar").textContent = c ? "▸" : "▾"; $("csecH").setAttribute("aria-expanded", !c); try { localStorage.setItem("pts:ccoll", c ? "1" : ""); } catch {} };
+$("csecH").addEventListener("click", e => { const sec = $("colSec"); if (e.target.closest(".gear") || sec.dataset.dragged){ delete sec.dataset.dragged; return; } setCsec(!sec.classList.contains("scoll")); });
+$("csecH").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); setCsec(!$("colSec").classList.contains("scoll")); } });
+try { if (localStorage.getItem("pts:ccoll")) setCsec(true); } catch {}
+$("colMake").addEventListener("click", () => addColumn("after"));
 $("tagOptsBtn").addEventListener("click", e => { const o = $("tagOpts"); o.hidden = !o.hidden; e.currentTarget.setAttribute("aria-expanded", !o.hidden);  });
 $("tsecH").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); setTsec(!tsec().classList.contains("tcoll")); } });
 try { if (localStorage.getItem("pts:tcoll")) setTsec(true); } catch {}
@@ -3821,7 +3840,7 @@ function selActions(){
   if (canCombine(pt)) add("comb", `⧉ Combine into one ${pt[0].tag}`, "Join the selected tags into one tag, like a paragraph or list split across pages or columns", mergeRows, { side:true });
   if (gapBases().length) add("gaps", "⫼ Split at gaps", "Split text spaced out into a row, like captions under images, into separate pieces", splitGaps);
   if (sel.filter(id => S.units.get(id)?.kind === "image").length > 1) add("weld", "⧉ Weld images", "Join the selected image pieces into one image, in the same spot and tag", weldImages);
-  if (colSelBox()) add("cola", "▥ Create column from selection", "Keep these tags together in the Tags list", () => addColumn("after"), { menu:true });
+  if (colSelBox()) add("cola", "▥ Create column from selection", "Keep these tags together in the Tags list (N)", () => addColumn("after"), { menu:true });
   if (pt.some(isGroup)) add("ungroup", "Ungroup", "Remove the group and keep what's inside", unwrapRows);
   if (S.enter) add("exit", "Go up one level (Esc)", "", () => { exitLevel(); renderAll(); });
   if (t0){ add("mvb", "⤒ Move tags before…", "Pick tags to move in front of the selected tag", () => openMoveDlg("before")); add("mva", "⤓ Move tags after…", "Pick tags to move right after the selected tag", () => openMoveDlg("after")); }
@@ -4028,6 +4047,7 @@ document.addEventListener("keydown", e => {
   else if (k === "v"){ togglePreview(); }
   else if (k === "z" && S.pages.length){ setZoomTool(!S.zoomTool); }
   else if (k === "e" && S.pages.length){ setEditMode(!S.editMode); }
+  else if (k === "n" && colSelBox()){ e.preventDefault(); addColumn("after"); }
   else if (k === "escape" && S.editMode){ if (S.esel.length){ S.esel = []; S.sel.clear(); renderAll(); } else setEditMode(false); }
   else if (k === "escape" && S.linkSrc){ S.linkSrc = null; document.body.classList.remove("picking"); toast("Link canceled."); }
   else if (k === "escape" && S.zoomTool){ setZoomTool(false); }
