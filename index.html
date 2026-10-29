@@ -496,7 +496,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <span class="splitbtn"><button class="btn" id="zoomFit" title="Fit to the page width">Fit width</button><button class="btn" id="zoomFitMenu" aria-haspopup="menu" aria-label="Choose fit width or fit height">▾</button></span>
         <span class="splitbtn"><button class="btn" id="zoomTool" aria-pressed="false" title="Zoom tool (Z): click to zoom, drag a box to zoom to it. Option flips in and out. Turns off after one zoom." aria-label="Zoom tool"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path class="zplus" d="M10 10l4 4M4.5 6.5h4M6.5 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><button class="btn" id="zoomMode" aria-haspopup="menu" aria-label="Choose zoom in or zoom out">▾</button></span>
         <button class="btn" id="editBtn" aria-pressed="false" title="Edit (E): drag to move. Drag a corner to resize (Shift keeps the shape), Option-drag a corner to crop. Double-click text to fix a line." aria-label="Edit">✎</button>
-        <span class="editbar" id="editBar" hidden><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*" hidden></label></span>
+        <span class="editbar" id="editBar" hidden><button class="btn" id="alignBtn" aria-haspopup="menu" title="Align and distribute the selected items">Align ▾</button><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*" hidden></label></span>
         <span class="sep"></span>
         <button class="btn" id="previewBtn" aria-pressed="false" title="Hide tags and show pages as they will export (V)">Preview</button>
         <span class="sep"></span>
@@ -1479,6 +1479,32 @@ function editText(v, id){
   inp.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter"){ e.preventDefault(); finish(true); } if (e.key === "Escape") finish(false); });
   inp.addEventListener("blur", () => finish(true));
 }
+/* align and distribute: one item lines up with the page, several line up with each other */
+function editObjs(){ indexUnits(); const m = new Map();
+  for (const id of S.esel){ const u = S.units.get(id); if (!u?.bbox) continue; const n = u.kind === "text" ? nodeOfUnit.get(id) : null; const k = (n && !n.obj && !isGroup(n) ? n.id : id) + "@" + u.page;
+    if (!m.has(k)) m.set(k, { ids:[], b:null, page:u.page }); const o = m.get(k); o.ids.push(id); o.b = union(o.b, u.bbox); }
+  return [...m.values()]; }
+function moveObj(o, dx, dy){ if (!dx && !dy) return; const M = [1, 0, 0, 1, dx, dy];
+  for (const id of o.ids){ const u = S.units.get(id); if (u.add){ const a = (S.opts.adds || []).find(z => z.id === id); if (a) a.rect = [a.rect[0] + dx, a.rect[1] + dy, a.rect[2] + dx, a.rect[3] + dy]; continue; }
+    (S.opts.xf ||= {})[id] = mul(S.opts.xf?.[id] || [1, 0, 0, 1, 0, 0], M); } }
+function alignObjs(how){ const os = editObjs(); if (!os.length) return; const pg = os[0].page; if (os.some(o => o.page !== pg)){ toast("Pick items on one page."); return; }
+  const dist = how.startsWith("d"); if (dist && os.length < 3){ toast("Select three or more items to distribute."); return; }
+  const vb = S.pages[pg].vp1.viewBox; const ref = os.length === 1 ? [vb[0], vb[1], vb[0] + vb[2], vb[1] + vb[3]] : os.reduce((a, o) => union(a, o.b), null);
+  if (how === "dh" || how === "dv"){ const h = how === "dh"; const lo = h ? 0 : 1, hi = h ? 2 : 3; const sorted = [...os].sort((a, b) => h ? a.b[0] - b.b[0] : b.b[3] - a.b[3]);
+    const total = sorted.reduce((t, o) => t + o.b[hi] - o.b[lo], 0); const span = h ? sorted[sorted.length - 1].b[2] - sorted[0].b[0] : sorted[0].b[3] - sorted[sorted.length - 1].b[1]; const gap = (span - total) / (sorted.length - 1);
+    if (h){ let x = sorted[0].b[0]; sorted.forEach(o => { moveObj(o, x - o.b[0], 0); x += o.b[2] - o.b[0] + gap; }); }
+    else { let y = sorted[0].b[3]; sorted.forEach(o => { moveObj(o, 0, y - o.b[3]); y -= o.b[3] - o.b[1] + gap; }); } }
+  else for (const o of os){ const b = o.b; const cx = (ref[0] + ref[2]) / 2 - (b[0] + b[2]) / 2, cy = (ref[1] + ref[3]) / 2 - (b[1] + b[3]) / 2;
+    moveObj(o, how === "l" ? ref[0] - b[0] : how === "r" ? ref[2] - b[2] : how === "c" ? cx : 0, how === "t" ? ref[3] - b[3] : how === "b" ? ref[1] - b[1] : how === "m" ? cy : 0); }
+  after(); }
+function openAlignMenu(){ const m = $("cmenu"); if (!m.hidden && m.dataset.kind === "align"){ closeMenu(); return; } const n = editObjs().length; const r = $("alignBtn").getBoundingClientRect();
+  const it = (k, t, dis) => `<button type="button" class="mi" data-a="${k}" ${dis ? "disabled" : ""}>${t}</button>`; const to = n === 1 ? " to page" : "";
+  m.dataset.kind = "align"; m.style.width = "220px";
+  m.innerHTML = (n ? "" : `<div class="need" style="padding:6px 8px;font-size:12px">Select items first. One item aligns to the page, several align to each other.</div>`)
+    + it("l", "Align left" + to, !n) + it("c", "Align centers" + to, !n) + it("r", "Align right" + to, !n) + "<hr>" + it("t", "Align top" + to, !n) + it("m", "Align middles" + to, !n) + it("b", "Align bottom" + to, !n)
+    + "<hr>" + it("dh", "Distribute horizontally", n < 3) + it("dv", "Distribute vertically", n < 3);
+  m.onclick = e => { const b = e.target.closest("button[data-a]"); if (!b || b.disabled) return; closeMenu(); alignObjs(b.dataset.a); };
+  m.hidden = false; m.style.left = r.left + "px"; m.style.top = r.bottom + 4 + "px"; }
 function setEditMode(on){ S.editMode = on; $("editBtn").classList.toggle("on", on); $("editBtn").setAttribute("aria-pressed", on); $("editBar").hidden = !on; document.body.classList.toggle("editing", on);
   if (on){ if (S.zoomTool) setZoomTool(false); S.esel = []; S.sel.clear(); S.rows.clear(); S.focus = null; toast("Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to fix a line. E or Esc to finish.", 5000); } else S.esel = []; renderAll(); }
 
@@ -3896,7 +3922,7 @@ function openMenu(x, y){
   m.querySelector(".tag-btn:not(:disabled)")?.focus();
 }
 function closeMenu(){ const m = $("cmenu"); if (m.dataset.kind === "meta") m.querySelectorAll(".mf").forEach(l => $("metaHold").appendChild(l)); m.hidden = true; m.style.width = ""; m.dataset.kind = ""; }
-document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#zoomMode") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
+document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#zoomMode") && !e.target.closest("#alignBtn") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("cmenu").hidden){ e.stopImmediatePropagation(); closeMenu(); } }, true);
 $("stage").addEventListener("scroll", closeMenu, { passive:true });
 $("pagesBox").addEventListener("contextmenu", e => {
@@ -3918,6 +3944,7 @@ $("order").addEventListener("contextmenu", e => {
 /* ---------- wiring ---------- */
 buildTagButtons(); renderAll();
 $("chooseBtn").addEventListener("click", () => $("fileInput").click());
+$("alignBtn").addEventListener("click", openAlignMenu);
 /* the page's language, for screen readers */
 if (!document.documentElement.lang) document.documentElement.lang = "en";
 /* the pop-up is a menu when it holds only menu items, otherwise a small dialog; screen readers get the right role either way */
@@ -3925,7 +3952,7 @@ new MutationObserver(() => { const m = $("cmenu"); if (m.hidden){ m.removeAttrib
   const items = [...m.querySelectorAll("button.mi")]; const other = m.querySelector("input,select,textarea,label,.tag-btn,.lpick");
   if (items.length && !other){ if (m.getAttribute("role") !== "menu") m.setAttribute("role", "menu"); items.forEach(b => b.getAttribute("role") !== "menuitem" && b.setAttribute("role", "menuitem")); m.querySelectorAll("hr").forEach(h => h.setAttribute("role", "separator")); }
   else { if (m.getAttribute("role") !== "dialog") m.setAttribute("role", "dialog"); m.querySelectorAll('[role="menuitem"]').forEach(b => b.removeAttribute("role")); }
-  const lab = ({ file:"File", stack:"Stacking", zmode:"Zoom tool", fit:"Fit", opt:"Doc Settings", tag:"Tag selection" })[m.dataset.kind] || m.querySelector(".mh")?.textContent || m.querySelector(".msel")?.textContent || "Options"; if (m.getAttribute("aria-label") !== lab) m.setAttribute("aria-label", lab);
+  const lab = ({ align:"Align", file:"File", stack:"Stacking", zmode:"Zoom tool", fit:"Fit", opt:"Doc Settings", tag:"Tag selection" })[m.dataset.kind] || m.querySelector(".mh")?.textContent || m.querySelector(".msel")?.textContent || "Options"; if (m.getAttribute("aria-label") !== lab) m.setAttribute("aria-label", lab);
 }).observe($("cmenu"), { attributes:true, attributeFilter:["hidden"], childList:true, subtree:true });
 $("fileInput").addEventListener("change", async e => { const f = e.target.files[0]; if (f) await loadPDF(new Uint8Array(await f.arrayBuffer()), f.name); e.target.value = ""; });
 $("saveBtn").addEventListener("click", exportPDF);
