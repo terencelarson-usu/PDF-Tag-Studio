@@ -328,6 +328,7 @@ body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stro
 .crumbs button{border:0;background:color-mix(in srgb,var(--accent) 10%,transparent);color:var(--accent);border-radius:5px;padding:2px 7px;font-weight:600}
 .crumbs .sep{color:var(--muted);padding:0 2px}
 body.zooming .sheet svg{cursor:zoom-in}
+body.zooming.zout .sheet svg,body.zooming.zalt .sheet svg{cursor:zoom-out}body.zooming.zout.zalt .sheet svg{cursor:zoom-in}
 body.zooming .sheet svg:active{cursor:crosshair}
 .splitbtn{display:inline-flex}.splitbtn .btn:first-child{border-top-right-radius:0;border-bottom-right-radius:0}.splitbtn .btn:last-child{border-top-left-radius:0;border-bottom-left-radius:0;border-left:0;padding-left:6px;padding-right:6px}
 .zsel{font-size:12px;font-variant-numeric:tabular-nums;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:6px;padding:3px 4px}
@@ -422,7 +423,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
 .ov-enter{fill:none;stroke:#2457d6;stroke-width:2;stroke-dasharray:8 4;opacity:.8}
 .ov-ct{fill:none;stroke-width:1.2;stroke-dasharray:6 3}
 .ov-ctl text{font:600 9px var(--mono)}
-.cxhex{width:76px;font:12px var(--mono, monospace);padding:3px 5px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}.cxhex.bad{border-color:var(--danger)}
+.cxhex{width:96px;font:12px var(--mono, monospace);padding:3px 5px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}.cxhex.bad{border-color:var(--danger)}
 .wfix .wlab{font-size:12px;color:var(--muted);align-self:center;margin-right:2px}.wfin{font-size:12px;padding:3px 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}
 .wsel{font-size:12px;max-width:220px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}
 .ov-col rect{fill:color-mix(in srgb,var(--accent) 10%,transparent);stroke:var(--accent);stroke-width:2.5}.ov-col text{font:700 30px var(--sans,sans-serif);fill:var(--accent)}
@@ -473,7 +474,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
     <button class="btn" id="optBtn" aria-haspopup="menu" title="Bookmarks, page numbers, form fields, comments and media, export">Doc Settings ▾</button>
     <button class="btn" id="undoBtn" title="Undo (Cmd+Z)" disabled>Undo</button>
     <button class="btn" id="redoBtn" title="Redo (Shift+Cmd+Z)" disabled>Redo</button>
-    <button class="btn" id="fileBtn" aria-haspopup="menu" title="Import, recent PDFs, checkpoints and close">File ▾</button>
+    <span class="splitbtn"><button class="btn" id="fileMain" title="Save your work in this browser (Cmd+S). Undo still works after.">Save</button><button class="btn" id="fileBtn" aria-haspopup="menu" title="File: import, export, recent PDFs, revert and close" aria-label="File menu">▾</button></span>
     <span hidden><label class="btn" for="fileInput" tabindex="0" id="openBtn">Import PDF</label>
     <button class="btn" id="closeBtn" disabled title="Close this PDF">Close</button>
     <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden>
@@ -493,7 +494,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <select id="zoomSel" class="zsel" aria-label="Zoom"></select>
         <button class="btn" id="zoomIn" aria-label="Zoom in">+</button>
         <span class="splitbtn"><button class="btn" id="zoomFit" title="Fit to the page width">Fit width</button><button class="btn" id="zoomFitMenu" aria-haspopup="menu" aria-label="Choose fit width or fit height">▾</button></span>
-        <button class="btn" id="zoomTool" aria-pressed="false" title="Zoom tool (Z): drag a box to zoom to it, click to zoom in, Option-click to zoom out. Turns off after one zoom." aria-label="Zoom tool"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 10l4 4M4.5 6.5h4M6.5 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <span class="splitbtn"><button class="btn" id="zoomTool" aria-pressed="false" title="Zoom tool (Z): click to zoom, drag a box to zoom to it. Option flips in and out. Turns off after one zoom." aria-label="Zoom tool"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path class="zplus" d="M10 10l4 4M4.5 6.5h4M6.5 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><button class="btn" id="zoomMode" aria-haspopup="menu" aria-label="Choose zoom in or zoom out">▾</button></span>
         <button class="btn" id="editBtn" aria-pressed="false" title="Edit (E): drag to move. Drag a corner to resize (Shift keeps the shape), Option-drag a corner to crop. Double-click text to fix a line." aria-label="Edit">✎</button>
         <span class="editbar" id="editBar" hidden><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*" hidden></label></span>
         <span class="sep"></span>
@@ -526,7 +527,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <div class="target" id="target" hidden><span>Adding into <b id="targetName"></b></span><button class="btn" id="targetClear" title="Add new tags at the top level instead">Top level</button></div>
         <div class="tbody">
         <button type="button" class="optbar" id="tagOptsBtn" aria-expanded="true" aria-controls="tagOpts" title="Tag each item separately, and where new tags go in the list"><span>Tagging options</span><svg class="car" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <div class="tagopts" id="tagOpts"><label class="each" for="eachChk"><input type="checkbox" id="eachChk"> Tag each item separately <span class="chip" style="padding:0 5px">Option + key</span></label>
+        <div class="tagopts" id="tagOpts"><label class="each" for="eachChk"><input type="checkbox" id="eachChk"> Tag each item separately <span class="chip" style="padding:0 5px" title="Press S to turn it on or off">S</span></label>
         <label class="each placerow" for="placeSel" title="Page order: new tags slot in left to right, top to bottom, on the page or in their column. Order made: new tags go to the end of their page's tags.">New tags go <select id="placeSel" class="langsel"><option value="pos">in page order</option><option value="end">in the order you make them</option></select></label></div>
         <div class="tags" id="tagBtns"></div>
         <div class="field ltrow" id="cellRow" hidden><b style="font:600 11px var(--mono)" id="cellTag">TD</b> <label>Col span <input type="number" min="1" max="99" id="cellCs" style="width:46px"></label> <label>Row span <input type="number" min="1" max="999" id="cellRs" style="width:46px"></label> <label id="cellScL">Scope <select id="cellSc" class="langsel"><option value="">None</option><option>Column</option><option>Row</option><option>Both</option></select></label></div>
@@ -534,7 +535,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <div class="colorrow" id="colorRow" hidden>
           <span class="cw" id="colorWhat">Text color</span>
           <input type="color" id="colorPick" aria-label="Pick a color">
-          <input type="text" id="colorHex" maxlength="7" placeholder="#000000" aria-label="Hex color">
+          <input type="text" id="colorHex" placeholder="#000000" aria-label="Color: hex, name or rgb()" title="Hex like #4A5560, a name like navy, or rgb(74, 85, 96)">
           <button class="btn" id="colorReset" title="Back to the original color">Reset</button>
           <span class="cinfo" id="colorInfo"></span>
         </div>
@@ -610,6 +611,13 @@ function canWrap(tag){ if (!selIds().length && !S.rows.size) return false; const
 const ALL_TAGS = ["H1","H2","H3","H4","H5","H6","P","Image","Figure","Caption","L","LI","Lbl","LBody","TOC","TOCI","Table","THead","TBody","TFoot","TR","TH","TD","Quote","Note","Reference","Formula","Sect"];
 const COLORVAR = t => /^H\d$/.test(t) ? "--t-h" : t === "P" ? "--t-p" : t === "Figure" || t === "Image" || t === "Formula" ? "--t-fig" : t === "Caption" ? "--t-cap"
   : ["L","LI","Lbl","LBody"].includes(t) ? "--t-li" : ["Table","THead","TBody","TFoot","TR","TH","TD"].includes(t) ? "--t-tb" : t === "Sect" ? "--t-sec" : "--t-q";
+/* any CSS color you type: hex (with or without #), a name like navy, or rgb()/rgba(); transparency is ignored since text and fills here are solid */
+const colorCtx = document.createElement("canvas").getContext("2d");
+function parseColor(str){ let v = (str || "").trim(); if (!v) return null; if (/^[0-9a-f]{3}([0-9a-f]{3})?$/i.test(v)) v = "#" + v;
+  if (/^#[0-9a-f]{3}$/i.test(v)) v = "#" + [...v.slice(1)].map(c => c + c).join(""); if (/^#[0-9a-f]{6}$/i.test(v)) return v.toLowerCase();
+  if (/^#[0-9a-f]{8}$/i.test(v)) return v.slice(0, 7).toLowerCase();
+  colorCtx.fillStyle = "#010203"; colorCtx.fillStyle = v; const out = colorCtx.fillStyle; if (out === "#010203" && !/^(#010203|rgba?\(\s*1\s*,\s*2\s*,\s*3\b)/i.test(v)) return null;
+  if (out.startsWith("#")) return out.toLowerCase(); const m = out.match(/\d+(\.\d+)?/g); return m ? "#" + m.slice(0, 3).map(x => Math.round(+x).toString(16).padStart(2, "0")).join("") : null; }
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 /* reading computed styles is slow; cache colors until the theme changes */
 const colorCache = new Map(); const tagColor = t => { const k = COLORVAR(t); if (!colorCache.has(k)) colorCache.set(k, css(k)); return colorCache.get(k); };
@@ -1305,10 +1313,10 @@ function wirePointer(v){
     S.tdrag = null; if (S.trange){ S.trange = null; } const d = drag; drag = null; const P = S.pages[v.i]; const vp = v.vp;
     if (S.zoomTool){ v.dragRect?.setAttribute("visibility", "hidden");
       const p0 = toPdf(...d.p0, vp), p1 = toPdf(...d.p1, vp); let cx, cy;
-      if (d.moved && Math.abs(p1[0] - p0[0]) > 4 && Math.abs(p1[1] - p0[1]) > 4){ const st = $("stage");
+      if (d.moved && d.alt === !!S.zoomOut && Math.abs(p1[0] - p0[0]) > 4 && Math.abs(p1[1] - p0[1]) > 4){ const st = $("stage");
         S.scale = Math.max(0.1, Math.min(8, Math.min((st.clientWidth - 40) / Math.abs(p1[0] - p0[0]), (st.clientHeight - 40) / Math.abs(p1[1] - p0[1]))));
         cx = (p0[0] + p1[0]) / 2; cy = (p0[1] + p1[1]) / 2; }
-      else { S.scale = Math.max(0.1, Math.min(8, d.alt ? S.scale / 2 : S.scale * 2)); [cx, cy] = p0; }
+      else { S.scale = Math.max(0.1, Math.min(8, d.alt !== !!S.zoomOut ? S.scale / 2 : S.scale * 2)); [cx, cy] = p0; }
       S.fit = false; rezoom(); centerOn(v.i, cx, cy); setZoomTool(false); return; }
     if (d.moved){
       const p0 = toPdf(...d.p0, vp), p1 = toPdf(...d.p1, vp);
@@ -1815,15 +1823,15 @@ function recentSave(){ if (!S.pages.length || S.sample || !S.fileKey) return; cl
   recentT = setTimeout(async () => { try { const w = workState(); await rtx("work", "readwrite", st => st.put({ key, name, pages, at:Date.now(), w })); } catch {} }, 1500); }
 async function recentOpen(key){ try { const [f, r] = await Promise.all([rtx("files", "readonly", st => st.get(key)), rtx("work", "readonly", st => st.get(key))]); if (!f){ toast("That PDF is no longer saved here."); return; }
     await loadPDF(new Uint8Array(f.bytes), r?.name || "document.pdf"); if (r?.w){ applyWork(r.w); resetHistory(); toast("Reopened with your latest changes."); } } catch (e){ console.error(e); toast("Could not reopen that PDF."); } }
-/* File menu: import, checkpoints, close, and recent PDFs */
+/* File menu: import, save, export, revert, close, and recent PDFs */
 async function openFileMenu(){ const m = $("cmenu"); const list = await recentList(); const b = $("fileBtn").getBoundingClientRect(); const has = !!S.pages.length; const dirty = $("keepBtn").classList.contains("dirty");
   m.dataset.kind = "file"; m.style.width = "300px"; const when = t => new Date(t).toLocaleString([], { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" });
   const item = (act, label, sub, dis) => `<button class="mi" data-f="${act}" ${dis ? "disabled" : ""}>${label}${sub ? ` <span class="need" style="font-size:10px">${sub}</span>` : ""}</button>`;
-  m.innerHTML = item("open", "Import PDF…") + (has ? item("keep", `Set checkpoint${dirty ? " •" : ""}`, "Cmd+S") + item("revert", "Revert to checkpoint", "", $("revertBtn").disabled) + item("close", $("closeBtn").textContent === "Close" ? "Close" : $("closeBtn").textContent) : "")
+  m.innerHTML = item("open", "Import PDF…") + (has ? item("keep", "Save", "Cmd+S") + item("revert", "Revert to last save", "", $("revertBtn").disabled) + item("export", "Export PDF…") + item("close", $("closeBtn").textContent === "Close" ? "Close" : $("closeBtn").textContent) : "")
     + `<hr><div class="mh">Recent PDFs</div>` + (list.length ? list.map(r => `<button class="mi" data-k="${esc(r.key)}" title="Reopen with your latest changes"><span style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)}</span><span class="need" style="font-size:11px">${when(r.at)}${r.pages ? ` · ${r.pages} page${r.pages > 1 ? "s" : ""}` : ""}</span></button>`).join("") + `<button class="mi" data-k="" style="font-size:12px;color:var(--muted)">Clear recent list</button>`
       : `<div class="need" style="padding:4px 8px 8px;font-size:12px">PDFs you import show up here, kept in this browser only.</div>`);
   m.onclick = async e => { const f = e.target.closest("button[data-f]"); if (f){ const act = f.dataset.f; if (act !== "close") closeMenu();
-      if (act === "open") $("fileInput").click(); else if (act === "keep") saveWork(); else if (act === "revert") revertWork(); else { $("closeBtn").click(); if (S.pages.length) f.textContent = $("closeBtn").textContent; else closeMenu(); } return; }
+      if (act === "open") $("fileInput").click(); else if (act === "keep") saveWork(); else if (act === "revert") revertWork(); else if (act === "export") exportPDF(); else { $("closeBtn").click(); if (S.pages.length) f.textContent = $("closeBtn").textContent; else closeMenu(); } return; }
     const x = e.target.closest("button[data-k]"); if (!x) return; closeMenu(); if (x.dataset.k) recentOpen(x.dataset.k); else { try { await rtx(["files", "work"], "readwrite", (f2, w) => { f2.clear(); w.clear(); }); toast("Cleared the recent list."); } catch {} } };
   m.hidden = false; m.style.left = Math.max(8, Math.min(b.left, innerWidth - 308)) + "px"; m.style.top = b.bottom + 4 + "px"; }
 function restore(st){ const o = JSON.parse(st); S.tree = o.tree; S.zc = o.zc; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (!$("cpanel").hidden) renderContrast(); if (S.focus && !findNode(S.focus)) S.focus = null; S.rows = new Set([...S.rows].filter(id => findNode(id))); S.sel.clear(); changed(); renderAll(); updUndo(); }
@@ -1832,17 +1840,17 @@ function redo(){ if (H.i >= H.stack.length - 1) return; H.i++; restore(H.stack[H
 function updUndo(){ $("undoBtn").disabled = H.i <= 0; $("redoBtn").disabled = H.i >= H.stack.length - 1; updDirty(); }
 /* save / revert: work is kept in this browser, keyed to the PDF's contents */
 const workState = () => JSON.stringify({ blobs:Object.fromEntries((S.opts?.adds || []).filter(a => S.blobs.has(a.blob)).map(a => { const b = S.blobs.get(a.blob); return [a.blob, { d:b64(b.bytes), w:b.w, h:b.h, type:b.type }]; })), tree:S.tree, zc:S.zc, fix:S.fix, actual:S.actual, opts:S.opts, fieldDesc:S.fieldDesc, title:$("docTitle").value, lang:S.docLang });
-function updDirty(){ const has = !!S.pages.length; const dirty = has && workState() !== S.savedWork; $("fileBtn").innerHTML = `${dirty ? `<span class="ddot" aria-hidden="true"></span>` : ""}File ▾`; $("fileBtn").title = dirty ? "Changes since your last checkpoint. Import, recent PDFs, checkpoints and close" : "Import, recent PDFs, checkpoints and close"; const b = $("keepBtn"); b.disabled = !has; b.textContent = dirty ? "Set checkpoint •" : "Set checkpoint"; b.classList.toggle("dirty", dirty); $("revertBtn").disabled = !dirty; }
+function updDirty(){ const has = !!S.pages.length; const dirty = has && workState() !== S.savedWork; $("fileMain").innerHTML = `${dirty ? `<span class="ddot" aria-hidden="true"></span>` : ""}Save`; $("fileMain").disabled = !has; $("fileMain").title = dirty ? "You have changes since your last save. Save them in this browser (Cmd+S)" : "Save your work in this browser (Cmd+S)"; const b = $("keepBtn"); b.disabled = !has; b.textContent = dirty ? "Set checkpoint •" : "Set checkpoint"; b.classList.toggle("dirty", dirty); $("revertBtn").disabled = !dirty; }
 async function fileKey(bytes){ try { const h = await crypto.subtle.digest("SHA-256", bytes); return "pts:" + [...new Uint8Array(h)].slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join(""); } catch { return "pts:" + S.name + ":" + bytes.length; } }
 function saveWork(){
   if (!S.pages.length) return;
   const w = workState();
-  try { localStorage.setItem(S.fileKey, JSON.stringify({ w, at:Date.now(), name:S.name })); S.savedWork = w; updDirty(); toast("Checkpoint set. Import this PDF here again to pick up where you left off."); }
-  catch { S.savedWork = w; updDirty(); toast("Checkpoint set for this session. This browser blocked long-term storage, so export when you're done."); }
+  try { localStorage.setItem(S.fileKey, JSON.stringify({ w, at:Date.now(), name:S.name })); S.savedWork = w; updDirty(); toast("Saved in this browser. Reopen it from File ▸ Recent to pick up where you left off."); }
+  catch { S.savedWork = w; updDirty(); toast("Saved for this session. This browser blocked long-term storage, so export when you're done."); }
 }
 function applyWork(w){ const o = JSON.parse(w); for (const [k, b] of Object.entries(o.blobs || {})) if (!S.blobs.has(k)) S.blobs.set(k, { bytes:unb64(b.d), w:b.w, h:b.h, type:b.type }); S.tree = o.tree || []; S.zc = o.zc || []; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (o.title != null) $("docTitle").value = o.title; if (o.lang) setDocLang(o.lang); S.focus = null; S.rows.clear(); S.sel.clear(); syncObjs(); changed(); renderAll(); }
-function revertWork(){ if (S.savedWork == null) return; applyWork(S.savedWork); record(); toast("Reverted to your last checkpoint. Undo brings your changes back."); }
-function loadSavedWork(){ try { const raw = localStorage.getItem(S.fileKey); if (!raw) return false; const o = JSON.parse(raw); applyWork(o.w); S.savedWork = o.w; toast(`Restored your checkpoint from ${new Date(o.at).toLocaleString()}.`, 4000); return true; } catch { return false; } }
+function revertWork(){ if (S.savedWork == null) return; applyWork(S.savedWork); record(); toast("Reverted to your last save. Undo brings your changes back."); }
+function loadSavedWork(){ try { const raw = localStorage.getItem(S.fileKey); if (!raw) return false; const o = JSON.parse(raw); applyWork(o.w); S.savedWork = o.w; toast(`Restored your save from ${new Date(o.at).toLocaleString()}.`, 4000); return true; } catch { return false; } }
 
 /* lines from units: top to bottom, left to right */
 function toLines(us){
@@ -3067,8 +3075,14 @@ async function buildOutput(){
       for (let i = 0; i < ent.length; i += 100){ const ch = ent.slice(i, i + 100); cm += `${ch.length} beginbfchar\n` + ch.map(([k, v]) => `<${k.toString(16).padStart(bytes * 2, "0").toUpperCase()}> <${hx(v)}>`).join("\n") + "\nendbfchar\n"; }
       cm += "endcmap\nCMapName currentdict /CMap defineresource pop\nend\nend"; obj.set(N("ToUnicode"), ctx.register(ctx.stream(fromLatin1(cm)))); } }
   if ((S.opts.anchors || []).length){ let names = cat.lookup(N("Names")); if (!(names instanceof PDFDict)){ names = ctx.obj({}); cat.set(N("Names"), names); }
-    if (!names.lookup(N("Dests"))){ const arr = []; [...S.opts.anchors].sort((a, b) => a.name < b.name ? -1 : 1).forEach(a => { const ad = anchorDest(a); arr.push(PDFString.of(a.name), ctx.obj([pages[ad.page].ref, N("XYZ"), ctx.obj(ad.x), ctx.obj(ad.y), ctx.obj(null)])); });
-      names.set(N("Dests"), ctx.obj({ Names:arr })); } }
+    /* keep the file's own named destinations and add yours; same name means yours replaces it */
+    const have = new Map(); const nameOf = k => k?.decodeText?.() ?? k?.asString?.() ?? "";
+    const read = (nd, depth = 0) => { if (!(nd instanceof PDFDict) || depth > 30) return; const arr = nd.lookup(N("Names")); if (arr instanceof PDFArray) for (let i = 0; i + 1 < arr.size(); i += 2) have.set(nameOf(arr.lookup(i)), { k:arr.get(i), v:arr.get(i + 1) });
+      const kids = nd.lookup(N("Kids")); if (kids instanceof PDFArray) for (let i = 0; i < kids.size(); i++) read(kids.lookup(i), depth + 1); };
+    read(names.lookup(N("Dests")));
+    for (const a of S.opts.anchors){ const ad = anchorDest(a); if (pages[ad.page]) have.set(a.name, { k:/^[\x20-\x7e]*$/.test(a.name) ? PDFString.of(a.name) : PDFHexString.fromText(a.name), v:ctx.obj([pages[ad.page].ref, N("XYZ"), ctx.obj(ad.x), ctx.obj(ad.y), ctx.obj(null)]) }); }
+    const arr = []; [...have.keys()].sort((a, b) => a < b ? -1 : a > b ? 1 : 0).forEach(k => arr.push(have.get(k).k, have.get(k).v));
+    names.set(N("Dests"), ctx.obj({ Names:arr })); }
   cat.set(N("MarkInfo"), ctx.obj({ Marked:true }));
   const lang = (S.docLang || "").trim(); if (lang) cat.set(N("Lang"), PDFString.of(lang));
   const title = $("docTitle").value.trim(); if (title) doc.setTitle(title, { showInWindowTitleBar:true });
@@ -3590,11 +3604,11 @@ function renderContrast(){
     d.querySelectorAll(".cxpick").forEach(pk => { const show = () => { const [nf, nb] = nowOf(g); const fg = pk.dataset.w === "fg" ? hexRgb(pk.value) : nf, bg = pk.dataset.w === "bg" ? hexRgb(pk.value) : nb; const r = cratio(fg, bg); d.querySelector(".cxnow").textContent = `${r.toFixed(1)}:1 ${r >= g.target ? "✓ passes" : "· needs " + g.target + ":1"}`; };
       pk.addEventListener("click", ev => ev.stopPropagation()); pk.addEventListener("input", show);
       pk.addEventListener("change", () => { if (pk.dataset.w === "fg"){ g.units.forEach(id => S.fix[id] = pk.value.toUpperCase()); after(); renderContrast(); } else setBg(g, pk.value.toUpperCase()); }); });
-    d.querySelectorAll(".cxhex").forEach(hx => { const pk = d.querySelector(`.cxpick[data-w="${hx.dataset.w}"]`); const norm = () => { let v = hx.value.trim().replace(/^#?/, "#"); if (/^#[0-9a-f]{3}$/i.test(v)) v = "#" + [...v.slice(1)].map(c => c + c).join(""); return /^#[0-9a-f]{6}$/i.test(v) ? v.toUpperCase() : null; };
+    d.querySelectorAll(".cxhex").forEach(hx => { const pk = d.querySelector(`.cxpick[data-w="${hx.dataset.w}"]`); const norm = () => parseColor(hx.value)?.toUpperCase() || null;
       hx.addEventListener("click", ev => ev.stopPropagation());
-      hx.addEventListener("input", () => { const v = norm(); hx.classList.toggle("bad", !v && hx.value.trim().length >= 4); if (v){ pk.value = v.toLowerCase(); pk.dispatchEvent(new Event("input")); } });
+      hx.addEventListener("input", () => { const v = norm(); hx.classList.toggle("bad", !v && hx.value.trim().length >= 7); if (v){ pk.value = v.toLowerCase(); pk.dispatchEvent(new Event("input")); } });
       hx.addEventListener("keydown", ev => { if (ev.key === "Enter"){ ev.preventDefault(); hx.blur(); } });
-      hx.addEventListener("change", () => { const v = norm(); if (!v){ toast("Type a hex color like #1F4E79."); return; } pk.value = v.toLowerCase(); pk.dispatchEvent(new Event("change")); }); });
+      hx.addEventListener("change", () => { const v = norm(); if (!v){ toast("Type a hex color like #1F4E79, a name like navy, or rgb(31, 78, 121)."); return; } pk.value = v.toLowerCase(); pk.dispatchEvent(new Event("change")); }); });
     d.querySelector(".doBg")?.addEventListener("click", ev => { ev.stopPropagation(); setBg(g, hexOf(g.bgFix)); });
     d.querySelector(".undoFix")?.addEventListener("click", ev => { ev.stopPropagation(); g.units.forEach(id => delete S.fix[id]); if (g.bgUnit) delete S.fix[g.bgUnit]; after(); renderContrast(); });
     d.addEventListener("click", () => { body.querySelectorAll(".ci.on").forEach(x => x.classList.remove("on")); d.classList.add("on"); S.sel = new Set(g.units); S.rows.clear(); renderAll(); scrollToUnit(g.u); });
@@ -3604,7 +3618,7 @@ function renderContrast(){
 $("contrastBtn").addEventListener("click", () => { $("backCheck").hidden = true; document.querySelector(".side").scrollTop = 0; checkContrast(); });
 $("colorPick").addEventListener("input", e => setColor(e.target.value, false));
 $("colorPick").addEventListener("change", e => setColor(e.target.value, true));
-$("colorHex").addEventListener("change", e => { let v = e.target.value.trim(); if (!v.startsWith("#")) v = "#" + v; if (/^#[0-9a-f]{3}$/i.test(v)) v = "#" + [...v.slice(1)].map(c => c + c).join(""); if (/^#[0-9a-f]{6}$/i.test(v)) setColor(v, true); else toast("Use a hex color like #4A5560."); });
+$("colorHex").addEventListener("change", e => { const v = parseColor(e.target.value); if (v) setColor(v, true); else toast("Use a hex color like #4A5560, a name like navy, or rgb(74, 85, 96)."); });
 $("colorReset").addEventListener("click", () => { colorable().forEach(u => delete S.fix[u.id]); changed(); record(); renderColorRow(); if (!$("cpanel").hidden) renderContrast(); });
 $("cclose").addEventListener("click", () => { $("cpanel").hidden = true; S.showContrast = false; drawOverlays(); });
 
@@ -3850,7 +3864,7 @@ function selActions(){
   if (t0?.tag === "Table") add("tcol", "Add column", "Adds an empty cell to the end of every row", () => tableAdd(t0, "col"));
   if (t0?.tag === "TR") add("tcell", "Add cell", "Adds an empty cell to the end of this row", () => tableAdd(t0, "cell"));
   if (t0 && (t0.tag === "TD" || t0.tag === "TH")) [["cb", "Insert empty cell before"], ["ca", "Insert empty cell after"], ["kb", "Insert empty column before"], ["ka", "Insert empty column after"]].forEach(([k, l]) => add("t" + k, l, "", () => tableAdd(t0, k)));
-  if (S.trange || hasSel) add("anchor", "⚓ Add anchor…", "Add a named anchor here that links can jump to", e => openAnchorMenu(...at(e)), { keep:true, id:"anchorLink" });
+  if (S.trange || hasSel || t0) add("anchor", "⚓ Add anchor…", "Add a named anchor here that links can jump to", e => openAnchorMenu(...at(e)), { keep:true, id:"anchorLink" });
   if ((S.trange && rangeText(S.trange)) || sel.some(id => S.units.get(id)?.kind === "text")) add("link", "🔗 Add link…", "Make the selected text a link to a heading, any tag, a page or a web address (Cmd+K)", e => openLinkMenu(...at(e)), { keep:true, id:"linkLink" });
   if (!S.trange && linkOfSel()){ const l = linkOfSel(); add("unlink", "Remove link", "The link goes; its text stays", () => removeLink(l.obj));
     const ul = underlineOf(l); if (ul.length) add("unlinkul", "Remove link and underline", "The link and the line under its text go; the text stays. Undo brings them back", () => { (S.opts.del ||= {}); stripUnits(ul); ul.forEach(id => S.opts.del[id] = 1); removeLink(l.obj); }); }
@@ -3882,7 +3896,7 @@ function openMenu(x, y){
   m.querySelector(".tag-btn:not(:disabled)")?.focus();
 }
 function closeMenu(){ const m = $("cmenu"); if (m.dataset.kind === "meta") m.querySelectorAll(".mf").forEach(l => $("metaHold").appendChild(l)); m.hidden = true; m.style.width = ""; m.dataset.kind = ""; }
-document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
+document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#zoomMode") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("cmenu").hidden){ e.stopImmediatePropagation(); closeMenu(); } }, true);
 $("stage").addEventListener("scroll", closeMenu, { passive:true });
 $("pagesBox").addEventListener("contextmenu", e => {
@@ -3916,6 +3930,10 @@ const ZOOMS = [25, 50, 75, 100, 125, 150, 200, 300, 400];
 function centerOn(i, x, y){ const v = S.views[i]; if (!v) return; const st = $("stage"); const sr = st.getBoundingClientRect(); const r = v.sheet.getBoundingClientRect();
   const m = v.vp.transform; const px = r.left + m[0] * x + m[2] * y + m[4], py = r.top + m[1] * x + m[3] * y + m[5];
   st.scrollLeft += px - (sr.left + sr.width / 2); st.scrollTop += py - (sr.top + sr.height / 2); }
+/* zoom in or out: the ▾ picks which, Option flips it while held */
+S.zoomOut = (() => { try { return localStorage.getItem("pts:zout") === "1"; } catch { return false; } })();
+function setZoomMode(out){ S.zoomOut = out; document.body.classList.toggle("zout", out); $("zoomTool").querySelector(".zplus")?.setAttribute("d", out ? "M10 10l4 4M4.5 6.5h4" : "M10 10l4 4M4.5 6.5h4M6.5 4.5v4"); $("zoomTool").setAttribute("aria-label", out ? "Zoom out tool" : "Zoom in tool"); try { localStorage.setItem("pts:zout", out ? "1" : ""); } catch {} }
+addEventListener("keydown", e => { if (e.key === "Alt") document.body.classList.add("zalt"); }); addEventListener("keyup", e => { if (e.key === "Alt") document.body.classList.remove("zalt"); }); addEventListener("blur", () => document.body.classList.remove("zalt"));
 function setZoomTool(on){ S.zoomTool = on; $("zoomTool").classList.toggle("on", on); $("zoomTool").setAttribute("aria-pressed", on); document.body.classList.toggle("zooming", on); }
 $("zoomTool").addEventListener("click", () => setZoomTool(!S.zoomTool));
 
@@ -3947,8 +3965,9 @@ $("listTypeSel").addEventListener("change", e => { const L = listOfSel(); if (L)
 
 /* add an anchor where the selection is: it follows the tag if there is one */
 function openAnchorMenu(x, y){
-  const ids = S.trange ? rangeSpans(S.trange).map(s => s.u.id) : selIds(); if (!ids.length && !S.focus){ toast("Select where the anchor should go first."); return; }
-  indexUnits(); const n = S.focus ? findNode(S.focus)?.n : ids.map(id => nodeOfUnit.get(id)).find(Boolean); const u = S.units.get(ids[0]);
+  const ids = S.trange ? rangeSpans(S.trange).map(s => s.u.id) : selIds(); const pt = pickedTop();
+  if (!ids.length && !S.focus && !pt.length){ toast("Select where the anchor should go first."); return; }
+  indexUnits(); const n = (S.focus && findNode(S.focus)?.n) || (pt.length === 1 ? pt[0] : null) || ids.map(id => nodeOfUnit.get(id)).find(Boolean); const u = S.units.get(ids[0]);
   const guess = (S.trange ? rangeText(S.trange) : n ? textOf(allUnits(n)) : textOf(ids)).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "anchor";
   const m = $("cmenu"); m.dataset.kind = "anchor"; m.style.width = "300px";
   m.innerHTML = `<div class="mh">Add anchor</div><div class="lpick"><div class="need" style="font-size:12px">Name it so links can jump here${n ? ` (at the ${esc(n.tag)} tag)` : ""}. It's also a named destination, so web links can use file.pdf#name.</div>
@@ -3957,7 +3976,7 @@ function openAnchorMenu(x, y){
   const inp = $("anName"); inp.focus(); inp.select(); inp.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") $("anGo").click(); if (e.key === "Escape") closeMenu(); });
   $("anGo").addEventListener("click", () => { const name = inp.value.trim(); if (!name){ toast("Give the anchor a name."); return; }
     if ((S.opts.anchors || []).some(a => a.name === name)){ toast("That name is taken. Pick another."); return; }
-    const a = { id:Date.now().toString(36), name }; if (n) a.node = n.id; else if (u?.bbox){ a.page = u.page; a.x = Math.max(0, u.bbox[0] - 4); a.y = u.bbox[3] + 6; }
+    const a = { id:Date.now().toString(36), name }; if (n) a.node = n.id; { const d = n ? anchorDest({ node:n.id }) : u?.bbox ? { page:u.page, x:Math.max(0, u.bbox[0] - 4), y:u.bbox[3] + 6 } : null; if (d){ a.page = d.page; a.x = d.x; a.y = d.y; } }
     (S.opts.anchors ||= []).push(a); closeMenu(); record(); drawOverlays(); toast(`Added anchor ⚓ ${name}. Links can jump here now.`); });
 }
 /* add a link from the selected text to a tag, a page or a web address */
@@ -4004,6 +4023,11 @@ function updZoomSel(){ const pct = Math.round(S.scale * 100);
 updZoomSel();
 $("zoomSel").addEventListener("change", e => { const v = +e.target.value; if (!v) return; S.fit = false; S.scale = v / 100; rezoom(); });
 $("zoomFit").addEventListener("click", () => { S.fit = S.fitMode || "w"; rezoom(); });
+setZoomMode(S.zoomOut);
+$("zoomMode").addEventListener("click", e => { e.stopPropagation(); const m = $("cmenu"); if (!m.hidden && m.dataset.kind === "zmode"){ closeMenu(); return; }
+  m.dataset.kind = "zmode"; m.innerHTML = `<button type="button" class="mi" data-z="in">${S.zoomOut ? "" : "✓ "}Zoom in</button><button type="button" class="mi" data-z="out">${S.zoomOut ? "✓ " : ""}Zoom out</button>`;
+  m.querySelectorAll(".mi").forEach(b => b.addEventListener("click", () => { closeMenu(); setZoomMode(b.dataset.z === "out"); setZoomTool(true); }));
+  const r = $("zoomTool").getBoundingClientRect(); m.style.width = "150px"; m.hidden = false; m.style.left = r.left + "px"; m.style.top = r.bottom + 4 + "px"; });
 $("zoomFitMenu").addEventListener("click", e => { e.stopPropagation(); const m = $("cmenu"); if (!m.hidden && m.dataset.kind === "fit"){ closeMenu(); return; }
   m.dataset.kind = "fit"; m.innerHTML = `<button type="button" class="mi" data-f="w">Fit width</button><button type="button" class="mi" data-f="h">Fit height</button>`;
   m.querySelectorAll(".mi").forEach(b => b.addEventListener("click", () => { closeMenu(); S.fit = b.dataset.f; rezoom(); }));
@@ -4026,6 +4050,7 @@ $("targetClear").addEventListener("click", () => { S.focus = null; S.rows.clear(
 
 
 
+$("fileMain").addEventListener("click", saveWork);
 $("fileBtn").addEventListener("click", () => { if (!$("cmenu").hidden && $("cmenu").dataset.kind === "file") closeMenu(); else openFileMenu(); });
 $("editBtn").addEventListener("click", () => setEditMode(!S.editMode));
 $("addImg").addEventListener("change", e => { insertImage(e.target.files[0]); e.target.value = ""; });
@@ -4039,14 +4064,14 @@ document.addEventListener("keydown", e => {
     if (k === "s"){ e.preventDefault(); saveWork(); return; }
   }
   if (e.target.closest("input,select,textarea,.snip") || e.metaKey || e.ctrlKey) return;
-  const codeKey = /^Key([A-Z])$/.exec(e.code)?.[1]?.toLowerCase() ?? /^Digit(\d)$/.exec(e.code)?.[1];
-  if (e.altKey){ const ta = TAG_BTNS.find(x => x.key === codeKey && !x.lv); if (ta && selIds().length){ e.preventDefault(); applyTagEach(ta.t); } return; }
+  if (e.altKey) return;
   const k = e.key.toLowerCase(); const t = (e.shiftKey && TAG_BTNS.find(x => x.skey === k)) || TAG_BTNS.find(x => x.key === k);
   if (t && t.lv && selIds().length){ e.preventDefault(); if (canWrap(t.t)) wrapRows(t.t); else toast(`Select ${WRAPS[t.t].filter(x => x !== "Caption").join(" or ")} tags to wrap them in ${t.t}.`); }
   else if (t && selIds().length){ e.preventDefault(); if (!canTagContent()){ toast("Several tags are selected. Use a Wrap in button, or select one tag or untagged content."); } else $("eachChk").checked ? applyTagEach(t.t) : applyTag(t.t); }
   else if (k === "v"){ togglePreview(); }
   else if (k === "z" && S.pages.length){ setZoomTool(!S.zoomTool); }
   else if (k === "e" && S.pages.length){ setEditMode(!S.editMode); }
+  else if (k === "s" && !e.shiftKey){ const c = $("eachChk"); c.checked = !c.checked; renderSel(); toast(c.checked ? "Tag each item separately: on" : "Tag each item separately: off", 1500); }
   else if (k === "n" && colSelBox()){ e.preventDefault(); addColumn("after"); }
   else if (k === "escape" && S.editMode){ if (S.esel.length){ S.esel = []; S.sel.clear(); renderAll(); } else setEditMode(false); }
   else if (k === "escape" && S.linkSrc){ S.linkSrc = null; document.body.classList.remove("picking"); toast("Link canceled."); }
@@ -4079,8 +4104,8 @@ function closeDoc(){
 }
 $("closeBtn").addEventListener("click", () => {
   const dirty = S.pages.length && workState() !== S.savedWork;
-  if (dirty && Date.now() - closeArm > 4000){ closeArm = Date.now(); $("closeBtn").textContent = "Close without checkpoint?"; setTimeout(() => { $("closeBtn").textContent = "Close"; }, 4000);
-    toast("You have changes since your last checkpoint. Click again to close anyway, or Set checkpoint first.", 4000); return; }
+  if (dirty && Date.now() - closeArm > 4000){ closeArm = Date.now(); $("closeBtn").textContent = "Close without saving?"; setTimeout(() => { $("closeBtn").textContent = "Close"; }, 4000);
+    toast("You have changes since your last save. Click again to close anyway, or Save first.", 4000); return; }
   closeArm = 0; $("closeBtn").textContent = "Close"; closeDoc(); });
 if (location.hash === "#sample") loadSample().then(showStart); else showStart();
 </script>
