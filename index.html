@@ -1,10 +1,10 @@
 <!doctype html><html><head><link rel="icon" href="images/favicon.ico" sizes="48x48"><link rel="icon" href="images/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="images/apple-touch-icon.png"><link rel="manifest" href="images/site.webmanifest"><meta property="og:title" content="PDF Tag Studio"><meta property="og:description" content="Tag PDFs for accessibility, right in your browser"><meta property="og:image" content="https://terencelarson-usu.github.io/PDF-Tag-Studio/images/social-preview.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:image:alt" content="PDF Tag Studio logo, a blue price tag shaped like a document"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#2457d6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1b2029" media="(prefers-color-scheme: dark)"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>PDF Tag Studio</title>
+<script>if(!document.querySelector('link[rel~="icon"][href*="images/favicon"]')){document.querySelectorAll('link[rel~="icon"]').forEach(x=>x.remove());const l=document.createElement("link");l.rel="icon";l.type="image/svg+xml";l.href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cstyle%3E.t%7Bfill:%23fff%7D.g%7Bstroke:%232457d6%7D%40media %28prefers-color-scheme:dark%29%7B.t%7Bfill:%231b2029%7D.g%7Bstroke:%236b95ff%7D%7D%3C/style%3E%3Crect class='t' width='20' height='20' rx='4.5'/%3E%3Cg transform='translate%2810 10%29 scale%28.72%29 translate%28-10 -10%29' fill='none' class='g' stroke-width='2' stroke-linecap='round'%3E%3Cpath stroke-linejoin='round' d='M8.2 1.4H11.8L16.6 6.2V17.4A1.4 1.4 0 0 1 15.2 18.8H4.8A1.4 1.4 0 0 1 3.4 17.4V6.2Z'/%3E%3Ccircle cx='10' cy='5.2' r='1.2' stroke-width='1.6'/%3E%3Cpath stroke-width='1.4' d='M10.9 4.3C12.6 2 15.5 .2 18.6 .4'/%3E%3Cpath d='M6.6 9.6h6.8M6.6 12.6h6.8M6.6 15.6h5.1'/%3E%3C/g%3E%3C/svg%3E";document.head.appendChild(l);}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
-
-  <style>
+<style>
 /* Layout: app bar on top, page viewer on the left, tag tools + reading order on the right. Stacks on narrow screens. */
 :root{
   --bg:#eef0f3; --panel:#ffffff; --fg:#1d2430; --muted:#5d6878; --line:#d6dbe3; --stage:#dde1e7;
@@ -120,7 +120,7 @@ body.picking .sheet svg{cursor:crosshair}
 .sec.tcoll .tbody,.sec.tcoll #selInfo,.sec.tcoll #target{display:none!important}
 .shwarn{margin-top:6px;color:var(--warn);font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .shwarn .btn{font-size:12px;padding:2px 10px}
-.side.ocoll .walk,.side.ocoll .seg,.side.ocoll #lcrumbs,.side.ocoll #otools,.side.ocoll #order{display:none!important}
+.side.ocoll .walk,.side.ocoll .seg,.side.ocoll #lcrumbs,.side.ocoll #order{display:none!important}
 .side:has(> .cpanel:not([hidden])){overflow:hidden}
 .sec{padding:14px 16px;border-bottom:1px solid var(--line)}
 .sec h2{margin:0 0 8px;font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
@@ -185,6 +185,10 @@ body.picking .sheet svg{cursor:crosshair}
 .num{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:3px;text-align:right;font-variant-numeric:tabular-nums}
 .body{min-width:0;display:flex;flex-direction:column;gap:3px}
 .top{display:flex;align-items:center;gap:6px;min-width:0}
+.tsel.tchip,.tsel.tfix,.tsel.timg{display:inline-flex;align-items:center;gap:3px;padding:1px 5px;line-height:1.4;justify-self:start}
+.tsel.tchip{cursor:pointer}.tsel.tchip span{font-size:8px;opacity:.7}
+.tsel.timg{padding:1px 4px}.tsel.timg svg{display:block}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .tsel{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--panel));border:1px solid color-mix(in srgb,var(--c) 40%,var(--line));border-radius:5px;padding:1px 2px}
 .pg{font-size:11px;color:var(--muted);font-family:var(--mono);margin-left:auto;white-space:nowrap}
 .snip{font-size:13px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere;cursor:pointer}
@@ -214,9 +218,17 @@ body.picking .sheet svg{cursor:crosshair}
 .ov-sel{fill:rgb(36 87 214 / .16);stroke:#2457d6;stroke-width:1}
 .ov-selbox{fill:none;stroke:#2457d6;stroke-width:1.5;stroke-dasharray:5 3}
 .ov-drag{fill:rgb(36 87 214 / .08);stroke:#2457d6;stroke-width:1;stroke-dasharray:4 2}
+.ov-drag.ov-ghost{fill:rgb(36 87 214 / .05);stroke-dasharray:none}
+.ov-esel{fill:none;stroke:var(--accent);stroke-width:1.2}
+.ov-eh{fill:var(--panel);stroke:var(--accent);stroke-width:1.2;cursor:nwse-resize}
+.editbar{display:inline-flex;gap:4px;align-items:center}.editbar .btn,.editbar .seg button{font-size:12px}
+#editBtn.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.etext{position:absolute;z-index:6;font:inherit;border:1.5px solid var(--accent);background:var(--panel);color:var(--fg);padding:1px 4px;border-radius:3px}
 body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stroke-width:4;stroke-dasharray:none;rx:3}
 .ov-badge text{font:600 10px var(--mono);fill:#fff}
 .ov-focus{stroke-width:3}
+.ov-link2 line{stroke-width:1.5;stroke-dasharray:4 3;opacity:.85}
+.ov-cont{opacity:.85}
 
 @media (max-width:860px){
   .main{grid-template-columns:1fr;grid-template-rows:minmax(55vh,1fr) auto;overflow:auto}
@@ -233,16 +245,22 @@ body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stro
 .tag-btn.third{grid-column:span 2}
 .each{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:8px;cursor:pointer}
 .each .chip{margin-left:auto}
+.ddot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:6px;vertical-align:1px}
+.gear{border:0;background:none;color:var(--muted);font-size:13px;line-height:1;padding:2px 4px;border-radius:5px;cursor:pointer}.gear:hover,.gear.on{color:var(--fg);background:color-mix(in srgb,var(--muted) 14%,transparent)}
+.sec.floating{position:fixed;z-index:60;width:360px;max-height:85vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgb(0 0 0 / .18);padding:10px 14px}
+.sec.floating .tsec-h{cursor:move}
+#tsecH .gear{margin-left:2px}#tsecH > span{margin-right:auto}
+.optbar{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:5px 10px;font-size:12px;margin-bottom:10px}
+.optbar:hover{background:color-mix(in srgb,var(--muted) 8%,var(--panel))}.optbar .car{color:var(--muted)}
+.optbar[aria-expanded="true"]{border-radius:8px 8px 0 0;margin-bottom:0;border-bottom-color:transparent}.optbar[aria-expanded="true"] .car{transform:rotate(180deg)}
+.tagopts{border:1px solid var(--line);border-top:0;border-radius:0 0 8px 8px;padding:4px 10px 2px;margin-bottom:10px}
+.placerow{cursor:default}.placerow select{font-size:12px}
 .sub{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:12px 0 6px;font-weight:600}
 .target{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:10px;padding:6px 8px;border-radius:6px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line))}
 .target b{font-family:var(--mono)}
 .target .btn{margin-left:auto;padding:2px 8px;font-size:12px}
 .build{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .build .btn{justify-content:center;font-size:12px;padding:5px 8px}
-.otools{display:flex;flex-wrap:wrap;gap:6px;padding:4px 16px 8px;align-items:center}
-.otools select,.otools .btn{font-size:12px;padding:3px 8px;border-radius:6px}
-.otools select{border:1px solid var(--line);background:var(--panel)}
-.otools .lbl{font-size:12px;color:var(--muted)}
 .row{padding-left:calc(8px + var(--gut,0px))}
 .bars{position:absolute;inset:0;pointer-events:none}
 .bars i{position:absolute;width:3px;top:-5px;border-radius:2px;background:color-mix(in srgb,var(--muted) 30%,transparent)}
@@ -270,20 +288,24 @@ body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stro
 .row.picked{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--panel))}
 .row.drop-in{outline:2px solid var(--accent);outline-offset:-2px}
 .order{position:relative}
-.tree .trow{display:grid;grid-template-columns:16px auto minmax(0,1fr) auto auto;align-items:center;gap:6px;padding:4px 6px 4px calc(6px + (var(--d,0) + 1) * 16px);border-radius:6px;cursor:default}
+.tree .trow{display:grid;grid-template-columns:10px 16px auto minmax(0,1fr) auto auto;align-items:center;gap:6px;padding:4px 6px 4px calc(2px + var(--d,0) * 16px);border-radius:6px;cursor:default}
 .tree .trow.grp .snip{font-weight:600}
 .tree .trow .snip.one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;-webkit-line-clamp:unset;font-size:13px}
 .tree .trow .tw{display:flex;justify-content:center}
 .tree .docrow{display:flex;align-items:center;gap:8px;padding:4px 6px;font-size:13px;color:var(--muted)}
+.tree .waitrow{display:flex;align-items:center;gap:6px;padding:4px 6px;font-size:12px;color:var(--muted);cursor:pointer;border-radius:6px}.tree .waitrow:hover{background:color-mix(in srgb,var(--muted) 10%,transparent)}.tree .waitrow svg{vertical-align:-1px}
 .tree .docrow b{font:600 11px var(--mono);color:var(--fg);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
 .tree .trow .meta{display:flex;gap:6px;align-items:center;font:11px var(--mono);color:var(--muted)}
 .tree .trow .num{min-width:2ch;text-align:right}
 .tree .trow .x{opacity:0}
 .tree .trow:hover .x,.tree .trow.active .x{opacity:1}
-.tree .trow .det{grid-column:2 / -1;display:flex;flex-direction:column;gap:6px;padding:4px 0 2px}
+.tree .trow .det{grid-column:3 / -1;display:flex;flex-direction:column;gap:6px;padding:4px 0 2px}
 .tree .trow.dragging{opacity:.35}
-.tree .trow::before{content:"";position:absolute;left:calc(14px + (var(--d,0) - 1) * 16px);top:0;bottom:0;border-left:1px solid var(--line)}
-.tree .trow[data-d="0"]::before{display:none}
+.tree .trow .grip{color:var(--muted);cursor:grab;font-size:14px;line-height:1;text-align:center;opacity:.55;user-select:none}
+.tree .trow:hover .grip{opacity:1}
+.tree .trow.ingrp:not(.picked):not(.active),.tree .trow.grphead:not(.picked):not(.active){background:color-mix(in srgb,var(--pc) 7%,transparent)}
+.tree .trow.ingrp{border-radius:0}.tree .trow.grphead{border-radius:6px 6px 0 0}
+.tree .trow.drop-area{background:color-mix(in srgb,var(--pc,var(--accent)) 16%,transparent)!important}
 .dropline{position:absolute;right:8px;height:2px;background:var(--accent);border-radius:2px;pointer-events:none;z-index:3}
 .dropline::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;border:2px solid var(--accent);background:var(--panel)}
 .dropline span{position:absolute;right:0;top:-18px;font:600 10px var(--mono);background:var(--accent);color:var(--accent-ink);padding:1px 6px;border-radius:4px}
@@ -390,6 +412,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
 .cmenu .mi:hover,.cmenu .mi:focus-visible{background:color-mix(in srgb,var(--accent) 12%,var(--panel))}
 .cmenu .msel{font-size:12px;padding:4px 6px 2px}
 .cmenu .each{padding:0 6px;margin:4px 0}
+.cmenu .mcomb{display:block;width:100%;margin:8px 0 2px;text-align:left}
 .cmenu .mtags{padding:0 6px 6px}
 .cmenu .mtags .tag-btn{padding:4px 0;font-size:11px}
 .cmenu .mtags .tlv6{padding:3px 6px}
@@ -427,13 +450,18 @@ body.zooming .sheet svg:active{cursor:crosshair}
 
 .colchip.on{border-color:#8a94a3;background:var(--bg)}
 .colchip .cord{font:600 10px var(--mono,monospace);color:var(--muted);min-width:10px}
+.chr.cur{outline:2px solid var(--accent);outline-offset:-2px;border-radius:4px}
+.tree .colmark{list-style:none;font:500 10px var(--mono,monospace);color:var(--muted);padding:6px 0 2px 8px;margin-left:2px;border-left:1px solid color-mix(in srgb,var(--muted) 45%,transparent)}
+.tree .row.incol{box-shadow:inset 1px 0 0 color-mix(in srgb,var(--muted) 45%,transparent)}
+.tree .pgtools{list-style:none;display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;padding:4px 8px 8px}
+.listtail{border-top:1px solid var(--line);margin-top:10px;padding-top:10px;display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:12px;justify-content:flex-end}
 </style>
 
 <div class="app">
   <header class="bar">
     <div class="brand">
       <svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8.2 1.4H11.8L16.6 6.2V17.4A1.4 1.4 0 0 1 15.2 18.8H4.8A1.4 1.4 0 0 1 3.4 17.4V6.2Z"/><circle cx="10" cy="5.2" r="1.2"/><path d="M10.9 4.3C12.6 2 15.5 .2 18.6 .4"/><path d="M6.6 9.6h6.8M6.6 12.6h6.8M6.6 15.6h5.1"/></g></svg>
-      PDF Tag Studio <span class="beta" title="Still being tested">Beta</span>
+      PDF Tag Studio <span class="beta" title="Still being tested">Beta 2.0</span>
     </div>
     <span class="file" id="fileName">No file</span>
     <div class="spacer"></div>
@@ -442,11 +470,12 @@ body.zooming .sheet svg:active{cursor:crosshair}
     <button class="btn" id="optBtn" aria-haspopup="menu" title="Bookmarks, page numbers, form fields, comments and media, export">Doc Settings ▾</button>
     <button class="btn" id="undoBtn" title="Undo (Cmd+Z)" disabled>Undo</button>
     <button class="btn" id="redoBtn" title="Redo (Shift+Cmd+Z)" disabled>Redo</button>
-    <label class="btn" for="fileInput" tabindex="0" id="openBtn">Import PDF</label>
+    <button class="btn" id="fileBtn" aria-haspopup="menu" title="Import, recent PDFs, checkpoints and close">File ▾</button>
+    <span hidden><label class="btn" for="fileInput" tabindex="0" id="openBtn">Import PDF</label>
     <button class="btn" id="closeBtn" disabled title="Close this PDF">Close</button>
     <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden>
     <button class="btn" id="revertBtn" title="Go back to your last checkpoint" disabled>Revert to checkpoint</button>
-    <button class="btn" id="keepBtn" title="Set a checkpoint you can revert to. It is kept in this browser (Cmd+S)" disabled>Set checkpoint</button>
+    <button class="btn" id="keepBtn" title="Set a checkpoint you can revert to. It is kept in this browser (Cmd+S)" disabled>Set checkpoint</button></span>
     <button class="btn primary" id="saveBtn" disabled>Export PDF</button>
   </header>
 
@@ -462,15 +491,14 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <button class="btn" id="zoomIn" aria-label="Zoom in">+</button>
         <span class="splitbtn"><button class="btn" id="zoomFit" title="Fit to the page width">Fit width</button><button class="btn" id="zoomFitMenu" aria-haspopup="menu" aria-label="Choose fit width or fit height">▾</button></span>
         <button class="btn" id="zoomTool" aria-pressed="false" title="Zoom tool (Z): drag a box to zoom to it, click to zoom in, Option-click to zoom out. Turns off after one zoom." aria-label="Zoom tool"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 10l4 4M4.5 6.5h4M6.5 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <button class="btn" id="editBtn" aria-pressed="false" title="Edit (E): drag to move. Drag a corner to resize (Shift keeps the shape), Option-drag a corner to crop. Double-click text to fix a line." aria-label="Edit">✎</button>
+        <span class="editbar" id="editBar" hidden><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*" hidden></label></span>
         <span class="sep"></span>
         <button class="btn" id="previewBtn" aria-pressed="false" title="Hide tags and show pages as they will export (V)">Preview</button>
         <span class="sep"></span>
-        <span class="zlbl">Stacking</span>
-        <button class="btn" id="zBack" title="Send to back">Back</button>
-        <button class="btn" id="zBackward" title="Move backward">Backward</button>
-        <button class="btn" id="zForward" title="Move forward">Forward</button>
-        <button class="btn" id="zFront" title="Bring to front">Front</button>
-        <span class="sep"></span>
+        <button class="btn" id="stackBtn" aria-haspopup="menu" hidden title="Change which item is drawn on top">Stacking ▾</button>
+        <span hidden><button class="btn" id="zBack">Back</button><button class="btn" id="zBackward">Backward</button><button class="btn" id="zForward">Forward</button><button class="btn" id="zFront">Front</button></span>
+        <span class="sep" id="stackSep" hidden></span>
         <button class="btn" id="contrastBtn" title="Check fonts, characters and contrast">Check</button>
         <span class="crumbs" id="crumbs"></span>
       </div>
@@ -490,11 +518,13 @@ body.zooming .sheet svg:active{cursor:crosshair}
     <aside class="side" aria-label="Tagging">
       <div class="backcheck" id="backCheck" hidden><button type="button" class="linkbtn" id="backCheckBtn">← Back to Check</button><span class="need" style="font-size:11px;margin-left:auto">Click a red ! on the page to select it</span><button type="button" class="linkbtn" id="doneFix" title="Hide the problem markers" style="margin-left:10px">Done</button></div>
       <div class="sec">
-        <h2 class="tsec-h" id="tsecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="tsecCar">▾</span>Tag selection</span></h2>
+        <h2 class="tsec-h" id="tsecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="tsecCar">▾</span>Tag selection</span><button type="button" class="gear" id="popBtn" aria-pressed="false" title="Pop out the tag buttons so you can move them next to your work" aria-label="Pop out tag buttons">⧉</button></h2>
         <div class="sel-info" id="selInfo">Nothing selected.</div>
         <div class="target" id="target" hidden><span>Adding into <b id="targetName"></b></span><button class="btn" id="targetClear" title="Add new tags at the top level instead">Top level</button></div>
         <div class="tbody">
-        <label class="each" for="eachChk"><input type="checkbox" id="eachChk"> Tag each item separately <span class="chip" style="padding:0 5px">Option + key</span></label>
+        <button type="button" class="optbar" id="tagOptsBtn" aria-expanded="false" aria-controls="tagOpts" title="Tag each item separately, and where new tags go in the list"><span>Tagging options</span><svg class="car" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="tagopts" id="tagOpts" hidden><label class="each" for="eachChk"><input type="checkbox" id="eachChk"> Tag each item separately <span class="chip" style="padding:0 5px">Option + key</span></label>
+        <label class="each placerow" for="placeSel" title="Page order: new tags slot in left to right, top to bottom, on the page or in their column. Order made: new tags go to the end of their page's tags.">New tags go <select id="placeSel" class="langsel"><option value="pos">in page order</option><option value="end">in the order you make them</option></select></label></div>
         <div class="tags" id="tagBtns"></div>
         <div class="field ltrow" id="cellRow" hidden><b style="font:600 11px var(--mono)" id="cellTag">TD</b> <label>Col span <input type="number" min="1" max="99" id="cellCs" style="width:46px"></label> <label>Row span <input type="number" min="1" max="999" id="cellRs" style="width:46px"></label> <label id="cellScL">Scope <select id="cellSc" class="langsel"><option value="">None</option><option>Column</option><option>Row</option><option>Both</option></select></label></div>
         <label class="field ltrow" id="listTypeRow" hidden>List type <select id="listTypeSel" class="langsel"></select> <span class="need" id="listTypeOf"></span></label>
@@ -505,18 +535,12 @@ body.zooming .sheet svg:active{cursor:crosshair}
           <button class="btn" id="colorReset" title="Back to the original color">Reset</button>
           <span class="cinfo" id="colorInfo"></span>
         </div>
-        <div class="sellinks"><button type="button" class="dellink lnk" id="mvbLink" hidden title="Pick tags to move in front of the selected tag">⤒ Move tags before…</button><button type="button" class="dellink lnk" id="mvaLink" hidden title="Pick tags to move right after the selected tag">⤓ Move tags after…</button><button type="button" class="dellink lnk" id="weldLink" hidden title="Join the selected image pieces into one image, in the same spot and tag">⧉ Weld images</button><button type="button" class="dellink lnk" id="anchorLink" hidden title="Add a named anchor here that links can jump to">⚓ Add anchor…</button><button type="button" class="dellink lnk" id="linkLink" hidden title="Make the selected text a link to a heading, any tag, a page or a web address (Cmd+K)">🔗 Add link…</button>
-        <button type="button" class="dellink" id="delLink" hidden title="Removes the selected content from the PDF, like empty boxes or stray shapes. Undo brings it back."><span aria-hidden="true" style="display:inline-block;margin-right:4px">✕</span>Delete from PDF…</button></div>
+        <div class="sellinks" id="selActs"></div>
         </div>
       </div>
       <div class="order-head"><div class="sec" style="padding:0;border:0"><h2 class="tsec-h" id="osecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="osecCar">▾</span>Structure and reading order <span id="orderCount"></span></span></h2></div><div class="seg" role="group" aria-label="List view"><button type="button" class="on" data-v="tags" aria-pressed="true">Tags</button><button type="button" data-v="content" aria-pressed="false" title="Objects in the order they are drawn on export">Content order</button></div><div class="walk" role="group" aria-label="Walk reading order"><label class="each" for="skipArt" id="skipArtL" hidden><input type="checkbox" id="skipArt"> Skip artifacts</label></div><div class="ohint" id="ohint"></div></div>
       <div class="colbar" id="colbar" hidden></div>
       <div class="crumbs lcrumbs" id="lcrumbs" hidden></div>
-      <div class="otools" id="otools">
-        <select id="wrapSel" aria-label="Group selected rows"><option value="">Group into…</option><option value="L">List</option><option value="LI">List item</option><option value="Table">Table</option><option value="THead">Table head (THead)</option><option value="TBody">Table body (TBody)</option><option value="TFoot">Table foot (TFoot)</option><option value="TR">Table row</option><option value="Figure">Figure</option><option value="Sect">Section</option></select>
-        <button class="btn" id="unwrapBtn" title="Remove the group and keep what's inside">Ungroup</button>
-        <button class="btn" id="mergeBtn" title="Combine selected rows into one tag. Merging table rows joins them cell by cell.">Merge</button>
-      </div>
       <div class="order" id="order"></div>
       <div class="foot" id="foot"></div>
       <div class="cpanel" id="opanel" hidden>
@@ -538,7 +562,18 @@ body.zooming .sheet svg:active{cursor:crosshair}
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script type="module">
 import * as pdfjsLib from "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs";
+const WORKER_SRC = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs";
+pdfjsLib.GlobalWorkerOptions.workerSrc = WORKER_SRC;
+/* some hosts block a worker loaded from another site, and pdf.js then reads PDFs on the main thread ("fake worker"), which is slow.
+   Load the worker code ourselves and start it from this page so it runs in the background everywhere */
+const workerReady = (async () => { try {
+  const code = await (await fetch(WORKER_SRC)).text(); const url = URL.createObjectURL(new Blob([code], { type:"text/javascript" }));
+  const w = new Worker(url, { type:"module" });
+  const ok = await new Promise(res => { const t = setTimeout(() => res(true), 4000); w.addEventListener("error", () => { clearTimeout(t); res(false); }, { once:true }); w.addEventListener("message", () => { clearTimeout(t); res(true); }, { once:true }); });
+  if (ok) pdfjsLib.GlobalWorkerOptions.workerPort = w; else w.terminate();
+} catch {} })();
+/* errors only: where workers are blocked, pdf.js still works on the main thread, so its "fake worker" note is just noise */
+const getDoc = async o => { await workerReady; return pdfjsLib.getDocument({ verbosity:pdfjsLib.VerbosityLevel.ERRORS, ...o }); };
 
 const L = window.PDFLib;
 const { PDFDocument, PDFName, PDFDict, PDFArray, PDFNumber, PDFRawStream, PDFString, PDFHexString, StandardFonts, rgb } = L;
@@ -549,36 +584,41 @@ const TAG_BTNS = [
   { t:"H1", key:"1" }, { t:"H2", key:"2" }, { t:"H3", key:"3" }, { t:"H4", key:"4" }, { t:"H5", key:"5" }, { t:"H6", key:"6" },
   { t:"P", key:"p" }, { t:"Lbl", key:"b" }, { t:"LBody", key:"i" },
   { t:"TH", key:"h" }, { t:"TD", key:"t" }, { t:"Quote", key:"q" },
-  { t:"Figure", key:"f" }, { t:"Caption", key:"c" }, { t:"Artifact", kbd:"Del" },
+  { t:"Image", key:"g" }, { t:"Caption", key:"c" }, { t:"Artifact", kbd:"A" },
   /* wrapping levels: each one only wraps the level below */
-  { t:"LI", key:"l", lv:2 }, { t:"TR", key:"r", lv:2 }, { t:"TOCI", lv:2 },
-  { t:"L", lv:3 }, { t:"TOC", lv:3 }, { t:"THead", lv:3 }, { t:"TBody", lv:3 }, { t:"TFoot", lv:3 },
-  { t:"Table", lv:4 },
-  { t:"Sect", lv:5 },
+  { t:"LI", key:"l", lv:2 }, { t:"TR", key:"r", lv:2 }, { t:"Figure", key:"f", lv:2 }, { t:"TOCI", lv:2 },
+  { t:"L", lv:3, skey:"l" }, { t:"TOC", lv:3, skey:"c" }, { t:"THead", lv:3, skey:"h" }, { t:"TBody", lv:3, skey:"b" }, { t:"TFoot", lv:3, skey:"f" },
+  { t:"Table", lv:4, skey:"t" },
+  { t:"Sect", lv:5, skey:"s" },
 ];
 const BLOCK = ["H1","H2","H3","H4","H5","H6","P","L","TOC","Table","Figure","Caption","Quote","Note","Formula","Reference","Sect","Link","Form","Annot"];
-const WRAPS = { TOCI:["P","Lbl","Reference","Link","TOC"], TOC:["TOCI","Caption"], Sect:BLOCK, LI:["Lbl","LBody"], TR:["TH","TD"], L:["LI","Caption"], THead:["TR"], TBody:["TR"], TFoot:["TR"], Table:["TR","THead","TBody","TFoot","Caption"] };
+const WRAPS = { Figure:["Image","Caption"], TOCI:["P","Lbl","Reference","Link","TOC"], TOC:["TOCI","Caption"], Sect:BLOCK, LI:["Lbl","LBody"], TR:["TH","TD"], L:["LI","Caption"], THead:["TR"], TBody:["TR"], TFoot:["TR"], Table:["TR","THead","TBody","TFoot","Caption"] };
 /* content tags apply to untagged content or one content tag; several tags or a group need a wrap level */
 function canTagContent(){ if (!selIds().length) return false; const nodes = pickedTop(); if (!nodes.length) return true; if (nodes.some(n => n.obj)) return false;
   /* with Tag each, several content tags can be retagged at once, like TD cells to TH */
   return nodes.every(n => !isGroup(n)) && (nodes.length === 1 || $("eachChk").checked); }
 /* can the selected tags be wrapped in this tag? */
-function canWrap(tag){ if (!selIds().length && !S.rows.size) return false; const nodes = pickedTop(); if (nodes.length === 1 && tag === "Sect" && nodes[0].obj) return false; if (!nodes.length || !nodes.every(n => WRAPS[tag].includes(n.tag)) || nodes.every(n => n.tag === "Caption")) return false;
+function canWrap(tag){ if (!selIds().length && !S.rows.size) return false; const nodes = pickedTop(); if (tag === "Figure" && !nodes.length && canTagContent()) return true; if (nodes.length === 1 && tag === "Sect" && nodes[0].obj) return false; if (!nodes.length || !nodes.every(n => WRAPS[tag].includes(n.tag)) || nodes.every(n => n.tag === "Caption")) return false;
   if (tag === "LI" && (nodes.filter(n => n.tag === "Lbl").length > 1 || nodes.filter(n => n.tag === "LBody").length > 1)) return false;
   const cover = new Set(nodes.flatMap(allUnits)); return selIds().every(id => cover.has(id)); }
-const ALL_TAGS = ["H1","H2","H3","H4","H5","H6","P","Figure","Caption","L","LI","Lbl","LBody","TOC","TOCI","Table","THead","TBody","TFoot","TR","TH","TD","Quote","Note","Reference","Formula","Sect"];
-const COLORVAR = t => /^H\d$/.test(t) ? "--t-h" : t === "P" ? "--t-p" : t === "Figure" || t === "Formula" ? "--t-fig" : t === "Caption" ? "--t-cap"
+const ALL_TAGS = ["H1","H2","H3","H4","H5","H6","P","Image","Figure","Caption","L","LI","Lbl","LBody","TOC","TOCI","Table","THead","TBody","TFoot","TR","TH","TD","Quote","Note","Reference","Formula","Sect"];
+const COLORVAR = t => /^H\d$/.test(t) ? "--t-h" : t === "P" ? "--t-p" : t === "Figure" || t === "Image" || t === "Formula" ? "--t-fig" : t === "Caption" ? "--t-cap"
   : ["L","LI","Lbl","LBody"].includes(t) ? "--t-li" : ["Table","THead","TBody","TFoot","TR","TH","TD"].includes(t) ? "--t-tb" : t === "Sect" ? "--t-sec" : "--t-q";
 const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const tagColor = t => css(COLORVAR(t));
-const ONLY_IN = { TOCI:["TOC"], LI:["L"], Lbl:["LI"], LBody:["LI"], TR:["Table","THead","TBody","TFoot"], THead:["Table"], TBody:["Table"], TFoot:["Table"], TH:["TR"], TD:["TR"], Caption:["Figure","Table","L"] };
+/* reading computed styles is slow; cache colors until the theme changes */
+const colorCache = new Map(); const tagColor = t => { const k = COLORVAR(t); if (!colorCache.has(k)) colorCache.set(k, css(k)); return colorCache.get(k); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { colorCache.clear(); drawOverlays(); });
+new MutationObserver(() => { colorCache.clear(); }).observe(document.documentElement, { attributes:true, attributeFilter:["data-theme"] });
+const ONLY_IN = { TOCI:["TOC"], LI:["L"], Lbl:["LI"], LBody:["LI"], TR:["Table","THead","TBody","TFoot"], THead:["Table"], TBody:["Table"], TFoot:["Table"], TH:["TR"], TD:["TR"], Caption:["Figure","Table","L"], Image:["Figure"] };
 const FLOW = new Set(["ROOT","Sect","LBody","LI","TH","TD","Quote","Note","TOCI"]);
 const OBJ_TAGS = new Set(["Link","Form","Annot"]);
 const accepts = (parent, child) => OBJ_TAGS.has(child) ? !["L","Table","THead","TBody","TFoot","TR"].includes(parent) : ONLY_IN[child] ? ONLY_IN[child].includes(parent) : FLOW.has(parent);
 /* a group holds other tags; links, fields and annotations inside a paragraph don't make it one */
 const isGroup = n => n.kids.some(k => !k.obj);
 const FOCUS_NEW = new Set(["L","LI","LBody","Table","THead","TBody","TFoot","TR","Figure","Sect"]);
-const NAMES = { TOC:"Table of contents", TOCI:"Contents entry", Link:"Link", Form:"Form field", Annot:"Annotation", L:"List", LI:"List item", Table:"Table", TR:"Table row", Sect:"Section", Figure:"Figure", LBody:"List body", TH:"Header cell", TD:"Cell", THead:"Table head", TBody:"Table body", TFoot:"Table foot" };
+const LINK_ICON = `<svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true"><path d="M-1.2 2.6l-1.4 1.4a1.9 1.9 0 0 1-2.7-2.7l1.4-1.4M1.2-2.6l1.4-1.4a1.9 1.9 0 0 1 2.7 2.7l-1.4 1.4M-1.8 1.8l3.6-3.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+const IMG_ICON = `<svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span class="sr-only">Image</span>`;
+const NAMES = { Image:"Image", TOC:"Table of contents", TOCI:"Contents entry", Link:"Link", Form:"Form field", Annot:"Annotation", L:"List", LI:"List item", Table:"Table", TR:"Table row", Sect:"Section", Figure:"Figure", LBody:"List body", TH:"Header cell", TD:"Cell", THead:"Table head", TBody:"Table body", TFoot:"Table foot" };
 
 /* ---------- state ---------- */
 const S = {
@@ -597,6 +637,8 @@ const ap = (m, x, y) => [m[0]*x+m[2]*y+m[4], m[1]*x+m[3]*y+m[5]];
 const bboxOf = pts => { if (!pts.length) return null; let x0=Infinity,y0=Infinity,x1=-Infinity,y1=-Infinity; for (const [x,y] of pts){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } return isFinite(x0) ? [x0,y0,x1,y1] : null; };
 const union = (a, b) => !a ? b : !b ? a : [Math.min(a[0],b[0]),Math.min(a[1],b[1]),Math.max(a[2],b[2]),Math.max(a[3],b[3])];
 const area = b => (b[2]-b[0]) * (b[3]-b[1]);
+/* thin lines, like underlines and rules, are hard to click: give them a wider target */
+const hitPad = (u, pad) => u.kind === "path" && Math.min(u.bbox[2] - u.bbox[0], u.bbox[3] - u.bbox[1]) * S.scale < 4 ? 6 / S.scale : pad;
 const inside = (b, x, y, pad=0) => x >= b[0]-pad && x <= b[2]+pad && y >= b[1]-pad && y <= b[3]+pad;
 const N = k => PDFName.of(String(k).replace(/#([0-9a-fA-F]{2})/g, (m, h) => String.fromCharCode(parseInt(h, 16))));
 const lk = (d, k) => { try { return d && d.lookup ? d.lookup(N(k)) : undefined; } catch { return undefined; } };
@@ -816,7 +858,7 @@ function analyzePage(P){
         const xo = lk(lk(res, "XObject"), a[0]?.name);
         const d = xo?.dict; const sub = nm(lk(d, "Subtype"));
         if (isForm(xo) && depth < 12){
-          const my = ++inst; const mx = nums(lk(d, "Matrix")); const xr = lk(res, "XObject")?.get?.(PDFName.of(a[0]?.name)); P.forms.push({ id:`F${P.i}:${my}`, inst:my, parent:cur, stm:xr instanceof L.PDFRef ? xr.toString() : null });
+          const my = ++inst; const mx = nums(lk(d, "Matrix")); const xr = lk(res, "XObject")?.get?.(PDFName.of(a[0]?.name)); P.forms.push({ id:`F${P.i}:${my}`, inst:my, parent:cur, ctm:mul(mx.length === 6 ? mx : [1,0,0,1,0,0], gs.ctm), stm:xr instanceof L.PDFRef ? xr.toString() : null });
           let fops = []; try { fops = parseContent(toLatin1(L.decodePDFRawStream(xo).decode())); } catch {}
           const fr = lk(d, "Resources");
           run(fops, fr instanceof PDFDict ? fr : res, { ...gs, ctm:mul(mx.length === 6 ? mx : [1,0,0,1,0,0], gs.ctm) }, my, depth + 1);
@@ -855,7 +897,9 @@ function chainOf(id){ const path = []; const rec = list => { for (const n of lis
 const findNode = id => { const c = chainOf(id); return c ? { n:c[c.length - 1], p:c[c.length - 2] || null } : null; };
 const kidsOf = p => p ? p.kids : S.tree;
 const allUnits = n => { const r = [...n.units]; n.kids.forEach(k => r.push(...allUnits(k))); return r; };
-const bySeq = (a, b) => (S.units.get(a)?.seq ?? 0) - (S.units.get(b)?.seq ?? 0);
+/* drawing order, page by page: each page counts from 0 */
+const psq = id => { const u = S.units.get(id); return u ? u.page * 1e7 + u.seq : 0; };
+const bySeq = (a, b) => psq(a) - psq(b);
 function detach(n){ const f = findNode(n.id); if (!f) return; const arr = kidsOf(f.p); arr.splice(arr.indexOf(n), 1); }
 function prune(list = S.tree){
   for (let i = list.length - 1; i >= 0; i--){ const n = list[i]; prune(n.kids); if (!n.units.length && !n.kids.length && !n.obj && n.tag !== "TD" && n.tag !== "TH") list.splice(i, 1); }
@@ -868,7 +912,7 @@ function indexUnits(){ nodeOfUnit.clear(); walk(n => n.units.forEach(u => nodeOf
 function flat(){ const r = []; walk((n, p, d) => { r.push({ n, p, d }); }); return r; }
 /* a tag's content in reading order: its own text, with links inside it placed where they sit, then its child tags */
 function seqItems(n){
-  const sq = id => S.units.get(id)?.seq ?? 0; const inl = n.kids.filter(k => k.obj && k.units.length);
+  const sq = psq; const inl = n.kids.filter(k => k.obj && k.units.length);
   const a = [...n.units.map(id => ({ u:id, s:sq(id) })), ...inl.map(k => ({ k, s:Math.min(...k.units.map(sq)) }))].sort((x, y) => x.s - y.s);
   return [...a, ...n.kids.filter(k => !inl.includes(k)).map(k => ({ k }))];
 }
@@ -877,12 +921,25 @@ function nodeKey(n){ const us = allUnits(n).map(id => S.units.get(id)).filter(u 
 const cmpKey = (a, b) => a[0] - b[0] || (Math.abs(a[1] - b[1]) > 2 ? a[1] - b[1] : a[2] - b[2]);
 /* columns: page regions read in the order they were made. Content in column 1 comes before column 2; content above the columns first, below them last */
 const pageCols = pg => (S.opts?.columns || []).filter(c => c.page === pg);
-function colRank(pg, b){ const cs = pageCols(pg); if (!cs.length || !b) return 0; const cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2;
-  const i = cs.findIndex(c => inside(c.rect, cx, cy, 2)); if (i >= 0) return i + 1;
+function colRank(pg, b, ids){ const cs = pageCols(pg); if (!cs.length || !b) return 0; const cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2;
+  const i = cs.findIndex(c => inside(c.rect, cx, cy, 2) && !(ids && c.out && ids.some(id => c.out.includes(id)))); if (i >= 0) return i + 1;
   return cy > Math.max(...cs.map(c => c.rect[3])) - 2 ? 0 : cy < Math.min(...cs.map(c => c.rect[1])) + 2 ? cs.length + 1 : 0; }
 function nodeBox(n){ const us = allUnits(n).map(id => S.units.get(id)).filter(u => u?.bbox); if (!us.length) return null; const pg = Math.min(...us.map(u => u.page)); return { pg, b:us.filter(u => u.page === pg).reduce((a, u) => union(a, u.bbox), null) }; }
-const cmpNodes = (a, b) => { const ka = nodeKey(a), kb = nodeKey(b); if (ka[0] !== kb[0]) return ka[0] - kb[0]; const A = nodeBox(a), B = nodeBox(b); const ca = A ? colRank(A.pg, A.b) : 0, cb = B ? colRank(B.pg, B.b) : 0; return ca - cb || cmpKey(ka, kb); };
-function insertByPos(arr, node){ let pos = arr.findIndex(o => cmpNodes(o, node) > 0); if (pos < 0) pos = arr.length; arr.splice(pos, 0, node); }
+const cmpNodes = (a, b) => { const ka = nodeKey(a), kb = nodeKey(b); if (ka[0] !== kb[0]) return ka[0] - kb[0]; const A = nodeBox(a), B = nodeBox(b); const ca = A ? colRank(A.pg, A.b, allUnits(a)) : 0, cb = B ? colRank(B.pg, B.b, allUnits(b)) : 0; return ca - cb || cmpKey(ka, kb); };
+/* new tags go in page order, or at the end of their page's tags. Parts of a list item or table row always follow the page */
+const PART = new Set(["Lbl","LBody","TH","TD","TR","LI"]);
+S.placeMode = (() => { try { return localStorage.getItem("placeMode") || "pos"; } catch { return "pos"; } })();
+function insertByPos(arr, node){
+  if (S.placeMode === "end" && !PART.has(node.tag)){ const pg = nodeKey(node)[0]; let pos = 0; for (let i = arr.length - 1; i >= 0; i--) if (nodeKey(arr[i])[0] <= pg){ pos = i + 1; break; } arr.splice(pos, 0, node); return; }
+  let pos = arr.findIndex(o => cmpNodes(o, node) > 0); if (pos < 0) pos = arr.length; arr.splice(pos, 0, node); }
+/* inside a wrap: the label comes first in a list item, cells read left to right, rows top to bottom */
+function partOrder(g){ const k = g.kids;
+  if (g.tag === "LI"){ k.sort((a, b) => (a.tag === "Lbl" ? 0 : 1) - (b.tag === "Lbl" ? 0 : 1)); return; }
+  const lx = n => nodeBox(n)?.b[0] ?? Infinity, ty = n => -(nodeBox(n)?.b[3] ?? -Infinity), pgOf = n => nodeBox(n)?.pg ?? 1e9;
+  if (g.tag === "TR"){ const cells = k.filter(n => n.tag === "TH" || n.tag === "TD"); if (cells.every(n => nodeBox(n))){ cells.sort((a, b) => lx(a) - lx(b)); let i = 0; g.kids = k.map(n => n.tag === "TH" || n.tag === "TD" ? cells[i++] : n); } return; }
+  if (/^(Table|THead|TBody|TFoot)$/.test(g.tag)){ const rows = k.filter(n => n.tag === "TR"); if (rows.every(n => nodeBox(n))){ rows.sort((a, b) => pgOf(a) - pgOf(b) || ty(a) - ty(b)); let i = 0; g.kids = k.map(n => n.tag === "TR" ? rows[i++] : n); } return; }
+  if (g.tag === "Figure"){ k.sort((a, b) => (a.tag === "Caption") - (b.tag === "Caption") || 0); const capAbove = k.find(n => n.tag === "Caption"), img = k.find(n => n.tag === "Image");
+    if (capAbove && img && nodeBox(capAbove) && nodeBox(img) && nodeBox(capAbove).pg === nodeBox(img).pg && nodeBox(capAbove).b[1] >= nodeBox(img).b[3] - 2){ g.kids = [capAbove, ...k.filter(n => n !== capAbove)]; } } }
 
 /* place a new node relative to the focused node */
 function place(node){
@@ -897,11 +954,12 @@ function place(node){
 }
 
 /* ---------- text helpers ---------- */
-function textOf(ids){
+function textOf(ids, orig){
+  if (!orig && S.opts?.txt && ids.some(id => S.opts.txt[id] != null)) return ids.map(id => S.opts.txt[id] ?? textOf([id])).join(" ").replace(/\s+/g, " ").trim();
   { const us0 = ids.map(id => S.units.get(id)).filter(u => u?.bbox); if (us0.some(u => u.piece)) return us0.sort((a, b) => a.page - b.page || a.seq - b.seq).map(u => u.piece ? glyphText(u) : textOf([u.id])).join(" ").replace(/\s+/g, " ").trim(); }
   const txt = []; const us = ids.map(id => S.units.get(id)).filter(u => u?.bbox);
   const byPage = new Map(); us.forEach(u => { if (!byPage.has(u.page)) byPage.set(u.page, []); byPage.get(u.page).push(u); });
-  for (const [pg, list] of [...byPage].sort((a, b) => a[0] - b[0])) for (const t of S.pages[pg].texts) if (list.some(u => inside(u.bbox, t.x, t.y, 1.5))) txt.push(t.s.trim());
+  for (const [pg, list] of [...byPage].sort((a, b) => a[0] - b[0])) for (const t of S.pages[pg].texts) if (list.some(u => inside(u.bbox0 || u.bbox, t.x, t.y, 1.5))) txt.push(t.s.trim());
   return txt.join(" ").replace(/\s+/g, " ").trim();
 }
 function snippet(n){
@@ -993,9 +1051,9 @@ $("stage").addEventListener("scroll", realign, { passive:true });
 $("stage").addEventListener("scroll", () => { cancelAnimationFrame(updatePageNo.raf); updatePageNo.raf = requestAnimationFrame(updatePageNo); }, { passive:true });
 let pvTimer = null;
 const isDel = u => !!S.opts?.del?.[u.id];
-const hasFixes = () => Object.keys(S.fix || {}).length > 0 || Object.keys(S.opts?.del || {}).length > 0 || (S.opts?.adds || []).length > 0;
+const hasFixes = () => Object.keys(S.fix || {}).length > 0 || Object.keys(S.opts?.del || {}).length > 0 || (S.opts?.adds || []).length > 0 || hasEdits();
 S.chg = 0;
-function changed(){ S.chg++; applySplits(); syncAdds(); S.previewDirty = true; if (S.preview || hasFixes() || S.hadFixes){ S.hadFixes = hasFixes(); clearTimeout(pvTimer); pvTimer = setTimeout(() => { S.pvVer++; rerenderVisible(); }, 450); } }
+function changed(){ S.chg++; applySplits(); syncAdds(); geomAll(); groupColumns(); S.previewDirty = true; if (S.preview || hasFixes() || S.hadFixes){ S.hadFixes = hasFixes(); clearTimeout(pvTimer); pvTimer = setTimeout(() => { S.pvVer++; rerenderVisible(); }, 450); } }
 let pvBuilding = null;
 async function ensurePreview(){
   if (!S.previewDirty && S.previewPdf) return;
@@ -1003,7 +1061,7 @@ async function ensurePreview(){
   pvBuilding = (async () => {
     S.previewDirty = false;
     const bytes = await buildOutput();
-    const old = S.previewPdf; S.previewPdf = await pdfjsLib.getDocument({ data:bytes }).promise; old?.destroy?.();
+    const old = S.previewPdf; S.previewPdf = await (await getDoc({ data:bytes })).promise; old?.destroy?.();
   })();
   try { await pvBuilding; } finally { pvBuilding = null; }
 }
@@ -1013,12 +1071,29 @@ const vrect = (b, vp) => { const a = toView(b[0], b[1], vp), c = toView(b[2], b[
 const SVGNS = "http://www.w3.org/2000/svg";
 const mk = (tag, attrs, parent) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent?.appendChild(e); return e; };
 
+/* group a tag's content on one page into pieces that sit together, in reading order */
+function clusters(us, order){
+  const near = (a, b, gx, gy) => a[0] - gx <= b[2] && b[0] - gx <= a[2] && a[1] - gy <= b[3] && b[1] - gy <= a[3];
+  const GX = 16, GY = 20; const par = us.map((_, i) => i); const find = i => par[i] === i ? i : (par[i] = find(par[i]));
+  for (let i = 0; i < us.length; i++) for (let j = i + 1; j < us.length; j++) if (find(i) !== find(j) && near(us[i].bbox, us[j].bbox, GX, GY)) par[find(j)] = find(i);
+  const rank = new Map(order.map((id, i) => [id, i])); const m = new Map();
+  us.forEach((u, i) => { const r = find(i); const c = m.get(r) || { b:null, r:Infinity }; c.b = union(c.b, u.bbox); c.r = Math.min(c.r, rank.get(u.id) ?? Infinity); m.set(r, c); });
+  let cs = [...m.values()];
+  /* pieces whose outlines now touch become one */
+  for (let again = true; again;){ again = false;
+    for (let i = 0; i < cs.length && !again; i++) for (let j = i + 1; j < cs.length; j++) if (near(cs[i].b, cs[j].b, 4, 4)){ cs[i] = { b:union(cs[i].b, cs[j].b), r:Math.min(cs[i].r, cs[j].r) }; cs.splice(j, 1); again = true; break; } }
+  return cs.sort((a, b) => a.r - b.r);
+}
+/* the closest points on two boxes, for a line that joins them */
+function edgePts(A, B){ const cl = (v, a, b) => Math.max(a, Math.min(b, v)); const ca = [A[0] + A[2] / 2, A[1] + A[3] / 2], cb = [B[0] + B[2] / 2, B[1] + B[3] / 2];
+  const a = [cl(cb[0], A[0], A[0] + A[2]), cl(cb[1], A[1], A[1] + A[3])], b = [cl(ca[0], B[0], B[0] + B[2]), cl(ca[1], B[1], B[1] + B[3])];
+  return Math.hypot(a[0] - b[0], a[1] - b[1]) < 2 ? [null] : [a, b]; }
 function drawOverlays(){ S.visible.forEach(i => drawOverlay(i)); }
 function drawOverlay(pi){
   const v = S.views[pi]; if (!v) return;
   const ov = v.svg; ov.replaceChildren(); const vp = v.vp;
   const P = S.pages[pi]; indexUnits();
-  const gTags = mk("g", { class:S.hide ? "ov-hidden" : "" }, ov);
+  const gTags = mk("g", { class:S.hide || S.editMode ? "ov-hidden" : "" }, ov);
   for (const u of [...P.units].filter(u => u.bbox && !isDel(u) && !nodeOfUnit.has(u.id)).sort((a, b) => area(b.bbox) - area(a.bbox))){
     const [x, y, w, h] = vrect(u.bbox, vp);
     mk("rect", { class:"ov-blk", x:x-1, y:y-1, width:Math.max(w+2, 3), height:Math.max(h+2, 3) }, gTags);
@@ -1030,17 +1105,27 @@ function drawOverlay(pi){
   const level = kidsOf(S.enter ? findNode(S.enter).n : null);
   for (const n of level){
     const col = tagColor(n.tag); const grp = n.kids.length > 0;
-    const us = allUnits(n).map(id => S.units.get(id)).filter(u => u && u.page === pi && u.bbox);
+    const allU = allUnits(n); const us = allU.map(id => S.units.get(id)).filter(u => u && u.page === pi && u.bbox);
     if (!us.length) continue;
-    let ub = null;
-    for (const u of us){ ub = union(ub, u.bbox); if (u.kind !== "text" || grp) continue; const [x, y, w, h] = vrect(u.bbox, vp); mk("rect", { class:"ov-unit", x, y, width:Math.max(w, 2), height:Math.max(h, 2), fill:col, "fill-opacity":0.12 }, gEl); }
-    const [x, y, w, h] = vrect(ub, vp); const pad = grp ? 4 : 2;
-    mk("rect", { class:"ov-el" + (S.focus === n.id ? " ov-focus" : ""), x:x-pad, y:y-pad, width:w+pad*2, height:h+pad*2, rx:grp ? 4 : 2, stroke:col, fill:col, "fill-opacity":grp ? 0.06 : us.some(u => u.kind !== "text") ? 0.07 : 0 }, gEl);
-    const label = `${idx.get(n.id)} ${n.tag}${grp ? " ▸" : ""}`; const bw = label.length * 6.2 + 8;
-    const by = y - pad - 14 >= 0 ? y - pad - 14 : y + h + pad + 1;
+    for (const u of us){ if (u.kind !== "text" || grp) continue; const [x, y, w, h] = vrect(u.bbox, vp); mk("rect", { class:"ov-unit", x, y, width:Math.max(w, 2), height:Math.max(h, 2), fill:col, "fill-opacity":0.12 }, gEl); }
+    /* content far apart gets its own outline; clicking the tag shows how the pieces connect */
+    const cl = clusters(us, allU); const pad = grp ? 4 : 2; const on = S.focus === n.id || S.rows.has(n.id);
+    const fillO = grp ? 0.06 : us.some(u => u.kind !== "text") ? 0.07 : 0;
+    const rs = cl.map(c => { const [x, y, w, h] = vrect(c.b, vp); return [x - pad, y - pad, w + pad * 2, h + pad * 2]; });
+    rs.forEach(([x, y, w, h]) => mk("rect", { class:"ov-el" + (S.focus === n.id ? " ov-focus" : ""), x, y, width:w, height:h, rx:grp ? 4 : 2, stroke:col, fill:col, "fill-opacity":fillO }, gEl));
+    if (on) for (let k = 1; k < rs.length; k++){ const [a, b] = edgePts(rs[k - 1], rs[k]); if (!a) continue; const g = mk("g", { class:"ov-link2" }, gEl);
+      mk("line", { x1:a[0], y1:a[1], x2:b[0], y2:b[1], stroke:col }, g); mk("circle", { cx:a[0], cy:a[1], r:3, fill:col }, g); mk("circle", { cx:b[0], cy:b[1], r:3, fill:col }, g); }
+    /* a tag that runs onto other pages says so */
+    const pgs = [...new Set(allU.map(id => S.units.get(id)?.page).filter(x => x != null))].sort((a, b) => a - b);
+    const prevPg = pgs.filter(x => x < pi).pop(), nextPg = pgs.find(x => x > pi);
+    const [x, y, w, h] = rs[0]; const label = `${idx.get(n.id)} ${n.tag}${grp ? " ▸" : ""}${prevPg != null ? ` · from p.${prevPg + 1}` : ""}`; const bw = label.length * 6.2 + 8;
+    const by = y - 14 >= 0 ? y - 14 : y + h + 1;
     const g = mk("g", { class:"ov-badge" }, gBadge);
-    mk("rect", { x:x-pad, y:by, width:bw, height:14, rx:3, fill:col }, g);
-    const t = mk("text", { x:x-pad+4, y:by+10.5 }, g); t.textContent = label;
+    mk("rect", { x, y:by, width:bw, height:14, rx:3, fill:col }, g);
+    const t = mk("text", { x:x + 4, y:by + 10.5 }, g); t.textContent = label;
+    if (nextPg != null){ const [lx, ly, lw, lh] = rs[rs.length - 1]; const lab = `continues on p.${nextPg + 1}`; const g2 = mk("g", { class:"ov-badge ov-cont" }, gBadge);
+      const ty = ly + lh + 15 <= v.svg.clientHeight || !v.svg.clientHeight ? ly + lh + 1 : ly - 15;
+      mk("rect", { x:lx + lw - (lab.length * 6.2 + 8), y:ty, width:lab.length * 6.2 + 8, height:14, rx:3, fill:col }, g2); const t2 = mk("text", { x:lx + lw - (lab.length * 6.2 + 4), y:ty + 10.5 }, g2); t2.textContent = lab; }
   }
   if (!S.hide) for (const Wg of P.widgets || []){ const [x, y, w, h] = vrect(Wg.rect, vp); mk("rect", { class:"ov-wid", x:x-1, y:y-1, width:w+2, height:h+2 }, ov); }
   if (!S.hide) for (const An of P.annots || []){ if (An.hidden || annDropped(An)) continue; const [x, y, w, h] = vrect(An.rect, vp); const r = mk("rect", { class:"ov-ann", x:x-1, y:y-1, width:w+2, height:h+2 }, ov);
@@ -1048,16 +1133,19 @@ function drawOverlay(pi){
     { const lab = annName(An); const bw = lab.length * 5.6 + 8; const g = mk("g", { class:"ov-annlab" }, ov); mk("rect", { x:x - 1, y:y - 14, width:bw, height:12, rx:3 }, g); const tt = mk("text", { x:x + 3, y:y - 5 }, g); tt.textContent = lab; }
     r.addEventListener("pointerdown", e => e.stopPropagation()); r.addEventListener("pointerup", e => e.stopPropagation()); r.addEventListener("click", e => { e.stopPropagation(); annotPopup(An, e.clientX, e.clientY); }); }
   if (!S.hide) for (const Lk of (P.links || []).filter(L => !S.opts.linkDrop?.[pi + ":" + L.k])){ const [x, y, w, h] = vrect(Lk.rect, vp); mk("rect", { class:"ov-link", x:x-1, y:y-1, width:w+2, height:h+2 }, ov); }
-  if (S.enter && !S.hide){ const en = findNode(S.enter)?.n; const eb = en && allUnits(en).map(id => S.units.get(id)).filter(u => u.page === pi && u.bbox).reduce((a, u) => union(a, u.bbox), null);
-    if (eb){ const [x, y, w, h] = vrect(eb, vp); mk("rect", { class:"ov-enter", x:x-8, y:y-8, width:w+16, height:h+16, rx:5 }, ov); } }
+  if (S.enter && !S.hide){ const en = findNode(S.enter)?.n; const eu = en ? allUnits(en) : []; const us = eu.map(id => S.units.get(id)).filter(u => u && u.page === pi && u.bbox);
+    for (const c of us.length ? clusters(us, eu) : []){ const [x, y, w, h] = vrect(c.b, vp); mk("rect", { class:"ov-enter", x:x-8, y:y-8, width:w+16, height:h+16, rx:5 }, ov); } }
   const gs = mk("g", { class:S.hide ? "ov-hidden" : "" }, ov); let sb = null;
   for (const id of S.sel){ const u = S.units.get(id); if (!u || u.page !== pi || !u.bbox) continue; sb = union(sb, u.bbox); const [x, y, w, h] = vrect(u.bbox, vp); mk("rect", { class:"ov-sel", x, y, width:Math.max(w, 2), height:Math.max(h, 2) }, gs); }
-  if (sb){ const [x, y, w, h] = vrect(sb, vp); mk("rect", { class:"ov-selbox", x:x-3, y:y-3, width:w+6, height:h+6 }, gs); }
+  /* one dashed box around each part of the selection, not one big box across the page */
+  if (sb){ const su = [...S.sel].map(id => S.units.get(id)).filter(u => u && u.page === pi && u.bbox); for (const c of clusters(su, su.map(u => u.id))){ const [x, y, w, h] = vrect(c.b, vp); mk("rect", { class:"ov-selbox", x:x-3, y:y-3, width:w+6, height:h+6 }, gs); } }
   if (S.showContrast && S.contrast && !S.hide){ const incArt = $("cArt")?.checked ?? false; const gc = mk("g", {}, ov);
     for (const g of S.contrast){ if (!g.tagged && !incArt) continue; if (g.units.every(id => S.fix[id])) continue; for (const id of g.units){ const u = S.units.get(id); if (u.page !== pi) continue; const [x, y, w, h] = vrect(u.bbox, vp);
       mk("rect", { class:"ov-cx", x:x-2, y:y-2, width:w+4, height:h+4 }, gc); } 
  } }
-  v.dragRect = mk("rect", { class:"ov-drag", x:0, y:0, width:0, height:0, visibility:"hidden" }, ov);
+  if (S.editMode){ const eb = eselBox(pi); if (eb){ const [x, y, w, h] = vrect(eb, vp); mk("rect", { class:"ov-esel", x, y, width:w, height:h }, ov);
+      [[x, y], [x + w, y], [x, y + h], [x + w, y + h]].forEach(([hx, hy]) => mk("rect", { class:"ov-eh", x:hx - 4, y:hy - 4, width:8, height:8 }, ov)); } }
+  v.dragRect = mk("rect", { class:"ov-drag" + (S.editMode ? " ov-ghost" : ""), x:0, y:0, width:0, height:0, visibility:"hidden" }, ov);
   if (!S.hide && !S.preview){ const lk2 = [...(P.links || []).filter(L => !S.opts.linkDrop?.[pi + ":" + L.k]).map(L => ({ key:pi + ":" + L.k, rect:L.rect, label:L.uri || "a spot in this document" })), ...(S.opts.nlinks || []).filter(l => l.page === pi).map(l => ({ key:"n:" + l.id, rect:l.rect, label:linkTargetLabel(l) }))];
     for (const L of lk2){ const [x, y, w] = vrect(L.rect, vp); const g = mk("g", { class:"ov-anc ov-lnk", transform:`translate(${x + w + 1},${y - 1}) scale(0.75)` }, ov); const t = mk("title", {}, g); t.textContent = "Link to " + L.label;
       mk("circle", { cx:0, cy:0, r:8 }, g); mk("path", { d:"M-1.2 2.6l-1.4 1.4a1.9 1.9 0 0 1-2.7-2.7l1.4-1.4M1.2-2.6l1.4-1.4a1.9 1.9 0 0 1 2.7 2.7l-1.4 1.4M-1.8 1.8l3.6-3.6" }, g);
@@ -1123,17 +1211,48 @@ function openMoveDlg(where){
 /* the selection's box on its first page */
 function selBox(){ const us = selIds().map(id => S.units.get(id)).filter(u => u?.bbox); if (!us.length) return null; const pg = Math.min(...us.map(u => u.page));
   const b = us.filter(u => u.page === pg).reduce((a, u) => union(a, u.bbox), null); return { page:pg, rect:[b[0] - 2, b[1] - 2, b[2] + 2, b[3] + 2] }; }
-function addColumn(where){ const b = selBox(); if (!b) return; const all = (S.opts.columns ||= []); const used = new Set(all.filter(c => c.page === b.page).map(c => c.name)); let k = 1; while (used.has(`Column ${k}`)) k++; const col = { id:Date.now().toString(36), name:`Column ${k}`, ...b };
+/* a column needs two or more items: tags, or separate pieces of untagged content */
+function selItemsN(){ const ids = selIds(); if (!ids.length) return 0; indexUnits(); const loose = ids.filter(id => !nodeOfUnit.has(id) && S.units.get(id)?.bbox);
+  return pickedTop().length + (loose.length ? itemsOf(loose).length : 0); }
+const colSelBox = () => selItemsN() >= 2 ? selBox() : null;
+function addColumn(where){ const b = colSelBox(); if (!b) return; const all = (S.opts.columns ||= []); const used = new Set(all.filter(c => c.page === b.page).map(c => c.name)); let k = 1; while (used.has(`Column ${k}`)) k++; const col = { id:Date.now().toString(36), name:`Column ${k}`, ...b };
   const mine = all.filter(c => c.page === b.page); if (where === "before" && mine.length) all.splice(all.indexOf(mine[0]), 0, col); else all.push(col);
-  after(); toast(`Made ${col.name} on page ${b.page + 1}.`); }
+  after(); toast(`Made ${col.name} on page ${b.page + 1}. Its tags now stay together.`); }
 function removeColumn(id){ S.opts.columns = (S.opts.columns || []).filter(c => c.id !== id); after(); }
+/* the column a tag sits in: all its content inside one column, and not taken out of it */
+function colOfNode(n){ const nb = nodeBox(n); if (!nb) return null; const cs = pageCols(nb.pg); if (!cs.length) return null; const ids = allUnits(n);
+  const joined = cs.find(c => c.in && ids.some(id => c.in.includes(id))); if (joined) return joined;
+  const us = ids.map(id => S.units.get(id)).filter(u => u?.bbox && u.page === nb.pg);
+  return cs.find(c => !(c.out && ids.some(id => c.out.includes(id))) && us.every(u => inside(c.rect, (u.bbox[0] + u.bbox[2]) / 2, (u.bbox[1] + u.bbox[3]) / 2, 2))) || null; }
+/* after a drag: a tag dropped among a column's tags joins that column; dropped anywhere else, it leaves its column */
+function leaveColumns(nodes){ const rows = flat().map(r => r.n); const moved = new Set(nodes);
+  const isIn = (x, n) => (chainOf(x.id) || []).includes(n) || (chainOf(n.id) || []).includes(x);
+  for (const n of nodes){ const i = rows.indexOf(n); let prev = null, next = null;
+    for (let k = i - 1; k >= 0 && !prev; k--) if (!moved.has(rows[k]) && !isIn(rows[k], n)) prev = rows[k];
+    for (let k = i + 1; k < rows.length && !next; k++) if (!moved.has(rows[k]) && !isIn(rows[k], n)) next = rows[k];
+    const was = colOfNode(n); const to = prev ? colOfNode(prev) : next ? colOfNode(next) : null;
+    const ids = allUnits(n); const drop = (c, k) => { if (c[k]) c[k] = c[k].filter(id => !ids.includes(id)); };
+    if (to === was) continue;
+    (S.opts.columns || []).forEach(c => { drop(c, "in"); });
+    if (was){ was.out = [...new Set([...(was.out || []), ...ids])]; }
+    if (to){ drop(to, "out"); to.in = [...new Set([...(to.in || []), ...ids])]; toast(`Moved into ${to.name || "a column"}.`); }
+    else if (was) toast(`Moved out of ${was.name || "its column"}.`); } }
+/* keep each column's tags together in the Tags list, in the columns' order. Tags outside columns stay where they are */
+function groupColumns(){ if (!(S.opts?.columns || []).length) return;
+  const fix = list => { const mem = list.map(n => colOfNode(n)); const pages = [...new Set(mem.filter(Boolean).map(c => c.page))];
+    for (const pg of pages){ const cols = pageCols(pg).filter(c => mem.includes(c)); if (!cols.length) continue;
+      const firsts = cols.map(c => mem.indexOf(c)).sort((a, b) => a - b); const blocks = new Map(firsts.map((at, k) => [at, list.filter((_, i) => mem[i] === cols[k])]));
+      const out = []; list.forEach((n, i) => { if (blocks.has(i)) out.push(...blocks.get(i)); if (!cols.includes(mem[i])) out.push(n); });
+      list.splice(0, list.length, ...out); mem.splice(0, mem.length, ...list.map(n => colOfNode(n))); }
+    list.forEach(n => n.kids?.length && fix(n.kids)); };
+  fix(S.tree); }
 /* the columns the selection sits in */
 function selCols(){ const us = selIds().map(id => S.units.get(id)).filter(u => u?.bbox); return (S.opts?.columns || []).filter(c => us.some(u => u.page === c.page && inside(c.rect, (u.bbox[0] + u.bbox[2]) / 2, (u.bbox[1] + u.bbox[3]) / 2, 2))); }
 const colName = (c, i) => c.name || `Column ${i + 1}`; /* the name stays with the column; its place in the order is shown separately */
-function renderColBar(){ const bar = $("colbar"); const sb = selBox(); const hit = selCols(); if (!sb && !hit.length){ bar.hidden = true; return; }
+function renderColBar(){ const bar = $("colbar"); const sb = colSelBox(); const hit = selCols(); if (!sb && !hit.length){ bar.hidden = true; return; }
   const pg = hit[0]?.page ?? sb.page; const cs = pageCols(pg); bar.hidden = false;
   bar.innerHTML = `<div class="colhead"><span class="sub">Columns · page ${pg + 1}</span>${sb ? `<button type="button" class="btn" id="colMake">▥ Create column from selection</button>` : ""}</div>
-    ${cs.length ? `<div class="need">Read in the numbered order. Drag a column to move it. Double-click a name to rename it.</div>
+    ${cs.length ? `<div class="need">Each column's tags stay together, in this order. Drag a pill to reorder, double-click to rename. In the Tags list, drag a tag out of a column or into another one.</div>
     <div class="colchips" id="colChips">${cs.map((c, i) => `<span class="colchip${hit.includes(c) ? " on" : ""}" data-id="${c.id}"><span class="grip" aria-hidden="true">⠿</span><b class="cord">${i + 1}</b><span class="cname">${esc(colName(c, i))}</span><button type="button" class="x" data-id="${c.id}" title="Remove this column" aria-label="Remove ${esc(colName(c, i))}">×</button></span>`).join("")}</div>` : ""}`;
   $("colMake")?.addEventListener("click", () => addColumn("after"));
   bar.querySelectorAll(".colchip .x").forEach(x => x.addEventListener("click", e => { e.stopPropagation(); removeColumn(x.dataset.id); }));
@@ -1155,17 +1274,19 @@ function renderColBar(){ const bar = $("colbar"); const sb = selBox(); const hit
 function wirePointer(v){
   let drag = null; const svg = v.svg;
   const pt = e => { const r = svg.getBoundingClientRect(); return [(e.clientX - r.left) * v.vp.width / r.width, (e.clientY - r.top) * v.vp.height / r.height]; };
-  svg.addEventListener("pointerdown", e => { if (e.button !== 0) return; if (S.zoomTool) e.preventDefault();
+  svg.addEventListener("pointerdown", e => { if (e.button !== 0) return; if (S.editMode && !S.zoomTool){ svg.setPointerCapture(e.pointerId); e.preventDefault(); editDown(v, pt(e), e); return; } if (S.zoomTool) e.preventDefault();
     svg.setPointerCapture(e.pointerId); const p = pt(e);
     if (!S.zoomTool && !(e.shiftKey || e.metaKey || e.ctrlKey)){ const [x, y] = toPdf(...p, v.vp); const g = glyphAt(S.pages[v.i], x, y); S.tdrag = g ? { v, a:g } : null; } drag = { p0:p, p1:p, moved:false, add:e.shiftKey || e.metaKey || e.ctrlKey, alt:e.altKey }; S.cur = v.i; updatePageNo(); });
   svg.addEventListener("pointermove", e => {
+    if (S.editMode && !S.zoomTool){ if (ed) editMove(v, pt(e), e); else { const [x, y] = toPdf(...pt(e), v.vp); svg.style.cursor = editHit(S.pages[v.i], x, y) ? "move" : ""; } return; }
     if (!drag){ const [x, y] = toPdf(...pt(e), v.vp); svg.style.cursor = S.zoomTool ? "" : S.pages[v.i].units.some(u => u.kind === "text" && u.bbox && inside(u.bbox, x, y)) ? "text" : ""; return; }
     if (S.tdrag && S.tdrag.v === v){ drag.p1 = pt(e); if (!drag.moved && Math.hypot(drag.p1[0]-drag.p0[0], drag.p1[1]-drag.p0[1]) > 4) drag.moved = true; if (!drag.moved) return;
       const [x, y] = toPdf(...drag.p1, v.vp); const g = glyphAt(S.pages[v.i], x, y); if (g){ S.trange = { page:v.i, a:S.tdrag.a, b:g }; drawOverlay(v.i); } return; } drag.p1 = pt(e);
     if (!drag.moved && Math.hypot(drag.p1[0]-drag.p0[0], drag.p1[1]-drag.p0[1]) > 4) drag.moved = true;
     if (drag.moved && v.dragRect){ const [a, b] = drag.p0, [c, d] = drag.p1; Object.entries({ x:Math.min(a,c), y:Math.min(b,d), width:Math.abs(c-a), height:Math.abs(d-b), visibility:"visible" }).forEach(([k, val]) => v.dragRect.setAttribute(k, val)); }
   });
-  svg.addEventListener("pointerup", () => {
+  svg.addEventListener("pointerup", e => {
+    if (S.editMode && !S.zoomTool){ editUp(v, pt(e), e); return; }
     if (!drag) return;
     if (S.tdrag && drag.moved && S.trange){ S.tdrag = null; drag = null; if (!rangeText(S.trange)){ S.trange = null; drawOverlays(); return; }
       /* the text you dragged across is also the selection for the tag buttons */
@@ -1190,12 +1311,12 @@ function wirePointer(v){
       renderAll(); return;
     }
     const [x, y] = toPdf(...d.p0, vp); const pad = 2 / S.scale;
-    if (S.linkSrc || S.linkRange){ const hit = P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, pad)).sort((a, b) => area(a.bbox) - area(b.bbox))[0]; indexUnits(); const n = hit && nodeOfUnit.get(hit.id);
+    if (S.linkSrc || S.linkRange){ const hit = P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, hitPad(u, pad))).sort((a, b) => area(a.bbox) - area(b.bbox))[0]; indexUnits(); const n = hit && nodeOfUnit.get(hit.id);
       document.body.classList.remove("picking"); if (!n){ S.linkSrc = null; S.linkRange = null; toast("That spot isn't tagged. Tag it first, then add the link."); return; }
       addLinkTo({ node:(n.obj ? findNode(n.id)?.p || n : n).id }); return; }
     const now = performance.now(); const last = v.lastClick; v.lastClick = { t:now, p:d.p0 };
     if (!d.add && last && now - last.t < 450 && Math.hypot(last.p[0] - d.p0[0], last.p[1] - d.p0[1]) < 6){ v.lastClick = null; enterAt(x, y); return; }
-    const hit = P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, pad)).sort((a, b) => area(a.bbox) - area(b.bbox))[0];
+    const hit = P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, hitPad(u, pad))).sort((a, b) => area(a.bbox) - area(b.bbox))[0];
     if (!hit){ if (!d.add){ S.sel.clear(); S.rows.clear(); S.focus = null; S.enter = null; S.iso = null; } renderAll(); return; }
     indexUnits(); const node = nodeOfUnit.get(hit.id);
     if (!node){
@@ -1212,7 +1333,7 @@ function wirePointer(v){
   /* double-click goes one level into a group, like Illustrator */
   const enterAt = (x, y) => {
     const P = S.pages[v.i]; const pad = 2 / S.scale;
-    const hit = P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, pad)).sort((a, b) => area(a.bbox) - area(b.bbox))[0]; if (!hit) return;
+    const hit = P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, hitPad(u, pad))).sort((a, b) => area(a.bbox) - area(b.bbox))[0]; if (!hit) return;
     indexUnits(); const node = nodeOfUnit.get(hit.id); if (!node) return;
     const chain = chainOf(node.id); const cur = chain.findIndex(n => S.rows.has(n.id)); if (cur < 0) return;
     if (cur === chain.length - 1){ toast("This tag has nothing inside it."); return; }
@@ -1220,6 +1341,128 @@ function wirePointer(v){
     S.rows = new Set([child.id]); S.sel = new Set(allUnits(child)); S.focus = child.id; keepSide(renderAll);
   };
 }
+
+/* ---------- edit mode: move, resize, crop, fix a line of text, add an image ---------- */
+/* every edit is stored as a change on top of the original (S.opts.xf / crop / txt), so Undo and export stay simple */
+S.editMode = false; S.edit = "resize"; S.esel = [];
+const rectXf = (r, m) => bboxOf([ap(m, r[0], r[1]), ap(m, r[2], r[1]), ap(m, r[0], r[3]), ap(m, r[2], r[3])]);
+const isect = (a, b) => [Math.max(a[0], b[0]), Math.max(a[1], b[1]), Math.min(a[2], b[2]), Math.min(a[3], b[3])];
+const normR = r => [Math.min(r[0], r[2]), Math.min(r[1], r[3]), Math.max(r[0], r[2]), Math.max(r[1], r[3])];
+const formCtm = u => u?.inst ? S.pages[u.page]?.forms.find(f => f.inst === u.inst)?.ctm || null : null;
+const hasEdits = () => ["xf","crop","txt"].some(k => Object.keys(S.opts?.[k] || {}).length);
+/* fonts: which characters a font can draw, from its ToUnicode map or its simple encoding */
+function fontEnc(u){
+  if (u._fe !== undefined) return u._fe; u._fe = null;
+  try { const fd = lk(lk(u.fres, "Font"), u.fname); if (!(fd instanceof PDFDict)) return null;
+    const two = nm(lk(fd, "Subtype")) === "Type0"; const map = new Map(); let bytes = two ? 2 : 1; const tu = lk(fd, "ToUnicode");
+    if (tu instanceof PDFRawStream){ const t = toLatin1(L.decodePDFRawStream(tu).decode()); const u16 = h => { let s = ""; for (let i = 0; i + 3 < h.length; i += 4) s += String.fromCharCode(parseInt(h.substr(i, 4), 16)); return s; };
+      for (const blk of t.matchAll(/beginbfchar([\s\S]*?)endbfchar/g)) for (const m of blk[1].matchAll(/<([0-9a-fA-F]+)>\s*<([0-9a-fA-F]*)>/g)){ bytes = m[1].length / 2; const ch = u16(m[2]); if (ch && !map.has(ch)) map.set(ch, parseInt(m[1], 16)); }
+      for (const blk of t.matchAll(/beginbfrange([\s\S]*?)endbfrange/g)) for (const m of blk[1].matchAll(/<([0-9a-fA-F]+)>\s*<([0-9a-fA-F]+)>\s*(<[0-9a-fA-F]+>|\[[^\]]*\])/g)){
+        bytes = m[1].length / 2; const lo = parseInt(m[1], 16), hi = parseInt(m[2], 16);
+        if (m[3][0] === "<"){ const d = m[3].slice(1, -1); const base = parseInt(d.slice(-4), 16); for (let c = lo; c <= hi && c - lo < 4096; c++){ const ch = u16(d.slice(0, -4) + (base + c - lo).toString(16).padStart(4, "0")); if (ch && !map.has(ch)) map.set(ch, c); } }
+        else [...m[3].matchAll(/<([0-9a-fA-F]+)>/g)].forEach((x, j) => { const ch = u16(x[1]); if (ch && !map.has(ch)) map.set(ch, lo + j); }); } }
+    if (!map.size && !two){ const first = num(lk(fd, "FirstChar")) ?? 32; const W = nums(lk(fd, "Widths"));
+      for (let c = 32; c < 127; c++){ const w = W.length ? W[c - first] : 500; if (w > 0) map.set(String.fromCharCode(c), c); } }
+    u._fe = { inv:map, bytes }; } catch (e){ console.warn(e); }
+  return u._fe;
+}
+function encodeText(u, str){ const fe = fontEnc(u); if (!fe) return { missing:[...new Set(str)] }; const miss = []; let hex = "";
+  for (const ch of str){ const c = fe.inv.get(ch); if (c == null){ miss.push(ch); continue; } hex += c.toString(16).padStart(fe.bytes * 2, "0"); }
+  return { hex, missing:[...new Set(miss)] }; }
+const origText = u => { const g = glyphText(u); return g.trim() ? g : textOf([u.id], true); };
+/* text width after an edit, so the box fits the new words */
+function txtRatio(u){ const t = S.opts?.txt?.[u.id]; const fe = t != null && fontEnc(u); if (!fe) return 1; const fi = fontInfo(u.fres, u.fname);
+  const adv = s => [...s].reduce((a, ch) => a + (fe.inv.has(ch) ? fi.w(fe.inv.get(ch)) : 0.5), 0); const old = adv(origText(u)); return old > 0 ? adv(t) / old : 1; }
+/* every box = its original, plus your edits */
+function geomAll(){
+  if (!S.pages.length) return; const o = S.opts || {};
+  for (const u of S.units.values()){ if (u.add || !u.bbox) continue; u.bbox0 ||= u.bbox.slice(); const m = o.xf?.[u.id], cr = o.crop?.[u.id];
+    let b = u.bbox0; if (u.kind === "text" && o.txt?.[u.id] != null){ const r = txtRatio(u); b = [b[0], b[1], b[0] + (b[2] - b[0]) * r, b[3]]; }
+    if (cr) b = isect(b, cr); u.bbox = m ? rectXf(b, m) : b.slice(); }
+}
+/* export: move, resize and crop happen in page space, even inside a form */
+function geomPrefix(id){
+  const u = S.units.get(id); if (!u || u.add) return ""; const m = S.opts.xf?.[id], cr = S.opts.crop?.[id]; if (!m && !cr) return "";
+  const F = formCtm(u); let s = ""; if (F) s += mtx(invM(F)) + " cm\n"; if (m) s += mtx(m) + " cm\n";
+  if (cr) s += `${fmtNum(cr[0])} ${fmtNum(cr[1])} ${fmtNum(cr[2] - cr[0])} ${fmtNum(cr[3] - cr[1])} re W n\n`; if (F) s += mtx(F) + " cm"; return s.trim();
+}
+/* export: a line with new words, in the same font */
+function editedBody(c){ const t = S.opts.txt?.[c.id]; const u = S.units.get(c.id); if (t == null || u?.kind !== "text") return c.body;
+  const L2 = c.body.split("\n"); const op = L2.slice(2, -1).join("\n"); const e = encodeText(u, t); if (e.missing.length) return c.body;
+  return [L2[0], L2[1], (/['"]\s*$/.test(op) ? "T* " : "") + `<${e.hex}> Tj`, "ET"].join("\n"); }
+/* read an image file as PNG or JPEG bytes plus its size */
+async function readImage(file){
+  const buf = new Uint8Array(await file.arrayBuffer()); const isJ = buf[0] === 0xFF && buf[1] === 0xD8, isP = buf[0] === 0x89 && buf[1] === 0x50;
+  const bmp = await createImageBitmap(new Blob([buf], { type:file.type || "image/png" })); let bytes = buf, type = isJ ? "jpg" : "png";
+  if (!isJ && !isP){ const cv = document.createElement("canvas"); cv.width = bmp.width; cv.height = bmp.height; cv.getContext("2d").drawImage(bmp, 0, 0);
+    bytes = new Uint8Array(await (await new Promise(r => cv.toBlob(r, "image/png"))).arrayBuffer()); type = "png"; }
+  const id = "i" + Date.now().toString(36); S.blobs.set(id, { bytes, type, w:bmp.width, h:bmp.height }); return id;
+}
+async function insertImage(file){ if (!file || !S.pages.length) return;
+  try { const blob = await readImage(file); const b = S.blobs.get(blob); const pg = S.cur; const [, , W, H] = S.pages[pg].vp1.viewBox;
+    const w = Math.min(W * 0.4, b.w), h = w * b.h / b.w; const x0 = (W - w) / 2, y0 = (H - h) / 2;
+    const a = { id:`${pg}:img:${blob}`, page:pg, rect:[x0, y0, x0 + w, y0 + h], blob }; (S.opts.adds ||= []).push(a); after();
+    S.esel = [a.id]; S.sel = new Set([a.id]); renderAll(); toast("Added the image. Drag to move it, drag a corner to size it. Tag it as an Image when it's placed."); }
+  catch (e){ console.error(e); toast("Could not read that image."); } }
+
+/* pointer in edit mode: click picks an object, drag moves it, a corner resizes or crops, double-click edits a line of text */
+let ed = null;
+const editHit = (P, x, y) => P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, hitPad(u, 2 / S.scale))).sort((a, b) => area(a.bbox) - area(b.bbox))[0];
+/* a click on text picks its whole block: every piece of the tag it's in, on this page */
+function editPick(u){ indexUnits(); const n = nodeOfUnit.get(u.id); return n && !n.obj && !isGroup(n) && u.kind === "text" ? n.units.filter(id => S.units.get(id)?.page === u.page) : [u.id]; }
+const eselBox = pi => S.esel.map(id => S.units.get(id)).filter(u => u && u.page === pi && u.bbox).reduce((a, u) => union(a, u.bbox), null);
+function editDown(v, p, e){
+  const P = S.pages[v.i]; const [x, y] = toPdf(...p, v.vp); S.cur = v.i; const eb = eselBox(v.i);
+  if (eb){ const [rx, ry, rw, rh] = vrect(eb, v.vp); const hi = [[rx, ry], [rx + rw, ry], [rx, ry + rh], [rx + rw, ry + rh]].findIndex(([hx, hy]) => Math.abs(hx - p[0]) < 7 && Math.abs(hy - p[1]) < 7);
+    if (hi >= 0){ ed = { mode:e.altKey ? "crop" : S.edit, h:hi, v, p0:p, p1:p, ids:[...S.esel] }; return; } }
+  const hit = editHit(P, x, y); if (!hit){ S.esel = []; S.sel.clear(); renderAll(); ed = null; return; }
+  const grp = editPick(hit);
+  if (e.shiftKey){ const on = grp.every(id => S.esel.includes(id)); S.esel = on ? S.esel.filter(i => !grp.includes(i)) : [...new Set([...S.esel, ...grp])]; S.sel = new Set(S.esel); renderAll(); ed = null; return; }
+  if (!grp.every(id => S.esel.includes(id))){ S.esel = grp; S.sel = new Set(grp); renderAll(); }
+  const now = performance.now(); const dbl = v.eLast?.id === hit.id && now - v.eLast.t < 450; v.eLast = { id:hit.id, t:now };
+  ed = { mode:"move", v, p0:p, p1:p, ids:[...S.esel], dbl:dbl && hit.kind === "text" ? hit.id : null };
+}
+function editRect(){
+  const { v, p0, p1 } = ed; const dx = p1[0] - p0[0], dy = p1[1] - p0[1];
+  const b = ed.ids.map(id => S.units.get(id)).filter(u => u?.page === v.i && u.bbox).reduce((a, u) => union(a, u.bbox), null); if (!b) return null;
+  const [x, y, w, h] = vrect(b, v.vp); if (ed.mode === "move") return [x + dx, y + dy, w, h];
+  const L0 = ed.h % 2 === 0, T0 = ed.h < 2; let x0 = x, y0 = y, x1 = x + w, y1 = y + h;
+  if (L0) x0 += dx; else x1 += dx; if (T0) y0 += dy; else y1 += dy;
+  if (ed.mode === "resize" && ed.shift){ const s = Math.max((x1 - x0) / w, (y1 - y0) / h); if (L0) x0 = x1 - w * s; else x1 = x0 + w * s; if (T0) y0 = y1 - h * s; else y1 = y0 + h * s; }
+  return [Math.min(x0, x1), Math.min(y0, y1), Math.abs(x1 - x0), Math.abs(y1 - y0)];
+}
+function editMove(v, p, e){
+  if (!ed || ed.v !== v) return; ed.p1 = p; ed.shift = e.shiftKey; if (Math.hypot(p[0] - ed.p0[0], p[1] - ed.p0[1]) > 3) ed.moved = true; if (!ed.moved) return;
+  const r = editRect(); if (!r || !v.dragRect) return; const [x, y, w, h] = r; Object.entries({ x, y, width:w, height:h, visibility:"visible" }).forEach(([k, val]) => v.dragRect.setAttribute(k, val));
+}
+function editUp(v, p, e){
+  if (!ed || ed.v !== v){ ed = null; return; } ed.p1 = p; ed.shift = e.shiftKey; v.dragRect?.setAttribute("visibility", "hidden"); const o = S.opts;
+  if (!ed.moved){ const d = ed.dbl; ed = null; if (d) editText(v, d); return; }
+  const r = editRect(); const mode = ed.mode; const ids = ed.ids.filter(id => S.units.get(id)?.page === v.i); ed = null; if (!r || !ids.length) return;
+  const [x, y, w, h] = r; const nb = normR([...toPdf(x, y + h, v.vp), ...toPdf(x + w, y, v.vp)]);
+  const old = ids.map(i => S.units.get(i).bbox).reduce((a, b) => union(a, b), null);
+  const sx = (nb[2] - nb[0]) / ((old[2] - old[0]) || 1), sy = (nb[3] - nb[1]) / ((old[3] - old[1]) || 1);
+  const M = mode === "move" ? [1, 0, 0, 1, nb[0] - old[0], nb[1] - old[1]] : [sx, 0, 0, sy, nb[0] - old[0] * sx, nb[1] - old[1] * sy];
+  for (const id of ids){ const u = S.units.get(id);
+    if (u.add){ const a = (o.adds || []).find(z => z.id === id); if (a && mode !== "crop"){ a.rect = normR([...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]); } continue; }
+    if (mode === "crop"){ const back = rectXf(nb, invM(o.xf?.[id] || [1, 0, 0, 1, 0, 0])); (o.crop ||= {})[id] = isect(back, u.bbox0 || u.bbox); continue; }
+    (o.xf ||= {})[id] = mul(o.xf?.[id] || [1, 0, 0, 1, 0, 0], M); }
+  after();
+}
+/* fix a line of text: only letters the font already has */
+function editText(v, id){
+  const u = S.units.get(id); if (!u) return; const [x, y, w] = vrect(u.bbox, v.vp);
+  const inp = document.createElement("input"); inp.className = "etext"; inp.value = S.opts.txt?.[id] ?? origText(u);
+  Object.assign(inp.style, { left:x + "px", top:(y - 2) + "px", width:Math.max(160, w + 16) + "px", fontSize:Math.max(11, (u.h || 10) * S.scale * 0.8) + "px" });
+  v.sheet.appendChild(inp); inp.focus(); inp.select(); let done = false;
+  const finish = ok => { if (done) return; done = true; const val = inp.value; inp.remove(); if (!ok || val === (S.opts.txt?.[id] ?? origText(u))) return;
+    const e = encodeText(u, val); if (e.missing.length){ toast(`This font doesn't have: ${e.missing.join(" ")}. Use letters that are already in this text's font.`, 5000); return; }
+    (S.opts.txt ||= {})[id] = val; after(); };
+  inp.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter"){ e.preventDefault(); finish(true); } if (e.key === "Escape") finish(false); });
+  inp.addEventListener("blur", () => finish(true));
+}
+function setEditMode(on){ S.editMode = on; $("editBtn").classList.toggle("on", on); $("editBtn").setAttribute("aria-pressed", on); $("editBar").hidden = !on; document.body.classList.toggle("editing", on);
+  if (on){ if (S.zoomTool) setZoomTool(false); S.esel = []; S.sel.clear(); S.rows.clear(); S.focus = null; toast("Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to fix a line. E or Esc to finish.", 5000); } else S.esel = []; renderAll(); }
 
 /* ---------- welded images: several image pieces become one image ---------- */
 S.blobs = new Map();
@@ -1238,7 +1481,7 @@ async function weldImages(){
   try {
     const saved = S.opts.del; S.opts.del = { ...(saved || {}) }; for (const u of S.pages[pg].units) if (!ids.includes(u.id)) S.opts.del[u.id] = 1;
     let bytes; try { bytes = await buildOutput(); } finally { S.opts.del = saved; }
-    const pdf = await pdfjsLib.getDocument({ data:bytes }).promise; const page = await pdf.getPage(pg + 1);
+    const pdf = await (await getDoc({ data:bytes })).promise; const page = await pdf.getPage(pg + 1);
     const vp0 = page.getViewport({ scale:1 }); const scale = Math.min(300 / 72, 6000 / Math.max(vp0.width, vp0.height)); const vp = page.getViewport({ scale });
     const cv = document.createElement("canvas"); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
     await page.render({ canvasContext:cv.getContext("2d"), viewport:vp, background:"rgba(0,0,0,0)" }).promise;
@@ -1347,10 +1590,17 @@ function applySplits(){
     for (const u of P.units0){ const cuts = sp[u.id]; u.isSplit = !!cuts?.length; if (!u.isSplit){ out.push(u); continue; }
       const b = [0, ...cuts, u.gl.length];
       for (let j = 0; j + 1 < b.length; j++){ const g0 = b[j], g1 = b[j + 1]; if (g1 <= g0) continue;
-        const pc = { ...u, id:`${u.id}~${g0}`, piece:true, parent:u.id, g0, g1, gl:u.gl.slice(g0, g1), bbox:glyphRect(u, g0, g1), seq:u.seq + g0 / 1e4, isSplit:false };
+        const pc = { ...u, bbox0:null, id:`${u.id}~${g0}`, piece:true, parent:u.id, g0, g1, gl:u.gl.slice(g0, g1), bbox:glyphRect(u, g0, g1), seq:u.seq + g0 / 1e4, isSplit:false };
         out.push(pc); S.units.set(pc.id, pc); } }
     P.units = out; }
 }
+/* a line typed with spaces to fake columns, like captions in a row: where the wide gaps are */
+function gapCuts(u){ const m = fontUni(u.fres, u.fname); const size = Math.abs((u.y1 - u.y0) / 1.08) || 10; const sp = g => /^\s*$/.test(m.get(g.c) ?? String.fromCharCode(g.c));
+  const cuts = []; let last = -1; u.gl.forEach((g, i) => { if (sp(g)) return; if (last >= 0 && i > 0 && g.a0 - u.gl[last].a1 > 1.5 * size) cuts.push(i); last = i; }); return cuts; }
+const gapBases = () => [...new Set(selIds().map(id => S.units.get(id)).filter(u => u?.kind === "text").map(u => u.piece ? u.parent : u.id))].filter(id => { const u = S.units.get(id); return u?.gl && gapCuts(u).some(c => !(S.opts.splits?.[id] || []).includes(c)); });
+function splitGaps(){ const bases = gapBases(); if (!bases.length){ toast("No wide gaps in the selected text."); return; } let n = 0;
+  for (const id of bases){ const u = S.units.get(id); for (const c of gapCuts(u)){ cutUnit(id, c); n++; } }
+  S.sel.clear(); after(); toast(`Split into ${n + bases.length} pieces. Select each piece to tag it.`); }
 /* cut a text unit at a glyph, keeping its tag: the piece ids replace the old id in place */
 function cutUnit(base, gi){
   const u = S.units.get(base); if (!u?.gl || gi <= 0 || gi >= u.gl.length) return; S.opts.splits ||= {}; const cuts = new Set(S.opts.splits[base] || []); if (cuts.has(gi)) return;
@@ -1421,7 +1671,7 @@ function itemsOf(ids){
     const hs = list.filter(u => u.kind === "text").map(u => u.bbox[3] - u.bbox[1]).sort((a, b) => a - b); const H = hs[hs.length >> 1] || 10;
     const parent = new Map(list.map(u => [u.id, u.id])); const find = x => { while (parent.get(x) !== x) x = parent.get(x); return x; };
     for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++){
-      const a = list[i], b = list[j];
+      const a = list[i], b = list[j]; if (a.piece && b.piece && a.parent === b.parent) continue; /* pieces you split apart stay apart */
       if (a.kind !== "text" || b.kind !== "text"){ if (a.kind !== "text" && b.kind !== "text" && Math.max(a.bbox[0], b.bbox[0]) - Math.min(a.bbox[2], b.bbox[2]) <= 1 && Math.max(a.bbox[1], b.bbox[1]) - Math.min(a.bbox[3], b.bbox[3]) <= 1) parent.set(find(a.id), find(b.id)); continue; }
       const gx = Math.max(a.bbox[0], b.bbox[0]) - Math.min(a.bbox[2], b.bbox[2]);
       const gy = Math.max(a.bbox[1], b.bbox[1]) - Math.min(a.bbox[3], b.bbox[3]);
@@ -1435,7 +1685,7 @@ function itemsOf(ids){
 }
 /* text tags skip lines and shapes mixed into the selection; those stay artifacts */
 function contentIds(tag){
-  const ids = selIds(); if (tag === "Figure") return ids;
+  const ids = selIds(); if (tag === "Figure" || tag === "Image") return ids;
   const us = ids.map(id => S.units.get(id)); if (!us.some(u => u.kind === "text" || u.kind === "image" || u.kind === "form")) return ids;
   return us.filter(u => u.kind !== "path" && u.kind !== "shade").map(u => u.id);
 }
@@ -1472,7 +1722,7 @@ function applyTag(tag){ S.trange = null; if (S.opts?.decor) selIds().forEach(id 
   const node = mkNode(tag, ids); place(node);
   S.sel.clear(); S.rows = new Set([node.id]);
   keepSide(after);
-  if (tag === "Figure") setTimeout(() => document.querySelector(`[data-id="${node.id}"] .alt`)?.focus(), 0);
+  if (tag === "Figure" || tag === "Image") setTimeout(() => document.querySelector(`[data-id="${node.id}"] .alt`)?.focus(), 0);
 }
 function commitBuilt(node){
   stripUnits(allUnits(node)); prune();
@@ -1538,15 +1788,41 @@ function after(){ syncObjs(); changed(); renderAll(); record(); }
 const H = { stack:[], i:-1 };
 S.fix = {}; S.actual = {};
 const snapState = () => JSON.stringify({ tree:S.tree, zc:S.zc, fix:S.fix, actual:S.actual, opts:S.opts, fieldDesc:S.fieldDesc });
-function record(){ const st = snapState(); if (H.stack[H.i] === st) return; H.stack = H.stack.slice(0, H.i + 1); H.stack.push(st); if (H.stack.length > 300) H.stack.shift(); H.i = H.stack.length - 1; updUndo(); }
+function record(){ const st = snapState(); if (H.stack[H.i] === st) return; recentSave(); H.stack = H.stack.slice(0, H.i + 1); H.stack.push(st); if (H.stack.length > 300) H.stack.shift(); H.i = H.stack.length - 1; updUndo(); }
 function resetHistory(){ H.stack = []; H.i = -1; record(); }
+/* ---------- recent PDFs: kept in this browser, with your latest changes ---------- */
+const RECENT_MAX = 8;
+const rdb = () => rdb.p ||= new Promise((ok, bad) => { const r = indexedDB.open("pts-recent", 1);
+  r.onupgradeneeded = () => { r.result.createObjectStore("files", { keyPath:"key" }); r.result.createObjectStore("work", { keyPath:"key" }); }; r.onsuccess = () => ok(r.result); r.onerror = () => bad(r.error); });
+const rtx = async (stores, mode, fn) => { const db = await rdb(); return new Promise((ok, bad) => { const t = db.transaction(stores, mode); const req = fn(...[].concat(stores).map(n => t.objectStore(n))); t.oncomplete = () => ok(req?.result); t.onerror = () => bad(t.error); }); };
+async function recentList(){ try { return ((await rtx("work", "readonly", w => w.getAll())) || []).sort((a, b) => b.at - a.at); } catch { return []; } }
+async function recentAdd(){ if (!S.pages.length || S.sample || !S.fileKey) return;
+  try { const key = S.fileKey; const old = (await recentList()).find(r => r.key === key);
+    await rtx(["files", "work"], "readwrite", (f, w) => { f.put({ key, bytes:S.bytes }); w.put({ key, name:S.name, pages:S.pages.length, at:Date.now(), w:old?.w ?? null }); });
+    const extra = (await recentList()).slice(RECENT_MAX); if (extra.length) await rtx(["files", "work"], "readwrite", (f, w) => extra.forEach(r => { f.delete(r.key); w.delete(r.key); })); } catch {} }
+let recentT = null;
+function recentSave(){ if (!S.pages.length || S.sample || !S.fileKey) return; clearTimeout(recentT); const key = S.fileKey, name = S.name, pages = S.pages.length;
+  recentT = setTimeout(async () => { try { const w = workState(); await rtx("work", "readwrite", st => st.put({ key, name, pages, at:Date.now(), w })); } catch {} }, 1500); }
+async function recentOpen(key){ try { const [f, r] = await Promise.all([rtx("files", "readonly", st => st.get(key)), rtx("work", "readonly", st => st.get(key))]); if (!f){ toast("That PDF is no longer saved here."); return; }
+    await loadPDF(new Uint8Array(f.bytes), r?.name || "document.pdf"); if (r?.w){ applyWork(r.w); resetHistory(); toast("Reopened with your latest changes."); } } catch (e){ console.error(e); toast("Could not reopen that PDF."); } }
+/* File menu: import, checkpoints, close, and recent PDFs */
+async function openFileMenu(){ const m = $("cmenu"); const list = await recentList(); const b = $("fileBtn").getBoundingClientRect(); const has = !!S.pages.length; const dirty = $("keepBtn").classList.contains("dirty");
+  m.dataset.kind = "file"; m.style.width = "300px"; const when = t => new Date(t).toLocaleString([], { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" });
+  const item = (act, label, sub, dis) => `<button class="mi" data-f="${act}" ${dis ? "disabled" : ""}>${label}${sub ? ` <span class="need" style="font-size:10px">${sub}</span>` : ""}</button>`;
+  m.innerHTML = item("open", "Import PDF…") + (has ? item("keep", `Set checkpoint${dirty ? " •" : ""}`, "Cmd+S") + item("revert", "Revert to checkpoint", "", $("revertBtn").disabled) + item("close", $("closeBtn").textContent === "Close" ? "Close" : $("closeBtn").textContent) : "")
+    + `<hr><div class="mh">Recent PDFs</div>` + (list.length ? list.map(r => `<button class="mi" data-k="${esc(r.key)}" title="Reopen with your latest changes"><span style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)}</span><span class="need" style="font-size:11px">${when(r.at)}${r.pages ? ` · ${r.pages} page${r.pages > 1 ? "s" : ""}` : ""}</span></button>`).join("") + `<button class="mi" data-k="" style="font-size:12px;color:var(--muted)">Clear recent list</button>`
+      : `<div class="need" style="padding:4px 8px 8px;font-size:12px">PDFs you import show up here, kept in this browser only.</div>`);
+  m.onclick = async e => { const f = e.target.closest("button[data-f]"); if (f){ const act = f.dataset.f; if (act !== "close") closeMenu();
+      if (act === "open") $("fileInput").click(); else if (act === "keep") saveWork(); else if (act === "revert") revertWork(); else { $("closeBtn").click(); if (S.pages.length) f.textContent = $("closeBtn").textContent; else closeMenu(); } return; }
+    const x = e.target.closest("button[data-k]"); if (!x) return; closeMenu(); if (x.dataset.k) recentOpen(x.dataset.k); else { try { await rtx(["files", "work"], "readwrite", (f2, w) => { f2.clear(); w.clear(); }); toast("Cleared the recent list."); } catch {} } };
+  m.hidden = false; m.style.left = Math.max(8, Math.min(b.left, innerWidth - 308)) + "px"; m.style.top = b.bottom + 4 + "px"; }
 function restore(st){ const o = JSON.parse(st); S.tree = o.tree; S.zc = o.zc; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (!$("cpanel").hidden) renderContrast(); if (S.focus && !findNode(S.focus)) S.focus = null; S.rows = new Set([...S.rows].filter(id => findNode(id))); S.sel.clear(); changed(); renderAll(); updUndo(); }
 function undo(){ if (H.i <= 0) return; H.i--; restore(H.stack[H.i]); toast("Undone."); }
 function redo(){ if (H.i >= H.stack.length - 1) return; H.i++; restore(H.stack[H.i]); toast("Redone."); }
 function updUndo(){ $("undoBtn").disabled = H.i <= 0; $("redoBtn").disabled = H.i >= H.stack.length - 1; updDirty(); }
 /* save / revert: work is kept in this browser, keyed to the PDF's contents */
-const workState = () => JSON.stringify({ blobs:Object.fromEntries((S.opts?.adds || []).filter(a => S.blobs.has(a.blob)).map(a => { const b = S.blobs.get(a.blob); return [a.blob, { d:b64(b.bytes), w:b.w, h:b.h }]; })), tree:S.tree, zc:S.zc, fix:S.fix, actual:S.actual, opts:S.opts, fieldDesc:S.fieldDesc, title:$("docTitle").value, lang:S.docLang });
-function updDirty(){ const has = !!S.pages.length; const dirty = has && workState() !== S.savedWork; const b = $("keepBtn"); b.disabled = !has; b.textContent = dirty ? "Set checkpoint •" : "Set checkpoint"; b.classList.toggle("dirty", dirty); $("revertBtn").disabled = !dirty; }
+const workState = () => JSON.stringify({ blobs:Object.fromEntries((S.opts?.adds || []).filter(a => S.blobs.has(a.blob)).map(a => { const b = S.blobs.get(a.blob); return [a.blob, { d:b64(b.bytes), w:b.w, h:b.h, type:b.type }]; })), tree:S.tree, zc:S.zc, fix:S.fix, actual:S.actual, opts:S.opts, fieldDesc:S.fieldDesc, title:$("docTitle").value, lang:S.docLang });
+function updDirty(){ const has = !!S.pages.length; const dirty = has && workState() !== S.savedWork; $("fileBtn").innerHTML = `${dirty ? `<span class="ddot" aria-hidden="true"></span>` : ""}File ▾`; $("fileBtn").title = dirty ? "Changes since your last checkpoint. Import, recent PDFs, checkpoints and close" : "Import, recent PDFs, checkpoints and close"; const b = $("keepBtn"); b.disabled = !has; b.textContent = dirty ? "Set checkpoint •" : "Set checkpoint"; b.classList.toggle("dirty", dirty); $("revertBtn").disabled = !dirty; }
 async function fileKey(bytes){ try { const h = await crypto.subtle.digest("SHA-256", bytes); return "pts:" + [...new Uint8Array(h)].slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join(""); } catch { return "pts:" + S.name + ":" + bytes.length; } }
 function saveWork(){
   if (!S.pages.length) return;
@@ -1554,7 +1830,7 @@ function saveWork(){
   try { localStorage.setItem(S.fileKey, JSON.stringify({ w, at:Date.now(), name:S.name })); S.savedWork = w; updDirty(); toast("Checkpoint set. Import this PDF here again to pick up where you left off."); }
   catch { S.savedWork = w; updDirty(); toast("Checkpoint set for this session. This browser blocked long-term storage, so export when you're done."); }
 }
-function applyWork(w){ const o = JSON.parse(w); for (const [k, b] of Object.entries(o.blobs || {})) if (!S.blobs.has(k)) S.blobs.set(k, { bytes:unb64(b.d), w:b.w, h:b.h }); S.tree = o.tree || []; S.zc = o.zc || []; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (o.title != null) $("docTitle").value = o.title; if (o.lang) setDocLang(o.lang); S.focus = null; S.rows.clear(); S.sel.clear(); syncObjs(); changed(); renderAll(); }
+function applyWork(w){ const o = JSON.parse(w); for (const [k, b] of Object.entries(o.blobs || {})) if (!S.blobs.has(k)) S.blobs.set(k, { bytes:unb64(b.d), w:b.w, h:b.h, type:b.type }); S.tree = o.tree || []; S.zc = o.zc || []; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (o.title != null) $("docTitle").value = o.title; if (o.lang) setDocLang(o.lang); S.focus = null; S.rows.clear(); S.sel.clear(); syncObjs(); changed(); renderAll(); }
 function revertWork(){ if (S.savedWork == null) return; applyWork(S.savedWork); record(); toast("Reverted to your last checkpoint. Undo brings your changes back."); }
 function loadSavedWork(){ try { const raw = localStorage.getItem(S.fileKey); if (!raw) return false; const o = JSON.parse(raw); applyWork(o.w); S.savedWork = o.w; toast(`Restored your checkpoint from ${new Date(o.at).toLocaleString()}.`, 4000); return true; } catch { return false; } }
 
@@ -1659,16 +1935,20 @@ function buildTable(){
 
 /* ---------- structure editing ---------- */
 function pickedNodes(){ return flat().filter(r => S.rows.has(r.n.id)); }
+/* after wrapping or combining, nothing stays selected, so the next thing you pick starts fresh */
+const done = () => { S.rows.clear(); S.sel.clear(); S.focus = null; S.trange = null; };
 function wrapRows(tag){
   const nodes = pickedTop();
   if (tag === "L" && nodes.length && nodes.every(m => m.tag === "LI")){ const f0 = findNode(nodes[0].id); const arr = kidsOf(f0.p);
     if (f0.p?.tag === "L"){ const i = arr.indexOf(nodes[0]); const prev = arr[i - 1];
-      if (prev?.tag === "LI" && !nodes.includes(prev)){ nodes.forEach(detach); const sub = subListOf(prev); sub.kids.push(...nodes); prune(); S.rows = new Set([sub.id]); S.focus = sub.id; S.open.add(prev.id); after(); toast("Made a sub-list inside the item above. Set its list type below."); return; }
+      if (prev?.tag === "LI" && !nodes.includes(prev)){ nodes.forEach(detach); const sub = subListOf(prev); sub.kids.push(...nodes); prune(); done(); S.open.add(prev.id); after(); toast("Made a sub-list inside the item above. Set its list type below."); return; }
       if (nodes.length === arr.filter(k => k.tag === "LI").length){ toast("These items are already a list."); return; } } }
+  if (!nodes.length && tag === "Figure" && selIds().length){ applyTag("Image"); if (pickedTop().length === 1 && pickedTop()[0].tag === "Image") wrapRows("Figure"); return; }
   if (!nodes.length){ const untagged = selIds().length; toast(untagged ? "Tag the selected content first, or use Build from selection." : "Select tagged items on the page, or rows in the list."); return; }
   const f0 = findNode(nodes[0].id); const arr = kidsOf(f0.p); const g = mkNode(tag);
-  arr.splice(arr.indexOf(nodes[0]), 0, g); nodes.forEach(detach); g.kids = nodes; prune();
-  S.rows = new Set([g.id]); S.focus = g.id; after();
+  arr.splice(arr.indexOf(nodes[0]), 0, g); nodes.forEach(detach); g.kids = nodes; partOrder(g); prune();
+  if (tag === "Figure"){ const im = nodes.find(n => n.tag === "Image"); if (im?.place){ g.place = im.place; delete im.place; } }
+  done(); after();
 }
 function unwrapRows(){
   const picked = pickedNodes().filter(r => r.n.kids.length); if (!picked.length){ toast("Select a group row to ungroup it."); return; }
@@ -1679,6 +1959,13 @@ function unwrapRows(){
   }
   S.rows.clear(); S.focus = null; after();
 }
+/* join a tag that continues on another page or column: where they meet, a list body, list or table body carries on as one */
+/* only tags of the same kind combine, like two P or two lists. Table cells combine into one spanning cell */
+const canCombine = pt => pt.length >= 2 && !pt.some(n => n.obj) && (pt.every(n => n.tag === pt[0].tag) || pt.every(n => n.tag === "TH" || n.tag === "TD"));
+function joinInto(a, b){ a.units.push(...b.units); a.units.sort(bySeq);
+  const x = a.kids[a.kids.length - 1], y = b.kids[0]; let rest = b.kids;
+  if (x && y && x.tag === y.tag && (["LBody","L","TBody","Table"].includes(y.tag) || (y.tag === "LI" && !y.kids.some(k => k.tag === "Lbl")))){ joinInto(x, y); rest = b.kids.slice(1); }
+  a.kids.push(...rest); }
 function mergeRows(){
   const nodes = pickedTop(); if (nodes.length < 2){ toast("Select two or more tags to merge, on the page or in the list."); return; }
   if (nodes.every(n => n.tag === "TH" || n.tag === "TD")){
@@ -1686,19 +1973,18 @@ function mergeRows(){
     const [first, ...rest] = nodes;
     first.rowspan = rowsOf.size; first.colspan = Math.max(...[...rowsOf.values()].map(cs => cs.reduce((a, c) => a + (c.colspan || 1), 0)));
     for (const c of rest){ first.units.push(...c.units); first.kids.push(...c.kids); detach(c); }
-    first.units.sort(bySeq); S.rows = new Set([first.id]); S.focus = first.id; S.sel = new Set(allUnits(first)); after();
+    first.units.sort(bySeq); done(); after();
     toast(`Merged into one cell spanning ${first.colspan} column${first.colspan > 1 ? "s" : ""} and ${first.rowspan} row${first.rowspan > 1 ? "s" : ""}.`); return;
   }
   const picked = nodes.map(n => ({ n, p:findNode(n.id).p }));
-  const parent = picked[0].p; if (picked.some(r => r.p !== parent)){ for (const r of picked.slice(1)){ picked[0].n.units.push(...r.n.units); picked[0].n.kids.push(...r.n.kids); detach(r.n); } picked[0].n.units.sort(bySeq); prune(); S.rows = new Set([picked[0].n.id]); S.focus = picked[0].n.id; after(); return; }
+  const parent = picked[0].p; if (picked.some(r => r.p !== parent)){ for (const r of picked.slice(1)){ joinInto(picked[0].n, r.n); detach(r.n); } prune(); done(); after(); toast(`Combined ${nodes.length} tags into one ${picked[0].n.tag}.`); return; }
   const [first, ...rest] = picked.map(r => r.n); const arr = kidsOf(parent);
   if (first.tag === "TR" && rest.every(n => n.tag === "TR")){
     for (const r of rest){ r.kids.forEach((cell, i) => { const t = first.kids[i]; if (t){ t.units.push(...cell.units); t.kids.push(...cell.kids); t.units.sort(bySeq); } else first.kids.push(cell); }); arr.splice(arr.indexOf(r), 1); }
   } else {
-    for (const r of rest){ first.units.push(...r.units); first.kids.push(...r.kids); arr.splice(arr.indexOf(r), 1); }
-    first.units.sort(bySeq);
+    for (const r of rest){ joinInto(first, r); arr.splice(arr.indexOf(r), 1); }
   }
-  S.rows = new Set([first.id]); S.focus = first.id; after();
+  done(); after(); toast(`Combined ${nodes.length} tags into one ${first.tag}.`);
 }
 /* list items nest as a sub-list in the item above: LI > LBody > L > LI */
 function subListOf(li){ let body = li.kids.find(k => k.tag === "LBody"); if (!body){ body = mkNode("LBody"); li.kids.push(body); }
@@ -1750,11 +2036,11 @@ function orderItems(items){
 /* export setting: rewrite content in tag order (default), or keep the file's content order */
 const reorderOn = () => true;
 /* untagged content on a page with columns is drawn column by column; it still comes before tagged content */
-const artPrio = (pg, b) => !pageCols(pg).length || !b ? -1 : -1 + colRank(pg, b) * 1e-3 + (2000 - b[3]) * 1e-7;
+const artPrio = (pg, b, id) => !pageCols(pg).length || !b ? -1 : -1 + colRank(pg, b, id ? [id] : null) * 1e-3 + (2000 - b[3]) * 1e-7;
 function pageItems(page, rank){
   const ro = reorderOn();
   /* content with no known box (like a clipped gradient) is treated as covering the page, the same as export does */
-  return S.pages[page].units.filter(u => (u.bbox || u.kind === "shade") && !isDel(u)).map(u => ({ ids:[u.id], bbox:u.bbox || [-1e6, -1e6, 1e6, 1e6], prio:!ro ? u.seq : rank.has(u.id) ? rank.get(u.id) : artPrio(page, u.bbox), seq:u.seq, art:!rank.has(u.id) }));
+  return S.pages[page].units.filter(u => (u.bbox || u.kind === "shade") && !isDel(u)).map(u => ({ ids:[u.id], bbox:u.bbox || [-1e6, -1e6, 1e6, 1e6], prio:!ro ? u.seq : rank.has(u.id) ? rank.get(u.id) : artPrio(page, u.bbox, u.id), seq:u.seq, art:!rank.has(u.id) }));
 }
 function stack(mode){
   const ids = selIds(); if (!ids.length){ toast("Select something on the page first."); return; }
@@ -1790,21 +2076,19 @@ function userOverrides(){ const rank = readingRank(); return S.zc.filter(c => ra
 /* ---------- side panel ---------- */
 function buildTagButtons(box = $("tagBtns"), done = null){
   box.replaceChildren(); const go = fn => e => { done?.(); fn(e); };
-  const LV = { 1:"Tag content", 2:"Wrap into a list item, table row or contents entry", 3:"Wrap into a list, table section or contents", 4:"Wrap into a table", 5:"Wrap into a section" };
+  const LV = { 1:"Tag content", 2:"Wrap into a list item, table row, figure or contents entry", 3:"Wrap into a list, table section or contents", 4:"Wrap into a table", 5:"Wrap into a section" };
   for (const lv of [1, 2, 3, 4, 5]){
     const head = document.createElement("div"); head.className = "tlv-h"; head.textContent = LV[lv]; box.appendChild(head);
     const row = document.createElement("div"); row.className = "tlv tlv" + lv; box.appendChild(row);
     for (const t of TAG_BTNS.filter(x => (x.lv || 1) === lv)){
       const b = document.createElement("button"); b.className = "tag-btn"; b.dataset.t = t.t; b.dataset.lv = lv; b.style.setProperty("--c", `var(${COLORVAR(t.t)})`);
-      b.innerHTML = `${t.t}${t.key || t.kbd ? `<kbd>${(t.key || t.kbd).toUpperCase()}</kbd>` : ""}`;
-      if (t.t === "Delete"){ b.style.setProperty("--c", "var(--danger)"); b.title = "Delete from the PDF: removes the selected content, like empty boxes or stray shapes (Shift+Delete)"; b.addEventListener("click", deleteSel); row.appendChild(b); continue; }
-      if (t.t === "Artifact"){ b.style.setProperty("--c", "var(--muted)"); b.title = "Make the selection an artifact: remove its tags (Delete)"; b.addEventListener("click", go(untag)); row.appendChild(b); continue; }
-      b.title = lv === 1 ? `Tag as ${NAMES[t.t] ? NAMES[t.t] + " (" + t.t + ")" : t.t}${t.key ? " · " + t.key.toUpperCase() : ""}` : `Wrap the selected ${WRAPS[t.t].filter(x => x !== "Caption").join(" or ")} tags in ${NAMES[t.t] || t.t} (${t.t})${t.key ? " · " + t.key.toUpperCase() : ""}`;
+      const hk = t.skey ? "⇧" + t.skey.toUpperCase() : (t.key || t.kbd || "").toUpperCase(); b.innerHTML = `${t.t}${hk ? `<kbd>${hk}</kbd>` : ""}`;
+      if (t.t === "Delete"){ b.style.setProperty("--c", "var(--danger)"); b.title = "Delete from the PDF: removes the selected content, like empty boxes or stray shapes (Delete)"; b.addEventListener("click", deleteSel); row.appendChild(b); continue; }
+      if (t.t === "Artifact"){ b.style.setProperty("--c", "var(--muted)"); b.title = "Make the selection an artifact: remove its tags (A)"; b.addEventListener("click", go(untag)); row.appendChild(b); continue; }
+      b.title = lv === 1 ? `Tag as ${NAMES[t.t] ? NAMES[t.t] + " (" + t.t + ")" : t.t}${t.key ? " · " + t.key.toUpperCase() : ""}` : `Wrap the selected ${WRAPS[t.t].filter(x => x !== "Caption").join(" or ")} tags in ${NAMES[t.t] || t.t} (${t.t})${t.key ? " · " + t.key.toUpperCase() : t.skey ? " · Shift+" + t.skey.toUpperCase() : ""}`;
       b.addEventListener("click", go(e => t.t === "TOCI" && !canWrap("TOCI") && canTagContent() ? ((e.altKey || $("eachChk").checked) ? applyTagEach("TOCI") : applyTag("TOCI")) : lv > 1 ? wrapRows(t.t) : (e.altKey || $("eachChk").checked) ? applyTagEach(t.t) : applyTag(t.t))); row.appendChild(b);
     }
   }
-  { const head = document.createElement("div"); head.className = "tlv-h"; head.textContent = "Wraps everything"; box.appendChild(head);
-    const d = document.createElement("div"); d.className = "tlv6"; d.textContent = "Document (added for you)"; box.appendChild(d); }
 }
 /* contents entries: find the heading an entry names, ignoring dot leaders and page numbers */
 const normT = t => (t || "").toLowerCase().replace(/[.·…_]{2,}|\s+\d+\s*$/g, " ").replace(/^\s*(\d+(\.\d+)*|[ivxlc]+)[.)]\s+/, "").replace(/[^\p{L}\p{N}]+/gu, " ").trim();
@@ -1829,6 +2113,11 @@ function cellOfSel(){ indexUnits(); const start = (S.focus && findNode(S.focus)?
 function listOfSel(){ indexUnits(); const start = (S.focus && findNode(S.focus)?.n) || selIds().map(id => nodeOfUnit.get(id)).find(Boolean); if (!start) return null;
   const ch = chainOf(start.id) || []; for (let i = ch.length - 1; i >= 0; i--) if (ch[i].tag === "L") return ch[i]; return null; }
 /* the link a selection sits in, if any */
+/* the thin line drawn under a link's text, if there is one */
+function underlineOf(l){ const us = allUnits(l).map(id => S.units.get(id)).filter(u => u?.kind === "text" && u.bbox); if (!us.length) return [];
+  const pg = us[0].page, b = us.filter(u => u.page === pg).reduce((a, u) => union(a, u.bbox), null); const h = b[3] - b[1];
+  return S.pages[pg].units.filter(u => u.kind === "path" && u.bbox && !isDel(u) && u.bbox[3] - u.bbox[1] < Math.max(2.5, h * 0.15) && u.bbox[1] > b[1] - h * 0.3 && u.bbox[3] < b[1] + h * 0.45
+    && Math.min(u.bbox[2], b[2]) - Math.max(u.bbox[0], b[0]) > 0.5 * (u.bbox[2] - u.bbox[0])).map(u => u.id); }
 function linkOfSel(){ indexUnits(); for (const id of selIds()){ const n = nodeOfUnit.get(id); if (n?.tag === "Link" && n.obj) return n; }
   const f = S.focus && findNode(S.focus); if (f?.n.tag === "Link" && f.n.obj) return f.n; const k = f?.n.kids.find(x => x.tag === "Link" && x.obj); return k || null; }
 /* click a comment, attachment or media item on the page: edit its description or remove it */
@@ -1904,14 +2193,14 @@ function wireObjDet(li, n){
   li.querySelector(".orm")?.addEventListener("click", () => { annOpts().drop[n.obj] = true; S.focus = null; after(); drawOverlays(); toast("Removed from the exported PDF. Undo brings it back."); });
 }
 /* list types: bulleted or numbered, and which kind */
-const LIST_TYPES = [["Bulleted", [["Disc", "• Disc"], ["Circle", "○ Circle"], ["Square", "■ Square"]]], ["Numbered", [["Decimal", "1, 2, 3"], ["UpperRoman", "I, II, III"], ["LowerRoman", "i, ii, iii"], ["UpperAlpha", "A, B, C"], ["LowerAlpha", "a, b, c"]]], ["Other", [["None", "No bullets or numbers"]]]];
+const LIST_TYPES = [["Bulleted", [["Disc", "• Disc"], ["Circle", "○ Circle"], ["Square", "■ Square"]]], ["Numbered", [["Decimal", "1, 2, 3 (numbers)"], ["UpperRoman", "I, II, III"], ["LowerRoman", "i, ii, iii"], ["UpperAlpha", "A, B, C"], ["LowerAlpha", "a, b, c"]]], ["Other", [["None", "No bullets or numbers"]]]];
 const listTypeName = v => LIST_TYPES.flatMap(g => g[1]).find(x => x[0] === v)?.[1] || "";
 const listTypeOptions = v => `<option value="" ${v ? "" : "selected"}>Not set</option>` + LIST_TYPES.map(([g, opts]) => `<optgroup label="${g}">${opts.map(([k, t]) => `<option value="${k}" ${k === v ? "selected" : ""}>${t}</option>`).join("")}</optgroup>`).join("");
 function renderAll(){ updTitleShow(); computeStructWarn(); drawOverlays(); renderSel(); renderOrder(); renderFoot(); }
 function renderCrumbs(){
   const box = $("crumbs"); if (S.enter && !findNode(S.enter)) S.enter = null;
   const ch = S.enter ? chainOf(S.enter) : [];
-  if (!ch.length){ box.innerHTML = `<span class="ch">Click selects groups · double-click goes inside</span>`; return; }
+  if (!ch.length){ box.replaceChildren(); return; }
   const flatIdx = new Map(flat().map((r, i) => [r.n.id, i + 1]));
   box.innerHTML = `<button type="button" data-l="">Document</button>` + ch.map(n => `<span class="sep">›</span><button type="button" data-l="${n.id}">${flatIdx.get(n.id)} ${NAMES[n.tag] || n.tag}</button>`).join("");
   box.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
@@ -1919,8 +2208,9 @@ function renderCrumbs(){
     const f = findNode(id); S.enter = f.p ? f.p.id : null; if (S.iso) S.iso = S.enter; S.rows = new Set([id]); S.sel = new Set(allUnits(f.n)); S.focus = id; renderAll();
   }));
 }
-function renderSel(){ { const c = S.pages.length ? cellOfSel() : null; $("cellRow").hidden = !c; if (c){ $("cellTag").textContent = c.tag; $("cellCs").value = c.colspan || 1; $("cellRs").value = c.rowspan || 1; $("cellScL").hidden = c.tag !== "TH"; $("cellSc").value = c.scope || ""; } } { const L = S.pages.length ? listOfSel() : null; $("listTypeRow").hidden = !L; if (L){ $("listTypeSel").innerHTML = listTypeOptions(L.numbering || ""); const d = (chainOf(L.id) || []).filter(n => n.tag === "L").length; $("listTypeOf").textContent = d > 1 ? `for this level ${d} list` : ""; } } { const one = pickedTop().length === 1; $("mvbLink").hidden = !one; $("mvaLink").hidden = !one; renderColBar(); }
-  $("weldLink").hidden = selIds().filter(id => S.units.get(id)?.kind === "image").length < 2; $("anchorLink").hidden = !(S.trange || selIds().length); $("linkLink").hidden = !(S.trange && rangeText(S.trange)) && !selIds().some(id => S.units.get(id)?.kind === "text"); $("delLink").hidden = !selIds().length;
+function renderSel(){ { const c = S.pages.length ? cellOfSel() : null; $("cellRow").hidden = !c; if (c){ $("cellTag").textContent = c.tag; $("cellCs").value = c.colspan || 1; $("cellRs").value = c.rowspan || 1; $("cellScL").hidden = c.tag !== "TH"; $("cellSc").value = c.scope || ""; } } { const L = S.pages.length ? listOfSel() : null; $("listTypeRow").hidden = !L; if (L){ $("listTypeSel").innerHTML = listTypeOptions(L.numbering || ""); const d = (chainOf(L.id) || []).filter(n => n.tag === "L").length; $("listTypeOf").textContent = d > 1 ? `for this level ${d} list` : ""; } } renderColBar();
+  renderSelActs();
+  
   renderCrumbs(); renderColorRow();
   const n = selIds().length;
   indexUnits(); const els = new Set(selIds().map(id => nodeOfUnit.get(id)).filter(Boolean));
@@ -1931,12 +2221,14 @@ function renderSel(){ { const c = S.pages.length ? cellOfSel() : null; $("cellRo
   $("deselShapes")?.addEventListener("click", () => { shp.forEach(u => S.sel.delete(u.id)); renderAll(); });
   if (S.trange){ const t = rangeText(S.trange); if (t) $("selInfo").innerHTML = `Text: “${esc(t.length > 60 ? t.slice(0, 57) + "…" : t)}” <span class="need" style="font-size:11px">· Cmd+K to link</span>`; }
   updTagBtns(document);
-  ["zBack","zBackward","zForward","zFront"].forEach(id => $(id).disabled = !n);
+  ["zBack","zBackward","zForward","zFront"].forEach(id => $(id).disabled = !n); $("stackBtn").hidden = $("stackSep").hidden = !n;
   const f = S.focus && findNode(S.focus);
   $("target").hidden = !f; if (f) $("targetName").textContent = `${flat().findIndex(r => r.n === f.n) + 1} ${f.n.tag}`;
 }
 /* the same rules light up buttons in the panel and in the right-click menu */
 function updTagBtns(root){ const n = selIds().length;
+  /* list, table and section wraps only show when one of them can be used */
+  queueMicrotask(() => root.querySelectorAll(".tlv3,.tlv4,.tlv5").forEach(r => { const off = [...r.querySelectorAll(".tag-btn")].every(b => b.disabled); r.hidden = off; if (r.previousElementSibling?.classList.contains("tlv-h")) r.previousElementSibling.hidden = off; }));
   root.querySelectorAll(".tag-btn").forEach(b => b.disabled = b.dataset.t === "Artifact" || b.dataset.t === "Delete" ? !n : b.dataset.t === "TOCI" ? !(canWrap("TOCI") || canTagContent()) : b.dataset.lv > 1 ? !canWrap(b.dataset.t) : !canTagContent()); }
 /* checks that need the whole tree: heading order and table shape */
 S.swarn = new Map();
@@ -1980,7 +2272,8 @@ function computeStructWarn(){
     if (n.tag === "LI" && !n.kids.some(k => k.tag === "LBody") && !n.units.length && !n.kids.some(k => k.tag !== "Lbl")) add(n, W_("List item has no LBody. Select its text on the page and tag it LBody."));
     else if (n.tag === "LI" && !n.kids.some(k => k.tag === "LBody")) add(n, W_("List item has no LBody."));
     if (n.tag === "L" && !n.numbering && n.kids.some(li => li.kids.some(k => k.tag === "Lbl"))){ const det = detectNumbering(n);
-      add(n, W_("List numbering isn't set.", F_(`Set to ${det}`, () => { n.numbering = det; }, true))); }
+      const types = [det, ...NUMBERINGS.filter(v => v && v !== det)];
+      add(n, W_("List numbering isn't set.", F_("List type", null, true, types.map(v => C_(`${listTypeName(v)}${v === det ? " (matches the page)" : ""}`, () => { n.numbering = v; }))).withSelect())); }
     if (n.tag === "Formula" && !n.alt.trim()) add(n, W_("Formula has no alt text. Describe it in words in the box below."));
   });
   S.swarn = W;
@@ -2003,17 +2296,21 @@ function rowWarn(n, p){
   }
   if (n.units.some(id => S.units.get(id)?.uni === false && !S.actual[id])) w.push(W_("Has characters with no Unicode, like a symbol-font bullet.",
     F_("Read it as", null, true, [..."•◦▪–✓"].map(c => C_(c, () => { n.units.filter(id => S.units.get(id)?.uni === false).forEach(id => S.actual[id] = c); })).concat(C_("Other", v => { n.units.filter(id => S.units.get(id)?.uni === false).forEach(id => S.actual[id] = v); }, true)))));
-  if (n.tag !== "Figure" && n.tag !== "Formula"){ const us = n.units.map(id => S.units.get(id)).filter(Boolean); const sh = us.filter(u => u.kind === "path" || u.kind === "shade");
+  if (n.tag !== "Figure" && n.tag !== "Image" && n.tag !== "Formula"){ const us = n.units.map(id => S.units.get(id)).filter(Boolean); const sh = us.filter(u => u.kind === "path" || u.kind === "shade");
     if (sh.length && sh.length < us.length) w.push(W_(`Has ${sh.length} shape${sh.length > 1 ? "s" : ""} mixed in, like a line, border or background. These should be artifacts.`,
       F_("Make shapes artifacts", () => { const set = new Set(sh.map(u => u.id)); n.units = n.units.filter(id => !set.has(id)); }, true))); }
   if (n.tag === "TOCI" && !hasLink(n)){ const h = tocTarget(n);
     w.push(W_("This contents entry doesn't link to its section.", F_("Choose where it links…", null, true).withOpen(r => { const us = allUnits(n).filter(id => S.units.get(id)?.kind === "text"); if (!us.length){ toast("This entry has no text to link."); return; } S.sel = new Set(us); S.trange = null; openLinkMenu(r.left, r.bottom + 4); }))); void h; }
   if (n.tag === "Figure" && !n.place && !/^(P|H[1-6]?|Span|Link|Quote|Lbl|Reference|Note|BibEntry|Code|Caption)$/.test(pt)) w.push(W_("Figure stands on its own but its Placement isn't set to Block. Checkers like PAC warn about this.", F_("Set to Block", () => { n.place = "Block"; }, true)));
-  if (n.tag === "Figure" && !n.alt.trim()) w.push(W_("Figure has no alt text. Describe the image in the box below.", F_("It's decorative: make it an artifact", () => { removeNodeQuiet(n); })));
+  if (n.tag === "Figure" && !figAlt(n)) w.push(W_("Figure has no alt text. Describe the image in the box below.", F_("It's decorative: make it an artifact", () => { stripUnits(allUnits(n).filter(id => !(n.kids.find(k => k.tag === "Caption") && allUnits(n.kids.find(k => k.tag === "Caption")).includes(id)))); removeNodeQuiet(n); })));
+  if (n.tag === "Image" && pt !== "Figure" && !figAlt(n)) w.push(W_("Image has no alt text. Describe it in the box below."));
   if (n.tag === "L" && n.kids.some(k => k.tag !== "LI" && k.tag !== "Caption")) w.push(W_("A list should only hold list items.",
     F_("Turn extra items into list items", () => { n.kids = n.kids.map(k => k.tag === "LI" || k.tag === "Caption" ? k : (k.tag === "Lbl" || k.tag === "LBody" ? Object.assign(mkNode("LI"), { kids:[k] }) : Object.assign(mkNode("LI"), { kids:[mkNode("LBody", k.units.slice(), k.kids)] }))); }, true)));
   return w;
 }
+/* a Figure's alt text lives on its Image when it has one */
+const altHost = n => n.tag === "Figure" ? n.kids.find(k => k.tag === "Image") || n : n;
+const figAlt = n => (n.alt || "").trim() || (n.tag === "Figure" ? (n.kids.find(k => k.tag === "Image")?.alt || "").trim() : "");
 function removeNodeQuiet(n){ const f = findNode(n.id); if (!f) return; const arr = kidsOf(f.p); arr.splice(arr.indexOf(n), 1, ...n.kids); if (S.focus === n.id) S.focus = null; S.rows.delete(n.id); }
 function applyFix(fx){ fx.run(); prune(); after(); }
 function fixAllSafe(){
@@ -2175,6 +2472,7 @@ function divergence0(){
   return new Set(seq.filter((_, i) => !keep.has(i)));
 }
 $("eachChk").addEventListener("change", () => renderSel());
+$("placeSel").value = S.placeMode; $("placeSel").addEventListener("change", e => { S.placeMode = e.target.value; try { localStorage.setItem("placeMode", S.placeMode); } catch {} });
 $("skipArt").addEventListener("change", e => { S.skipArt = e.target.checked; renderOrder(); });
 /* walk reading order one item at a time: tags that hold content, or content order rows */
 function walk1(dir){
@@ -2185,14 +2483,17 @@ function walk1(dir){
     const ids = r.dataset.ids.split(" "); S.sel = new Set(ids); syncRowsFromSel(); S.focus = S.rows.size === 1 ? [...S.rows][0] : null; renderAll();
     document.querySelector(`#order .crow[data-ids="${r.dataset.ids}"]`)?.scrollIntoView({ block:"nearest" }); const u = S.units.get(ids[0]); if (u) scrollToUnit(u); return;
   }
-  const all = flat(); const list = all.filter(x => x.n.units.length); if (!list.length) return;
+  /* stops on what you read: a Figure, not the Image inside it; a paragraph, not the links inside it */
+  const stop = r => r.n.tag === "Image" && r.p?.tag === "Figure" ? false : r.n.tag === "Figure" ? allUnits(r.n).length > 0 : r.n.units.length > 0;
+  const all = flat(); const list = all.filter(stop); if (!list.length) return;
   /* start from the focused tag, even a group or one picked on the page */
   indexUnits(); let cur = S.focus || [...S.rows][0] || (S.sel.size ? nodeOfUnit.get([...S.sel][0])?.id : null);
   const pos = cur ? all.findIndex(r => r.n.id === cur) : -1; let x;
   if (pos < 0) x = dir > 0 ? list[0] : list[list.length - 1];
-  else x = dir > 0 ? all.slice(pos + 1).find(r => r.n.units.length) || all[pos] : all.slice(0, pos).reverse().find(r => r.n.units.length) || all[pos];
+  else x = dir > 0 ? all.slice(pos + 1).find(stop) || all[pos] : all.slice(0, pos).reverse().find(stop) || all[pos];
   const n = x.n; const ch = chainOf(n.id) || []; ch.slice(0, -1).forEach(a => S.open.add(a.id));
-  S.enter = x.p ? x.p.id : null; S.rows = new Set([n.id]); S.sel = new Set(allUnits(n)); S.focus = n.id; renderAll(); scrollRow(n.id);
+  /* a link inside a paragraph is a stop, but the page stays on the paragraph's level */
+  S.enter = n.obj && x.p && !OBJ_TAGS.has(x.p.tag) ? (findNode(x.p.id)?.p?.id ?? null) : x.p ? x.p.id : null; S.rows = new Set([n.id]); S.sel = new Set(allUnits(n)); S.focus = n.id; renderAll(); scrollRow(n.id);
   const u = S.units.get(allUnits(n).sort(bySeq)[0]); if (u) scrollToUnit(u);
 }
 function matchReadingOrder(){
@@ -2203,6 +2504,18 @@ function matchReadingOrder(){
   const left = divergence().size; toast(left ? "Stacking changes removed. Some content still can't follow tag order because items are layered." : "Content now matches tag order.", 4000);
 }
 let wipeArm = 0;
+/* untagged content that shows nothing: blank text like stray spaces, and fills too thin to see */
+let emptyMemo = null;
+function emptyArts(){ if (emptyMemo && emptyMemo.chg === S.chg && emptyMemo.n === S.units.size) return emptyMemo.ids; indexUnits(); const ids = [];
+  for (const u of S.units.values()){ if (nodeOfUnit.has(u.id) || isDel(u)) continue;
+    if (u.kind === "text"){ const gt = glyphText(u); if (!(u.gl || []).length || (gt ? !gt.trim() : u.bbox && !textOf([u.id]).trim())) ids.push(u.id); continue; }
+    if (u.kind === "path" || u.kind === "image" || u.kind === "form"){ const b = u.bbox; if (!b){ if (u.kind === "path") ids.push(u.id); continue; } const w = b[2] - b[0], h = b[3] - b[1];
+      if ((u.kind === "path" && !u.stroke && (w < 0.2 || h < 0.2)) || (w < 0.5 && h < 0.5)) ids.push(u.id); } }
+  emptyMemo = { chg:S.chg, n:S.units.size, ids }; return ids; }
+function deleteEmpty(btn){
+  if (Date.now() - wipeArm > 4000){ wipeArm = Date.now(); const t = btn.textContent; btn.textContent = "Click again to confirm"; setTimeout(() => { btn.textContent = t; }, 4000); return; }
+  wipeArm = 0; const ids = emptyArts(); S.opts.del ||= {}; ids.forEach(id => { S.opts.del[id] = 1; if (S.opts.decor) delete S.opts.decor[id]; }); S.sel.clear(); after();
+  toast(`Deleted ${ids.length} empty item${ids.length === 1 ? "" : "s"} from the PDF. Undo brings ${ids.length === 1 ? "it" : "them"} back.`, 4000); }
 function wipeTags(art, btn){
   if (Date.now() - wipeArm > 4000){ wipeArm = Date.now(); const t = btn.textContent; btn.textContent = "Click again to confirm"; setTimeout(() => { btn.textContent = t; }, 4000); return; }
   wipeArm = 0; const keep = []; walk(n => { if (n.obj) keep.push(n); });
@@ -2212,9 +2525,9 @@ function wipeTags(art, btn){
   after(); toast(art ? "Everything is an artifact now. Links, form fields and comments keep their tags. Undo brings it all back." : "Removed all tags. Links, form fields and comments keep their tags. Undo brings them back.", 5000);
 }
 /* same as above for the page you're viewing: content on other pages keeps its tags */
-function wipePage(art, btn){
+function wipePage(art, btn, page){
   if (Date.now() - wipeArm > 4000){ wipeArm = Date.now(); const t = btn.textContent; btn.textContent = "Click again to confirm"; setTimeout(() => { btn.textContent = t; }, 4000); return; }
-  wipeArm = 0; const pg = S.cur; const on = id => S.units.get(id)?.page === pg;
+  wipeArm = 0; const pg = page ?? S.cur; const on = id => S.units.get(id)?.page === pg;
   const lost = new Set(); walk(n => { if (n.obj && n.tag !== "Link") return; const k = n.units.length; n.units = n.units.filter(id => !on(id)); if (n.units.length < k) lost.add(n); });
   /* cells emptied here go too, so no empty table is left behind; groups left empty are pruned below */
   const drop = list => { for (let i = list.length - 1; i >= 0; i--){ const n = list[i]; drop(n.kids); if (lost.has(n) && !n.units.length && !n.kids.length && !n.obj) list.splice(i, 1); } }; drop(S.tree);
@@ -2225,7 +2538,7 @@ function wipePage(art, btn){
 }
 function renderContentOrder(){
   $("skipArtL").hidden = false; $("skipArt").checked = !!S.skipArt;
-  const box = $("order"); $("otools").hidden = true; $("lcrumbs").hidden = true; indexUnits(); const rank = readingRank(); let k = 0;
+  const box = $("order"); $("lcrumbs").hidden = true; indexUnits(); const rank = readingRank(); let k = 0;
   $("orderCount").textContent = "";
   const bad = [], badSet = divergence(); let h = ""; $("ohint").textContent = "Runs top to bottom, like reading order. Lower items draw over higher ones. Drag to reorder. ↑ ↓ keys walk the order.";
   S.pages.forEach((P, pi) => {
@@ -2273,26 +2586,39 @@ function renderOrder(){
   $("skipArtL").hidden = true;
   $("ohint").textContent = "Drag rows to set reading order. Drag right to nest, left to take out. Double-click a group to go inside. ↑ ↓ keys walk the order.";
   const box = $("order"); const all = flat(); $("orderCount").textContent = all.length ? all.length + " tags" : "";
-  $("otools").hidden = !all.length; $("lcrumbs").hidden = true;
-  if (!all.length){ box.innerHTML = `<div class="empty">Tags show up here in reading order. Drag a row up or down to reorder. Drag right to put it inside the group above, or left to take it out. Double-click a group to see what's inside. Anything untagged exports as an artifact.</div>`; return; }
+  $("lcrumbs").hidden = true;
+  if (!all.length){ box.innerHTML = `<div class="empty">Tags show up here in reading order. Drag a row up or down to reorder. Drag right to put it inside the group above, or left to take it out. Double-click a group to see what's inside. Anything untagged exports as an artifact.</div>`; { const ne = S.pages.length ? emptyArts().length : 0; if (ne){ const t = document.createElement("div"); t.className = "sellinks listtail"; const eb = document.createElement("button"); eb.type = "button"; eb.className = "dellink"; eb.textContent = `Delete ${ne} empty artifact${ne === 1 ? "" : "s"}`; eb.title = "Removes untagged content that shows nothing, like stray spaces and invisible shapes. Undo brings it back."; eb.addEventListener("click", e => deleteEmpty(e.target)); t.appendChild(eb); box.appendChild(t); } } return; }
   const num = new Map(all.map((r, i) => [r.n.id, i + 1]));
-  const rows = visibleRows(); S.vrows = rows;
+  /* links whose text isn't tagged yet wait in one folded row; each joins its text's tag once you tag that text */
+  const all0 = visibleRows(); const waiting = all0.filter(r => r.d === 0 && r.n.obj && r.n.tag === "Link" && !allUnits(r.n).length);
+  const rows = S.showWaiting ? [...waiting, ...all0.filter(r => !waiting.includes(r))] : all0.filter(r => !waiting.includes(r)); S.vrows = rows;
   const ol = document.createElement("ol"); ol.className = "tree"; let lastPg = -1;
   /* the Document tag that wraps everything on export */
   { const dr = document.createElement("li"); dr.className = "docrow"; dr.title = "Every tag sits inside one Document tag in the exported PDF";
-    dr.innerHTML = `<span>▾</span><b>Document</b><span class="dt"></span>`; dr.querySelector(".dt").textContent = $("docTitle").value || S.name; ol.appendChild(dr); }
+    dr.innerHTML = `<b>Document</b><span class="dt"></span>`; dr.querySelector(".dt").textContent = $("docTitle").value || S.name; ol.appendChild(dr); }
+  if (waiting.length){ const w = document.createElement("li"); w.className = "waitrow";
+    w.innerHTML = `<button type="button" class="tog" aria-expanded="${!!S.showWaiting}">${S.showWaiting ? "▾" : "▸"}</button><span>${LINK_ICON} ${waiting.length > 1 ? `${waiting.length} links waiting for their text` : "1 link waiting for its text"}</span>`;
+    w.title = "These links aren't in a tag yet. When you tag the text a link sits on, the link moves into that tag by itself.";
+    w.addEventListener("click", () => { S.showWaiting = !S.showWaiting; renderOrder(); }); ol.appendChild(w); }
+  let lastCol = null; const colIdx = c => pageCols(c.page).indexOf(c);
+  const pgTools = pg => { const li = document.createElement("li"); li.className = "pgtools sellinks";
+    li.innerHTML = `<button type="button" class="dellink" title="Remove the tags on page ${pg + 1}. Undo brings them back.">Remove tags on page ${pg + 1}</button><button type="button" class="dellink" title="Remove the tags on page ${pg + 1} and mark its content as artifacts. Undo brings them back.">Make page ${pg + 1} an artifact</button>`;
+    const [a, b] = li.querySelectorAll("button"); a.addEventListener("click", e => wipePage(false, e.target, pg)); b.addEventListener("click", e => wipePage(true, e.target, pg)); return li; };
   rows.forEach(({ n, p, d }) => {
+    { const c = colOfNode(n); if (c && c !== lastCol && d <= (lastCol ? 99 : 99)){ const cm = document.createElement("li"); cm.className = "colmark"; cm.textContent = `${colIdx(c) + 1}. ${colName(c, colIdx(c))}`; ol.appendChild(cm); } if (c || d === 0) lastCol = c; }
     if (d === 0){ const pgs = allUnits(n).map(id => S.units.get(id)?.page).filter(x => x != null); const pg0 = pgs.length ? Math.min(...pgs) : lastPg;
-      if (pg0 > lastPg){ const dv = document.createElement("li"); dv.className = "pdiv"; dv.innerHTML = `<button type="button">Page ${pg0 + 1}</button>`; dv.querySelector("button").addEventListener("click", () => showPage(pg0, true)); ol.appendChild(dv); lastPg = pg0; } }
+      if (pg0 > lastPg){ if (lastPg >= 0) ol.appendChild(pgTools(lastPg)); const dv = document.createElement("li"); dv.className = "pdiv"; dv.innerHTML = `<button type="button">Page ${pg0 + 1}</button>`; dv.querySelector("button").addEventListener("click", () => showPage(pg0, true)); ol.appendChild(dv); lastPg = pg0; } }
     const li = document.createElement("li"); const focused = S.focus === n.id;
-    li.className = "row trow" + (focused ? " active" : "") + (S.rows.has(n.id) ? " picked" : "") + (n.kids.length ? " grp" : "");
+    li.className = "row trow" + (focused ? " active" : "") + (S.rows.has(n.id) ? " picked" : "") + (n.kids.length ? " grp" : "") + (lastCol ? " incol" : "");
     li.dataset.id = n.id; li.dataset.d = d; li.draggable = true; li.style.setProperty("--c", `var(${COLORVAR(n.tag)})`); li.style.setProperty("--d", d);
+    /* an open group is a tinted area: drag a tag into it to put it in the group */
+    if (p){ li.classList.add("ingrp"); li.style.setProperty("--pc", `var(${COLORVAR(p.tag)})`); } else if (n.kids.length && S.open.has(n.id)){ li.classList.add("grphead"); li.style.setProperty("--pc", `var(${COLORVAR(n.tag)})`); }
     const closed = n.kids.length && !S.open.has(n.id);
     const warns = rowWarn(n, p); const sn = snippet(n); const cell = n.tag === "TH" || n.tag === "TD";
     const pages = [...new Set(allUnits(n).map(id => S.units.get(id).page + 1))];
     const span = cell ? (n.colspan > 1 ? ` ↔${n.colspan}` : "") + (n.rowspan > 1 ? ` ↕${n.rowspan}` : "") : "";
-    li.innerHTML = `<span class="tw">${n.kids.length ? `<button class="tog" aria-label="${closed ? "Expand" : "Collapse"}" aria-expanded="${!closed}">${closed ? "▸" : "▾"}</button>` : ""}</span>
-      ${n.obj ? `<select class="tsel" aria-label="Tag type" disabled title="Links, form fields and annotations keep their tag"><option>${n.tag}</option></select>` : ""}<select class="tsel" aria-label="Tag type" ${n.obj ? "hidden" : ""}>${ALL_TAGS.map(t => `<option ${t === n.tag ? "selected" : ""}>${t}</option>`).join("")}<option disabled>──────────</option><option value="__remove">Remove tag, keep contents</option><option value="__artifact">Remove tag (artifact)</option></select>
+    li.innerHTML = `<span class="grip" aria-hidden="true" title="Drag to move">⋮</span><span class="tw">${n.kids.length ? `<button class="tog" aria-label="${closed ? "Expand" : "Collapse"}" aria-expanded="${!closed}">${closed ? "▸" : "▾"}</button>` : ""}</span>
+      ${n.obj ? `<span class="tsel tfix" title="${n.tag === "Link" ? "Link: open it to change or remove it" : "Form fields and annotations keep their tag"}">${n.tag === "Link" ? LINK_ICON : ""}${n.tag}</span>` : n.tag === "Image" ? `<span class="tsel timg" title="Image: the picture inside a Figure">${IMG_ICON}</span>` : `<button type="button" class="tsel tchip" aria-label="Tag type ${n.tag}. Change it" title="Change the tag type">${n.tag}<span aria-hidden="true">▾</span></button>`}
       <span class="snip one${n.kids.length && !n.units.length ? " sum" : /^[\[(]/.test(sn) ? " dim" : ""}" tabindex="0"></span>
       <span class="meta">${warns.length ? `<span class="warnicon" title="Select to see the fix">⚠</span>` : ""}<span class="pg">${pages.length ? "p." + pages.join(",") : ""}</span><span class="num">${num.get(n.id)}</span></span>
       <button class="x" aria-label="Remove tag" title="Remove tag, keep contents">×</button>
@@ -2301,7 +2627,7 @@ function renderOrder(){
         ${n.units.some(id => S.units.get(id)?.uni === false) ? `<input class="act" placeholder="Replacement text, like •" aria-label="Replacement text">` : ""}
         ${n.units.filter(id => S.units.get(id) && isOdd(S.units.get(id))).map(id => `<label class="prop" style="flex-direction:column;align-items:stretch">Screen readers get “${esc(oddText(S.units.get(id)).slice(0, 60))}”. Type what it says:<input class="oddfix" data-u="${id}" value="${esc(S.actual[id] || "")}" placeholder="${esc(oddText(S.units.get(id)))}"></label>`).join("")}
         ${!S.opts.ligfix && allUnits(n).some(id => S.units.get(id) && hasLig(S.units.get(id))) ? `<div class="need" style="font-size:11px">Has ligatures like ﬁ that screen readers may misread. Fix them in Doc Settings ▸ Characters.</div>` : ""}
-        ${n.tag === "Figure" || n.tag === "Formula" ? `<input class="alt${n.alt.trim() ? "" : " missing"}" placeholder="${n.tag === "Formula" ? "Alt text (say the formula in words)" : "Alt text (describe the image)"}" aria-label="Alt text">` : ""}
+        ${n.tag === "Figure" || n.tag === "Image" || n.tag === "Formula" ? `<input class="alt${altHost(n).alt.trim() ? "" : " missing"}" placeholder="${n.tag === "Formula" ? "Alt text (say the formula in words)" : "Alt text (describe the image)"}" aria-label="Alt text">` : ""}
         ${n.tag === "Figure" ? `<div class="props"><label class="prop" title="Block: the figure stands on its own. Inline: it sits inside a line of text.">Placement <select class="place"><option value="" ${n.place ? "" : "selected"}>Not set (inline)</option><option value="Block" ${n.place === "Block" ? "selected" : ""}>Block</option><option value="Inline" ${n.place === "Inline" ? "selected" : ""}>Inline</option></select></label></div>` : ""}
         ${n.tag === "L" ? `<div class="props"><label class="prop">List type <select class="numb">${listTypeOptions(n.numbering || "")}</select></label><button type="button" class="btn ldet" style="font-size:11px;padding:2px 8px" title="Set the type from the bullets or numbers on the page">Detect</button></div>` : ""}
         <div class="props"><label class="prop">Language <select class="lang langsel" aria-label="Language of this tag">${langOptions(n.lang || "", true)}</select></label>
@@ -2319,12 +2645,16 @@ function renderOrder(){
     li.querySelector(".ldet")?.addEventListener("click", e => { e.stopPropagation(); const d = detectNumbering(n); n.numbering = d; after(); toast(`List type: ${listTypeName(d) || d}.`); });
     li.querySelector(".lang")?.addEventListener("change", e => pickLang(e.target, n.lang || "", v => { n.lang = v; after(); }, true));
     li.querySelector(".exp")?.addEventListener("change", e => { n.exp = e.target.value.trim(); after(); });
-    const alt = li.querySelector(".alt"); if (alt){ alt.value = n.alt; alt.addEventListener("input", () => { n.alt = alt.value; alt.classList.toggle("missing", !alt.value.trim()); renderFoot(); }); alt.addEventListener("change", record); }
+    const alt = li.querySelector(".alt"); if (alt){ const ah = altHost(n); alt.value = ah.alt; alt.addEventListener("input", () => { ah.alt = alt.value; alt.classList.toggle("missing", !alt.value.trim()); renderFoot(); }); alt.addEventListener("change", record); }
     li.querySelector(".cs")?.addEventListener("change", e => { n.colspan = Math.max(1, parseInt(e.target.value) || 1); after(); });
     li.querySelector(".rs")?.addEventListener("change", e => { n.rowspan = Math.max(1, parseInt(e.target.value) || 1); after(); });
     li.querySelector(".sc")?.addEventListener("change", e => { n.scope = e.target.value; record(); });
-    li.querySelector(".tsel").addEventListener("change", e => { if (e.target.value === "__remove"){ removeNode(n); return; }
-      if (e.target.value === "__artifact"){ stripUnits(allUnits(n)); const f = findNode(n.id); if (f) kidsOf(f.p).splice(kidsOf(f.p).indexOf(n), 1); prune(); if (S.focus && !findNode(S.focus)) S.focus = null; S.rows.delete(n.id); S.sel.clear(); after(); toast("Removed. Its content exports as artifacts."); return; } n.tag = e.target.value; if (n.tag === "TH" && !n.scope) n.scope = "Column"; after(); });
+    /* the tag menu is built when you open it, so long lists stay quick */
+    li.querySelector(".tchip")?.addEventListener("click", e => { e.stopPropagation(); const chip = e.currentTarget; const sel = document.createElement("select"); sel.className = "tsel"; sel.setAttribute("aria-label", "Tag type");
+      sel.innerHTML = `${ALL_TAGS.filter(t => t !== "Image").map(t => `<option ${t === n.tag ? "selected" : ""}>${t}</option>`).join("")}<option disabled>──────────</option><option value="__remove">Remove tag, keep contents</option><option value="__artifact">Remove tag (artifact)</option>`;
+      chip.replaceWith(sel); sel.addEventListener("change", onTagPick); sel.addEventListener("blur", () => setTimeout(() => { if (sel.isConnected) renderOrder(); }, 0)); sel.focus(); try { sel.showPicker(); } catch {} });
+    const onTagPick = e => { if (e.target.value === "__remove"){ removeNode(n); return; }
+      if (e.target.value === "__artifact"){ stripUnits(allUnits(n)); const f = findNode(n.id); if (f) kidsOf(f.p).splice(kidsOf(f.p).indexOf(n), 1); prune(); if (S.focus && !findNode(S.focus)) S.focus = null; S.rows.delete(n.id); S.sel.clear(); after(); toast("Removed. Its content exports as artifacts."); return; } n.tag = e.target.value; if (n.tag === "TH" && !n.scope) n.scope = "Column"; after(); };
     if (n.obj) li.querySelector(".x").hidden = true;
     li.querySelector(".x").addEventListener("click", e => { e.stopPropagation(); removeNode(n); });
     const pick = e => {
@@ -2363,32 +2693,43 @@ function renderOrder(){
   });
   const line = document.createElement("div"); line.className = "dropline"; line.hidden = true; line.innerHTML = `<span></span>`;
   /* tucked away at the bottom: start over */
+  if (lastPg >= 0) ol.appendChild(pgTools(lastPg));
   const tail = document.createElement("div"); tail.className = "sellinks listtail";
-  tail.innerHTML = `<button type="button" class="dellink" id="clearAllBtn" title="Remove every tag. Undo brings them back.">Remove all tags</button><button type="button" class="dellink" id="artAllBtn" title="Remove every tag and mark all content as decorative artifacts. Undo brings them back.">Make everything an artifact</button><button type="button" class="dellink" id="clearPgBtn" title="Remove the tags on the page you're viewing. Undo brings them back.">Remove tags on page ${S.cur + 1}</button><button type="button" class="dellink" id="artPgBtn" title="Remove the tags on the page you're viewing and mark its content as artifacts. Undo brings them back.">Make page ${S.cur + 1} an artifact</button>`;
+  tail.innerHTML = `<button type="button" class="dellink" id="clearAllBtn" title="Remove every tag in the document. Undo brings them back.">Remove all tags from document</button><button type="button" class="dellink" id="artAllBtn" title="Remove every tag and mark all content as decorative artifacts. Undo brings them back.">Make whole document an artifact</button>`;
   box.replaceChildren(ol, line, tail);
+  { const ne = emptyArts().length; if (ne){ const eb = document.createElement("button"); eb.type = "button"; eb.className = "dellink"; eb.textContent = `Delete ${ne} empty artifact${ne === 1 ? "" : "s"}`; eb.title = "Removes untagged content that shows nothing, like stray spaces and invisible shapes. Undo brings it back."; eb.addEventListener("click", e => deleteEmpty(e.target)); tail.prepend(eb); } }
   tail.querySelector("#clearAllBtn").addEventListener("click", e => wipeTags(false, e.target));
   tail.querySelector("#artAllBtn").addEventListener("click", e => wipeTags(true, e.target));
-  tail.querySelector("#clearPgBtn").addEventListener("click", e => wipePage(false, e.target));
-  tail.querySelector("#artPgBtn").addEventListener("click", e => wipePage(true, e.target));
+
 }
 const allDesc = n => n.kids.flatMap(k => [k, ...allDesc(k)]);
 /* where a drag would land: between rows, and how deep (drag right to nest, left to un-nest) */
 function project(e){
   const box = $("order"); const lis = [...box.querySelectorAll("li.trow")].filter(li => !S.drag.hide.has(li.dataset.id));
   const info = new Map(S.vrows.map(r => [r.n.id, r])); const rv = lis.map(li => info.get(li.dataset.id));
-  let i = lis.findIndex(li => { const r = li.getBoundingClientRect(); return e.clientY < r.top + r.height / 2; }); if (i < 0) i = lis.length;
+  const br = box.getBoundingClientRect(); const nm = t => NAMES[t] || t;
+  /* the row under the pointer: its top half drops before it, its bottom half after it, the middle of a group row drops into that group, at its end */
+  const h = lis.findIndex(li => e.clientY < li.getBoundingClientRect().bottom); let i, pref = 0;
+  if (h < 0) i = lis.length;
+  else { const r = lis[h].getBoundingClientRect(), f = (e.clientY - r.top) / r.height, row = rv[h];
+    if (isGroup(row.n) && f > 0.25 && f < 0.75 && !row.n.obj)
+      return { parent:row.n, ref:null, depth:row.d + 1, y:r.bottom - br.top + box.scrollTop, label:`Into ${nm(row.n.tag)}`, appendEnd:true };
+    if (f < 0.5){ i = h; pref = row.d; } else { i = h + 1; pref = row.n.kids.length && S.open.has(row.n.id) ? row.d + 1 : row.d; } }
   const prev = rv[i - 1], next = rv[i];
   const maxD = prev ? prev.d + 1 : 0, minD = next ? Math.min(next.d, maxD) : 0;
-  let depth = S.drag.startDepth + Math.round((e.clientX - S.drag.startX) / INDENT); depth = Math.max(minD, Math.min(maxD, depth));
+  let depth = pref + Math.round((e.clientX - S.drag.startX) / INDENT); depth = Math.max(minD, Math.min(maxD, depth));
   let parent = null; if (depth > 0) for (let j = i - 1; j >= 0; j--) if (rv[j].d === depth - 1){ parent = rv[j].n; break; }
   let ref = null; for (let j = 0; j < i; j++) if (rv[j].d === depth && rv[j].p === parent) ref = rv[j].n;
-  const br = box.getBoundingClientRect(); const anchor = i < lis.length ? lis[i].getBoundingClientRect().top - 1 : lis[lis.length - 1].getBoundingClientRect().bottom + 1;
-  return { parent, ref, depth, y:anchor - br.top + box.scrollTop, label:parent ? `Into ${NAMES[parent.tag] || parent.tag}` : "Top level", appendEnd:parent && prev && prev.n === parent && !S.open.has(parent.id) };
+  const anchor = i < lis.length ? lis[i].getBoundingClientRect().top - 1 : lis[lis.length - 1].getBoundingClientRect().bottom + 1;
+  return { parent, ref, depth, y:anchor - br.top + box.scrollTop, label:parent ? `Into ${nm(parent.tag)}` : "Top level", appendEnd:false };
 }
 $("order").addEventListener("dragover", e => {
   if (!S.drag) return; e.preventDefault(); const pr = project(e); S.drag.pr = pr;
   const line = $("order").querySelector(".dropline"); if (!line) return; line.hidden = false;
   line.style.top = pr.y + "px"; line.style.left = (10 + (pr.depth + 1) * INDENT) + "px"; line.querySelector("span").textContent = pr.label;
+  /* light up the group it lands in */
+  const key = pr.parent ? pr.parent.id : ""; if (S.drag.areaKey !== key){ S.drag.areaKey = key; $("order").querySelectorAll(".drop-area").forEach(x => x.classList.remove("drop-area"));
+    if (pr.parent) [pr.parent, ...allDesc(pr.parent)].forEach(m => { const el = $("order").querySelector(`li.trow[data-id="${m.id}"]`); if (el){ el.classList.add("drop-area"); el.style.setProperty("--pc", `var(${COLORVAR(pr.parent.tag)})`); } }); }
 });
 $("order").addEventListener("dragleave", e => { if (!e.relatedTarget || !$("order").contains(e.relatedTarget)) clearDrop(); });
 $("order").addEventListener("drop", e => {
@@ -2399,9 +2740,9 @@ $("order").addEventListener("drop", e => {
   if (pr.appendEnd) arr.push(...nodes);
   else { const at = pr.ref ? arr.indexOf(pr.ref) + 1 : 0; arr.splice(at, 0, ...nodes); }
   if (pr.parent) S.open.add(pr.parent.id);
-  prune(); S.rows = new Set(nodes.map(x => x.id)); S.focus = nodes[0].id; after();
+  prune(); leaveColumns(nodes); S.rows = new Set(nodes.map(x => x.id)); S.focus = nodes[0].id; after();
 });
-function clearDrop(){ const l = $("order").querySelector(".dropline"); if (l) l.hidden = true; document.querySelectorAll(".drop-before,.drop-after,.drop-in").forEach(x => x.classList.remove("drop-before", "drop-after", "drop-in")); }
+function clearDrop(){ const l = $("order").querySelector(".dropline"); if (l) l.hidden = true; document.querySelectorAll(".drop-before,.drop-after,.drop-in,.drop-area").forEach(x => x.classList.remove("drop-before", "drop-after", "drop-in", "drop-area")); if (S.drag) S.drag.areaKey = null; }
 function scrollRow(id){ let el = document.querySelector(`[data-id="${id}"]`); if (!el){ const ch = chainOf(id) || []; for (let i = ch.length - 2; i >= 0 && !el; i--) el = document.querySelector(`[data-id="${ch[i].id}"]`); } el?.scrollIntoView({ block:"nearest" }); }
 function focusRow(id){ setTimeout(() => document.querySelector(`[data-id="${id}"] .snip`)?.focus(), 0); }
 function renderFoot(){
@@ -2537,8 +2878,8 @@ async function buildOutput(){
   const doc = await PDFDocument.load(S.bytes, { updateMetadata:false });
   const ctx = doc.context; const pages = doc.getPages();
   const blobRef = new Map(); let imgN = 0;
-  for (const a of S.opts.adds || []){ const b = S.blobs.get(a.blob); if (b && !blobRef.has(a.blob)) blobRef.set(a.blob, (await doc.embedPng(b.bytes)).ref); }
-  const contentTag = t => t === "Quote" ? "BlockQuote" : t;
+  for (const a of S.opts.adds || []){ const b = S.blobs.get(a.blob); if (b && !blobRef.has(a.blob)) blobRef.set(a.blob, (await (b.type === "jpg" ? doc.embedJpg(b.bytes) : doc.embedPng(b.bytes))).ref); }
+  const contentTag = t => t === "Quote" ? "BlockQuote" : t === "Image" ? "Figure" : t;
   const rank = readingRank(); indexUnits();
   const GS0 = { font:null, size:0, Tc:0, Tw:0, Th:1, TL:0, rise:0 };
   const SKIP = ["/Length", "/Filter", "/DecodeParms", "/StructParents", "/StructParent"];
@@ -2561,7 +2902,7 @@ async function buildOutput(){
         for (const pc of kids){ const it = { type:"child", form:info, piece:pc, prio:pc.prio, bbox:pc.bbox, seq:pc.seq, art:pc.art, ids:pc.ids, chainPrev:prev }; items.push(it); prev = it; }
       } else {
         const u = S.units.get(c.id); const pcs = splitIds(c.id); const rs = (pcs || [c.id]).map(id => rank.get(id)).filter(x => x != null); const r = rs.length ? Math.min(...rs) : null;
-        items.push({ type:"own", chunk:c, prio:reorderOn() ? r ?? artPrio(pi, u?.bbox) : u?.seq ?? 0, bbox:u?.bbox || pcs?.map(id => S.units.get(id)?.bbox).reduce((a, b) => union(a, b), null) || BIG, seq:u?.seq ?? 0, art:r == null, ids:pcs || [c.id] });
+        items.push({ type:"own", chunk:c, prio:reorderOn() ? r ?? artPrio(pi, u?.bbox, c.id) : u?.seq ?? 0, bbox:u?.bbox || pcs?.map(id => S.units.get(id)?.bbox).reduce((a, b) => union(a, b), null) || BIG, seq:u?.seq ?? 0, art:r == null, ids:pcs || [c.id] });
       }
     }
     const out = [];
@@ -2586,7 +2927,7 @@ async function buildOutput(){
         if (hex) parts.push(`<${hex}>`); }
       out.push(...c.oc);
       if (node){ const m = counts.get(key) || 0; counts.set(key, m + 1); unitStream.set(id, { key, m, pi, stm }); out.push(`/${contentTag(node.tag)} <</MCID ${m}>> BDC`); } else out.push("/Artifact BMC");
-      out.push("q"); if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id));
+      out.push("q"); { const gp = geomPrefix(id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id));
       out.push(`BT\n${mtx(mul([1, 0, 0, 1, base.gl[p.g0].a0, 0], Tm))} Tm\n[${parts.join(" ")}] TJ\nET`, "Q", "EMC"); c.oc.forEach(() => out.push("EMC")); }
     return out;
   };
@@ -2601,7 +2942,7 @@ async function buildOutput(){
         const act = S.actual[c.id] ? ` /ActualText ${hexText(S.actual[c.id])}` : "";
         if (node && !pc.art){ const m = counts.get(key) || 0; counts.set(key, m + 1); unitStream.set(c.id, { key, m, pi, stm }); out.push(`/${contentTag(node.tag)} <</MCID ${m}${act}>> BDC`); }
         else out.push(act ? `/Artifact <<${act.trim()}>> BDC` : "/Artifact BMC");
-        out.push("q"); if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); out.push(c.body); out.push("Q"); out.push("EMC");
+        out.push("q"); { const gp = geomPrefix(c.id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); out.push(editedBody(c)); out.push("Q"); out.push("EMC");
         c.oc.forEach(() => out.push("EMC"));
       } else {
         const fc = pc.form.c; const ref = ctx.nextRef(); const ckey = "C" + (++cloneN);
@@ -2632,13 +2973,16 @@ async function buildOutput(){
   const build = (n, parentRef) => {
     const ref = ctx.nextRef(); const type = contentTag(n.tag);
     const K = [];
-    for (const it of seqItems(n)){ if (it.u){ const m = mcr(it.u, ref); if (m) K.push(m); } else K.push(build(it.k, ref)); }
+    /* an Image is the Figure's content: it isn't a tag of its own in the PDF */
+    const into = (m, out) => { for (const it of seqItems(m)){ if (it.u){ const r = mcr(it.u, ref); if (r) out.push(r); } else if (n.tag === "Figure" && it.k.tag === "Image") into(it.k, out); else out.push(build(it.k, ref)); } };
+    into(n, K);
     /* links, form fields and annotations get finished below, once their annotation is known */
     if (n.obj){ objEls.set(n.obj, { ref, n, parent:parentRef, K }); return ref; }
     const d = { Type:"StructElem", S:type, P:parentRef, K };
-    if (n.tag === "Figure"){
-      if (n.alt.trim()) d.Alt = PDFHexString.fromText(n.alt.trim());
-      const us = allUnits(n).map(id => S.units.get(id)).filter(u => u?.bbox); const pg = us[0]?.page;
+    if (n.tag === "Figure" || n.tag === "Image"){
+      if (figAlt(n)) d.Alt = PDFHexString.fromText(figAlt(n));
+      const capIds = new Set(n.kids.filter(k => k.tag === "Caption").flatMap(allUnits));
+      const us = allUnits(n).filter(id => !capIds.has(id)).map(id => S.units.get(id)).filter(u => u?.bbox); const pg = us[0]?.page;
       const ub = us.filter(u => u.page === pg).reduce((a, u) => union(a, u.bbox), null);
       if (ub) d.A = ctx.obj({ O:"Layout", ...(n.place ? { Placement:n.place } : {}), BBox:ub.map(v => Math.round(v * 100) / 100) });
     }
@@ -2790,7 +3134,7 @@ async function loadPDF(bytes, name, opts = {}){
     let doc;
     try { doc = await PDFDocument.load(bytes, { updateMetadata:false }); }
     catch (e){ if (/encrypt/i.test(String(e))) throw new Error("This PDF is password protected. Remove its security in Acrobat, then import it again."); throw e; }
-    const pdf = await pdfjsLib.getDocument({ data:bytes.slice() }).promise;
+    const pdf = await (await getDoc({ data:bytes.slice() })).promise;
     S.pdf?.destroy?.(); S.previewPdf?.destroy?.(); S.views = []; $("pagesBox").replaceChildren();
     S.fontReg = new Map();
     Object.assign(S, { name, bytes, pdf, pages:[], units:new Map(), tree:[], sel:new Set(), rows:new Set(), focus:null, cur:0, fit:"w", zc:[], previewPdf:null, previewDirty:true, sample:!!opts.sample });
@@ -2834,7 +3178,7 @@ async function loadPDF(bytes, name, opts = {}){
     buildViewer(); updatePageNo();
     applySplits(); syncAdds(); syncObjs();
     S.open.clear(); S.enter = null; S.iso = null; S.fix = {}; S.actual = {}; S.contrast = null; S.showContrast = false; $("cpanel").hidden = true; S.fileKey = await fileKey(bytes); S.savedWork = workState();
-    renderAll(); if (!opts.sample) loadSavedWork(); resetHistory(); showStart?.();
+    renderAll(); if (!opts.sample) loadSavedWork(); resetHistory(); showStart?.(); recentAdd();
     if (kept) toast(`Kept ${kept} existing tag${kept > 1 ? "s" : ""}. Use Clear all to start over.`, 4000);
   } catch (e){
     console.error(e); toast(e.message || "Could not import this PDF.", 5000);
@@ -2914,8 +3258,9 @@ async function loadSample(){
   const li = range("1.", "2 cups."); S.focus = null; S.sel = new Set(li); if (li.length) buildList(); S.focus = null;
   const capU = texts.find(u => txt(u).startsWith("Figure 1.")); const lastLi = S.units.get(li[li.length - 1]);
   if (capU && lastLi){ const fig = S.pages[0].units.filter(u => u.bbox && u.kind === "path" && u.bbox[1] >= capU.bbox[3] - 1 && u.bbox[3] <= lastLi.bbox[1] + 1).map(u => u.id);
-    tag(fig, "Figure"); walk(n => { if (n.tag === "Figure") n.alt = "Bar chart of nitrogen, phosphorus, potassium and zinc. Phosphorus is highest and zinc is lowest."; });
-    const f = S.tree.find(n => n.tag === "Figure"); S.focus = f?.id || null; S.sel = new Set([capU.id]); applyTag("Caption"); S.focus = null; }
+    tag(fig, "Image"); walk(n => { if (n.tag === "Image") n.alt = "Bar chart of nitrogen, phosphorus, potassium and zinc. Phosphorus is highest and zinc is lowest."; });
+    tag([capU.id], "Caption"); indexUnits(); const im = S.tree.find(n => n.tag === "Image"), cap = nodeOfUnit.get(capU.id);
+    if (im && cap){ S.sel.clear(); S.rows = new Set([im.id, cap.id]); wrapRows("Figure"); } S.focus = null; S.rows.clear(); }
   const q = S.pages[1].units.find(u => u.kind === "text" && u.bbox && textOf([u.id]).startsWith("Questions?")); if (q) tag([q.id], "P");
   S.sel.clear(); S.focus = null; S.rows.clear(); changed(); renderAll();
   if (!loadSavedWork()) S.savedWork = workState(); resetHistory();
@@ -3102,7 +3447,8 @@ function liveContrast(){
     const worst = ms.reduce((a, m) => (m.r / m.target < a.r / a.target ? m : a));
     const ok = worst.r >= worst.target;
     out.className = "cinfo " + (ok ? "pass" : "failc");
-    out.textContent = `Contrast ${worst.r.toFixed(1)}:1 · ${ok ? "passes AA" : `fails AA, needs ${worst.target}:1`}`;
+    const aaa = ms.every(m => m.r >= (m.large ? 4.5 : 7));
+    out.textContent = `Contrast ${worst.r.toFixed(1)}:1 · ${ok ? (aaa ? "passes AA and AAA" : `passes AA · AAA needs ${worst.large ? 4.5 : 7}:1`) : `fails AA, needs ${worst.target}:1`}`;
     if (!ok){
       const sug = isShape ? suggestColor(worst.bg, worst.fg, worst.target) : suggestColor(worst.fg, worst.bg, worst.target);
       if (sug){ const hx = hexOf(sug); const b = document.createElement("button"); b.type = "button"; b.className = "btn primary sugg";
@@ -3146,9 +3492,9 @@ function otherChecksHTML(){
       : `<div class="ck ok">✓ ${widgets.length} form field${widgets.length > 1 ? "s are" : " is"} tagged on export, with descriptions.</div>`; }
   { indexUnits(); S.opts.decor ||= {}; const ids = [...S.units.values()].filter(u => u.kind === "text" && u.bbox && !u.isSplit && !isDel(u) && !nodeOfUnit.has(u.id) && !S.opts.decor[u.id] && textOf([u.id])).map(u => u.id);
     const items = ids.length ? itemsOf(ids) : []; S._untag = items;
-    h += items.length ? `<div class="ck bad">✗ ${items.length} piece${items.length > 1 ? "s" : ""} of text ${items.length > 1 ? "aren't" : "isn't"} tagged. Screen readers will skip ${items.length > 1 ? "them" : "it"}. Tag ${items.length > 1 ? "them" : "it"}, or mark as decorative (like page numbers and running headers). <button type="button" class="btn" id="untagSel">Select all</button> <button type="button" class="btn" id="untagDecor">All decorative</button></div><div class="chars">${items.map((g, i) => `<div class="chr ut" data-i="${i}" data-key="${utKey(g)}"><span class="lb" title="Select on page">${esc(textOf(g).slice(0, 50))} · p.${S.units.get(g[0]).page + 1}</span><button type="button" class="btn">Decorative</button></div>`).join("")}</div>`
+    h += items.length ? `<div class="ck bad">✗ ${items.length} piece${items.length > 1 ? "s" : ""} of text ${items.length > 1 ? "aren't" : "isn't"} tagged. Screen readers will skip ${items.length > 1 ? "them" : "it"}. Tag ${items.length > 1 ? "them" : "it"}, or mark as decorative (like page numbers and running headers). <button type="button" class="btn" id="untagSel">Select all</button> <button type="button" class="btn" id="untagDecor">All decorative</button></div><div class="chars">${items.map((g, i) => `<div class="chr ut" data-i="${i}" data-key="${utKey(g)}"><span class="lb" title="Select on page">${esc(textOf(g).slice(0, 50))} · p.${S.units.get(g[0]).page + 1}</span><button type="button" class="btn utshow">Show</button><button type="button" class="btn utdec">Decorative</button></div>`).join("")}</div>`
       : `<div class="ck ok">✓ All text is tagged or marked decorative.</div>`;
-    const dv = divergence().size; h += dv ? `<div class="ck bad" data-key="dv">✗ Some content will be read in a different order than the tags.${S.zc.length ? ` <button type="button" class="btn" id="chkMatch">Undo stacking changes</button><div class="need whow">Removes the Back and Forward stacking changes that cause this. Your tags don't move.</div>` : `<div class="need whow">This happens when items are layered, like a title on a photo: the item underneath has to be drawn first. To fix it, move that item's tag earlier, or leave it.</div>`}</div>` : `<div class="ck ok">✓ Content order matches tag order.</div>`; }
+    const dvSet = divergence(); const dv = dvSet.size; const dvNodes = [...new Set([...dvSet].map(id => nodeOfUnit.get(id)).filter(Boolean))]; S._dv = dvNodes; h += dv ? `<div class="ck bad" data-key="dv">✗ ${dvNodes.length} tag${dvNodes.length === 1 ? "'s content is" : "s' content is"} drawn in a different order than the tags.${S.zc.length ? ` <button type="button" class="btn" id="chkMatch">Undo stacking changes</button><div class="need whow">Removes the Back and Forward stacking changes that cause this. Your tags don't move.</div>` : `<div class="need whow">This happens when items are layered, like a title on a photo: the item underneath has to be drawn first. To fix it, move that item's tag earlier, or leave it.</div>`}</div><div class="chars">${dvNodes.map((n, i) => `<div class="chr dvr" data-i="${i}" data-key="dv:${n.id}"><span class="lb" title="Show on page"><b>${n.tag}</b> · ${esc(textOf(allUnits(n)).slice(0, 44))} · p.${(nodeBox(n)?.pg ?? 0) + 1}</span><button type="button" class="btn sshow" data-id="${n.id}">Show</button></div>`).join("")}</div>` : `<div class="ck ok">✓ Content order matches tag order.</div>`; }
   { const us = [...S.units.values()].filter(u => u.kind === "text" && !u.isSplit && !isDel(u)); const lig = S.opts.ligfix ? 0 : us.filter(hasLig).length, odd = us.filter(u => isOdd(u) && !S.actual[u.id]).length;
     if (lig) h += `<div class="ck bad">✗ ${lig} line${lig > 1 ? "s use" : " uses"} ligature characters like ﬁ that screen readers may misread. <div class="need whow">Turn on “Read ligatures as plain letters” in Doc Settings ▸ Characters.</div> <button type="button" class="btn chShow">Show</button></div>`;
     { const fm = S.opts.mapfix ? 0 : fontsNeedingMap().length; if (fm) h += `<div class="ck bad">✗ ${fm} font${fm > 1 ? "s have" : " has"} a missing or incomplete Unicode map and use${fm > 1 ? "" : "s"} character names checkers can't read, like f_i. <div class="need whow">Turn on “Add Unicode maps” in Doc Settings ▸ Characters.</div> <button type="button" class="btn chShow">Show</button></div>`; }
@@ -3175,8 +3521,9 @@ function wireOtherChecks(){
   $("untagSel")?.addEventListener("click", () => { S.sel = new Set(S._untag.flat()); syncRowsFromSel(); $("cpanel").hidden = true; renderAll(); const u = S.units.get(S._untag[0][0]); if (u) scrollToUnit(u); });
   $("untagDecor")?.addEventListener("click", () => { S._untag.flat().forEach(id => S.opts.decor[id] = 1); record(); renderContrast(); });
   document.querySelectorAll("#csum .chr.ut").forEach(row => { const ids = S._untag[+row.dataset.i];
-    row.querySelector(".lb").addEventListener("click", () => { S.sel = new Set(ids); syncRowsFromSel(); renderAll(); const u = S.units.get(ids[0]); if (u) scrollToUnit(u); });
-    row.querySelector("button").addEventListener("click", () => { ids.forEach(id => S.opts.decor[id] = 1); record(); renderContrast(); }); });
+    const go = () => { S.sel = new Set(ids); syncRowsFromSel(); renderAll(); const u = S.units.get(ids[0]); if (u) scrollToUnit(u); row.closest(".chars")?.querySelectorAll(".chr").forEach(r => r.classList.toggle("cur", r === row)); };
+    row.querySelector(".lb").addEventListener("click", go); row.querySelector(".utshow").addEventListener("click", go);
+    row.querySelector(".utdec").addEventListener("click", () => { ids.forEach(id => S.opts.decor[id] = 1); record(); renderContrast(); }); });
   $("annFill")?.addEventListener("click", () => { annTagged().forEach(({ A }) => { if (!annDesc(A)) annOpts().desc[A.key] = annSuggest(A); }); record(); renderContrast(); });
   $("annEdit")?.addEventListener("click", () => openOpt("an"));
   document.querySelectorAll("#csum .chShow").forEach(b => b.addEventListener("click", () => { $("backCheck").hidden = false; openOpt("ch"); }));
@@ -3184,10 +3531,11 @@ function wireOtherChecks(){
   $("chkMatch")?.addEventListener("click", matchReadingOrder);
   $("fixStruct")?.addEventListener("click", () => { const n = fixAllSafe(); renderContrast(); toast(`Fixed ${n} problem${n === 1 ? "" : "s"}. Check the rest by hand.`); });
   document.querySelectorAll("#csum .chr.sw").forEach(row => wireWarnButtons(row, S._sw[+row.dataset.i].ws));
+  document.querySelectorAll("#csum .chr.dvr .lb").forEach(lb => lb.addEventListener("click", () => revealTag(S._dv[+lb.closest(".chr").dataset.i].id)));
   document.querySelectorAll("#csum .sshow").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); revealTag(b.dataset.id); }));
   document.querySelectorAll("#csum .chr.sw .lb").forEach(lb => lb.addEventListener("click", () => { const row = lb.closest(".chr"); const id = row.dataset.id; const f = findNode(id); if (!f) return; reveal(id); S.focus = id; S.rows = new Set([id]); S.sel = new Set(allUnits(f.n)); renderAll(); setTimeout(() => scrollRow(id), 0); const u = S.units.get(allUnits(f.n)[0]); if (u) scrollToUnit(u); }));
 
-  document.querySelectorAll("#csum .chr:not(.sw):not(.fd):not(.ut)").forEach(row => { const g = S._charOpen[+row.dataset.i];
+  document.querySelectorAll("#csum .chr:not(.sw):not(.fd):not(.ut):not(.dvr)").forEach(row => { const g = S._charOpen[+row.dataset.i];
     row.querySelector("button").addEventListener("click", () => { const v = row.querySelector("input").value; if (!v.trim()){ toast("Type the character this symbol stands for, like •."); return; } g.units.forEach(id => S.actual[id] = v); after(); renderContrast(); });
     row.querySelector(".lb").addEventListener("click", () => { S.sel = new Set(g.units); S.rows.clear(); renderAll(); scrollToUnit(S.units.get(g.units[0])); });
   });
@@ -3435,7 +3783,20 @@ function renderFields(){
 }
 const tsec = () => $("tsecH").closest(".sec");
 const setTsec = c => { tsec().classList.toggle("tcoll", c); $("tsecCar").textContent = c ? "▸" : "▾"; $("tsecH").setAttribute("aria-expanded", !c); try { localStorage.setItem("pts:tcoll", c ? "1" : ""); } catch {} };
-$("tsecH").addEventListener("click", () => setTsec(!tsec().classList.contains("tcoll")));
+$("tsecH").addEventListener("click", e => { if (e.target.closest(".gear") || tsec().dataset.dragged){ delete tsec().dataset.dragged; return; } setTsec(!tsec().classList.contains("tcoll")); });
+/* pop the tag buttons out into a panel you can drag anywhere; the spot is remembered in this browser */
+function setPop(on, pos){ const sec = tsec(); sec.classList.toggle("floating", on); $("popBtn").classList.toggle("on", on); $("popBtn").setAttribute("aria-pressed", on); $("popBtn").title = on ? "Put the tag buttons back in the sidebar" : "Pop out the tag buttons so you can move them next to your work";
+  if (on){ const p = pos || { x:Math.max(8, innerWidth - 760), y:120 }; sec.style.left = Math.min(p.x, innerWidth - 120) + "px"; sec.style.top = Math.min(Math.max(8, p.y), innerHeight - 60) + "px"; } else { sec.style.left = sec.style.top = ""; }
+  try { localStorage.setItem("pts:pop", on ? JSON.stringify(pos || { x:parseFloat(sec.style.left), y:parseFloat(sec.style.top) }) : ""); } catch {} }
+$("popBtn").addEventListener("click", e => { e.stopPropagation(); setPop(!tsec().classList.contains("floating")); });
+$("popBtn").addEventListener("keydown", e => e.stopPropagation());
+$("tsecH").addEventListener("pointerdown", e => { const sec = tsec(); if (!sec.classList.contains("floating") || e.target.closest(".gear") || e.button !== 0) return;
+  const r = sec.getBoundingClientRect(), x0 = e.clientX, y0 = e.clientY; let moved = false; $("tsecH").setPointerCapture(e.pointerId);
+  const mv = ev => { if (!moved && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 4) return; moved = true; sec.style.left = Math.min(innerWidth - 80, Math.max(0, r.left + ev.clientX - x0)) + "px"; sec.style.top = Math.min(innerHeight - 40, Math.max(0, r.top + ev.clientY - y0)) + "px"; };
+  const up = () => { $("tsecH").removeEventListener("pointermove", mv); $("tsecH").removeEventListener("pointerup", up); if (moved){ sec.dataset.dragged = "1"; try { localStorage.setItem("pts:pop", JSON.stringify({ x:parseFloat(sec.style.left), y:parseFloat(sec.style.top) })); } catch {} } };
+  $("tsecH").addEventListener("pointermove", mv); $("tsecH").addEventListener("pointerup", up); });
+try { const pp = localStorage.getItem("pts:pop"); if (pp) setPop(true, JSON.parse(pp)); } catch {}
+$("tagOptsBtn").addEventListener("click", e => { const o = $("tagOpts"); o.hidden = !o.hidden; e.currentTarget.setAttribute("aria-expanded", !o.hidden);  });
 $("tsecH").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); setTsec(!tsec().classList.contains("tcoll")); } });
 try { if (localStorage.getItem("pts:tcoll")) setTsec(true); } catch {}
 const setOsec = c => { document.querySelector(".side").classList.toggle("ocoll", c); $("osecCar").textContent = c ? "▸" : "▾"; $("osecH").setAttribute("aria-expanded", !c); try { localStorage.setItem("pts:ocoll", c ? "1" : ""); } catch {} };
@@ -3452,41 +3813,57 @@ $("oclose").addEventListener("click", () => { $("opanel").hidden = true; });
 
 /* ---------- right-click menu ---------- */
 /* right-click: the Tag selection panel, right where you are */
+/* the actions for what's selected: the sidebar and the right-click menu show the same list */
+function selActions(){
+  const pt = pickedTop(), sel = selIds(), hasSel = sel.length > 0, t0 = pt.length === 1 ? pt[0] : null; const A = [];
+  const add = (act, label, title, run, o = {}) => A.push({ act, label, title, run, ...o });
+  const at = e => { const r = e.currentTarget.getBoundingClientRect(); return [e.clientX || r.left, (e.clientY || r.bottom) + 4]; };
+  if (canCombine(pt)) add("comb", `⧉ Combine into one ${pt[0].tag}`, "Join the selected tags into one tag, like a paragraph or list split across pages or columns", mergeRows, { side:true });
+  if (gapBases().length) add("gaps", "⫼ Split at gaps", "Split text spaced out into a row, like captions under images, into separate pieces", splitGaps);
+  if (sel.filter(id => S.units.get(id)?.kind === "image").length > 1) add("weld", "⧉ Weld images", "Join the selected image pieces into one image, in the same spot and tag", weldImages);
+  if (colSelBox()) add("cola", "▥ Create column from selection", "Keep these tags together in the Tags list", () => addColumn("after"), { menu:true });
+  if (pt.some(isGroup)) add("ungroup", "Ungroup", "Remove the group and keep what's inside", unwrapRows);
+  if (S.enter) add("exit", "Go up one level (Esc)", "", () => { exitLevel(); renderAll(); });
+  if (t0){ add("mvb", "⤒ Move tags before…", "Pick tags to move in front of the selected tag", () => openMoveDlg("before")); add("mva", "⤓ Move tags after…", "Pick tags to move right after the selected tag", () => openMoveDlg("after")); }
+  { const lis = pt.filter(n => n.tag === "LI"); if (lis.length){ const f = findNode(lis[0].id); const sib = kidsOf(f.p); const prev = sib[sib.indexOf(lis[0]) - 1];
+      if (prev?.tag === "LI") add("nest", "→ Make sub-item of the item above", "", () => { lis.forEach(detach); subListOf(prev).kids.push(...lis); S.open.add(prev.id); prune(); after(); toast("Now a sub-item. Set its List type if it differs."); });
+      if ((chainOf(lis[0].id) || []).filter(n => n.tag === "L").length > 1) add("unnest", "← Move out a level", "", () => lis.forEach(n => outdent(n))); } }
+  if (t0?.tag === "Table") add("tcol", "Add column", "Adds an empty cell to the end of every row", () => tableAdd(t0, "col"));
+  if (t0?.tag === "TR") add("tcell", "Add cell", "Adds an empty cell to the end of this row", () => tableAdd(t0, "cell"));
+  if (t0 && (t0.tag === "TD" || t0.tag === "TH")) [["cb", "Insert empty cell before"], ["ca", "Insert empty cell after"], ["kb", "Insert empty column before"], ["ka", "Insert empty column after"]].forEach(([k, l]) => add("t" + k, l, "", () => tableAdd(t0, k)));
+  if (S.trange || hasSel) add("anchor", "⚓ Add anchor…", "Add a named anchor here that links can jump to", e => openAnchorMenu(...at(e)), { keep:true, id:"anchorLink" });
+  if ((S.trange && rangeText(S.trange)) || sel.some(id => S.units.get(id)?.kind === "text")) add("link", "🔗 Add link…", "Make the selected text a link to a heading, any tag, a page or a web address (Cmd+K)", e => openLinkMenu(...at(e)), { keep:true, id:"linkLink" });
+  if (!S.trange && linkOfSel()){ const l = linkOfSel(); add("unlink", "Remove link", "The link goes; its text stays", () => removeLink(l.obj));
+    const ul = underlineOf(l); if (ul.length) add("unlinkul", "Remove link and underline", "The link and the line under its text go; the text stays. Undo brings them back", () => { (S.opts.del ||= {}); stripUnits(ul); ul.forEach(id => S.opts.del[id] = 1); removeLink(l.obj); }); }
+  if (hasSel) add("del", "✕ Delete from PDF…", "Removes the selected content from the PDF, like empty boxes or stray shapes (Delete). Undo brings it back.", deleteSel, { danger:true });
+  return A;
+}
+function renderSelActs(){ const box = $("selActs"); if (!box) return; box.replaceChildren();
+  for (const a of S.pages.length ? selActions().filter(a => !a.menu) : []){ const b = document.createElement("button"); b.type = "button"; b.className = "dellink" + (a.danger ? "" : " lnk"); b.textContent = a.label; b.title = a.title; if (a.id) b.id = a.id; b.addEventListener("click", e => a.run(e)); box.appendChild(b); } }
 function openMenu(x, y){
   const m = $("cmenu"); const hasSel = selIds().length > 0; const rowsN = pickedTop().length; if (!hasSel && !rowsN && !S.enter) return;
   m.dataset.kind = "tag"; m.style.width = "340px"; m.innerHTML = "";
   const info = document.createElement("div"); info.className = "msel"; info.innerHTML = $("selInfo").innerHTML; info.querySelector(".shwarn")?.remove(); m.appendChild(info);
+  /* two parts of one paragraph or list, on different pages or columns: join them */
   const each = document.createElement("label"); each.className = "each"; each.innerHTML = `<input type="checkbox" ${$("eachChk").checked ? "checked" : ""}> Tag each item separately`; m.appendChild(each);
   each.querySelector("input").addEventListener("change", e => { $("eachChk").checked = e.target.checked; renderSel(); updTagBtns(m); });
   const box = document.createElement("div"); box.className = "tags mtags"; m.appendChild(box); buildTagButtons(box, closeMenu); updTagBtns(m);
-  const extra = []; if (rowsN > 1) extra.push(`<button class="mi" data-act="merge">Merge</button>`); if (pickedTop().some(n => isGroup(n))) extra.push(`<button class="mi" data-act="ungroup">Ungroup</button>`);
-  if (S.enter) extra.push(`<button class="mi" data-act="exit">Go up one level (Esc)</button>`);
-  if (pickedTop().length === 1) extra.push(`<button class="mi" data-act="mvb">Move tags before…</button><button class="mi" data-act="mva">Move tags after…</button>`);
-  if (selBox()) extra.push(`<button class="mi" data-act="cola">Create column from selection</button>`);
-  if (selIds().filter(id => S.units.get(id)?.kind === "image").length > 1) extra.push(`<button class="mi" data-act="weld">⧉ Weld images into one</button>`);
-  { const lis = pickedTop().filter(n => n.tag === "LI"); if (lis.length){ const f = findNode(lis[0].id); const sib = kidsOf(f.p); const i = sib.indexOf(lis[0]);
-      if (i > 0 && sib[i - 1].tag === "LI") extra.push(`<button class="mi" data-act="nest">→ Make sub-item of the item above</button>`);
-      if ((chainOf(lis[0].id) || []).filter(n => n.tag === "L").length > 1) extra.push(`<button class="mi" data-act="unnest">← Move out a level</button>`); } }
-  { const t0 = pickedTop()[0]; if (t0 && pickedTop().length === 1){ if (t0.tag === "Table") extra.push(`<button class="mi" data-act="tcol">Add column</button>`); if (t0.tag === "TR") extra.push(`<button class="mi" data-act="tcell">Add cell</button>`); if (t0.tag === "TD" || t0.tag === "TH") extra.push(`<button class="mi" data-act="tcb">Insert empty cell before</button><button class="mi" data-act="tafter">Insert empty cell after</button><button class="mi" data-act="tkb">Insert empty column before</button><button class="mi" data-act="tka">Insert empty column after</button>`); } }
+  /* two parts of one paragraph or list, on different pages or columns: join them */
+  if (canCombine(pickedTop())){ const cb = document.createElement("button"); cb.className = "btn mcomb"; cb.textContent = `⧉ Combine into one ${pickedTop()[0].tag}`; cb.title = "Join the selected tags into one tag, like a paragraph or list split across pages or columns"; cb.addEventListener("click", () => { closeMenu(); mergeRows(); }); box.querySelector(".tlv5").after(cb); }
+  const acts = selActions().filter(a => !a.side); const extra = [];
   { const c = cellOfSel(); if (c) extra.push(`<div class="lpick"><div class="need" style="font-size:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="font:600 11px var(--mono)">${c.tag}</b><label>Col span <input type="number" min="1" id="mCs" value="${c.colspan || 1}" style="width:44px"></label><label>Row span <input type="number" min="1" id="mRs" value="${c.rowspan || 1}" style="width:44px"></label></div></div>`); }
   const Ln = listOfSel(); if (Ln) extra.push(`<div class="lpick"><label class="need" style="font-size:12px;display:flex;gap:6px;align-items:center">List type <select id="mListType" class="langsel" style="flex:1">${listTypeOptions(Ln.numbering || "")}</select></label></div>`);
-  if (S.trange || hasSel) extra.push(`<button class="mi" data-act="anchor">⚓ Add anchor…</button>`);
-  if (!S.trange && linkOfSel()) extra.push(`<button class="mi" data-act="unlink">Remove link</button>`);
-  if (S.trange || selIds().some(id => S.units.get(id)?.kind === "text")) extra.push(`<button class="mi" data-act="link">🔗 Add link… <span class="need" style="font-size:10px">Cmd+K</span></button>`);
-  if (hasSel) extra.push(`<button class="mi dellink" data-act="del" title="Removes the selected content from the PDF. Undo brings it back."><span aria-hidden="true">✕</span> Delete from PDF…</button>`);
+  extra.push(...acts.map(a => `<button class="mi${a.danger ? " dellink" : ""}" data-act="${a.act}" title="${esc(a.title)}">${esc(a.label)}${a.act === "link" ? ` <span class="need" style="font-size:10px">Cmd+K</span>` : ""}</button>`));
   if (extra.length){ const d = document.createElement("div"); d.innerHTML = `<hr>${extra.join("")}`; m.appendChild(d); }
   m.hidden = false;
   const r = m.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(x, innerWidth - r.width - 8)) + "px"; m.style.top = Math.max(8, Math.min(y, innerHeight - r.height - 8)) + "px";
   [["mCs", "colspan"], ["mRs", "rowspan"]].forEach(([id, k]) => { const i = $(id); if (!i) return; i.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter"){ i.blur(); closeMenu(); } }); i.addEventListener("change", () => { const c = cellOfSel(); if (c){ c[k] = Math.max(1, parseInt(i.value) || 1); after(); } }); });
   $("mListType")?.addEventListener("change", e => { const L = listOfSel(); if (L){ L.numbering = e.target.value; closeMenu(); after(); toast(`List type: ${listTypeName(L.numbering) || "not set"}.`); } });
-  m.onclick = e => { const b = e.target.closest("button[data-act]"); if (!b) return; if (b.dataset.act === "link"){ openLinkMenu(e.clientX, e.clientY); return; } if (b.dataset.act === "anchor"){ openAnchorMenu(e.clientX, e.clientY); return; } closeMenu();
-    ({ tcol:() => tableAdd(pickedTop()[0], "col"), tcell:() => tableAdd(pickedTop()[0], "cell"), tafter:() => tableAdd(pickedTop()[0], "ca"), tcb:() => tableAdd(pickedTop()[0], "cb"), tkb:() => tableAdd(pickedTop()[0], "kb"), tka:() => tableAdd(pickedTop()[0], "ka"), nest:() => { const lis = pickedTop().filter(n => n.tag === "LI"); const f = findNode(lis[0].id); const sib = kidsOf(f.p); const prev = sib[sib.indexOf(lis[0]) - 1];
-      lis.forEach(detach); subListOf(prev).kids.push(...lis); S.open.add(prev.id); prune(); after(); toast("Now a sub-item. Set its List type if it differs."); },
-    unnest:() => { pickedTop().filter(n => n.tag === "LI").forEach(n => outdent(n)); }, unlink:() => { const l = linkOfSel(); if (l) removeLink(l.obj); }, merge:mergeRows, ungroup:unwrapRows, mvb:() => openMoveDlg("before"), mva:() => openMoveDlg("after"), colb:() => addColumn("before"), cola:() => addColumn("after"), weld:weldImages, del:deleteSel, exit:() => { exitLevel(); renderAll(); } })[b.dataset.act]?.(); };
+  m.onclick = e => { const b = e.target.closest("button[data-act]"); if (!b) return; const a = acts.find(x => x.act === b.dataset.act); if (!a) return; if (!a.keep) closeMenu(); a.run({ currentTarget:b, clientX:e.clientX, clientY:e.clientY }); };
   m.querySelector(".tag-btn:not(:disabled)")?.focus();
 }
 function closeMenu(){ const m = $("cmenu"); if (m.dataset.kind === "meta") m.querySelectorAll(".mf").forEach(l => $("metaHold").appendChild(l)); m.hidden = true; m.style.width = ""; m.dataset.kind = ""; }
-document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu")) closeMenu(); }, true);
+document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("cmenu").hidden){ e.stopImmediatePropagation(); closeMenu(); } }, true);
 $("stage").addEventListener("scroll", closeMenu, { passive:true });
 $("pagesBox").addEventListener("contextmenu", e => {
@@ -3524,7 +3901,6 @@ function setZoomTool(on){ S.zoomTool = on; $("zoomTool").classList.toggle("on", 
 $("zoomTool").addEventListener("click", () => setZoomTool(!S.zoomTool));
 
 
-$("delLink").addEventListener("click", deleteSel);
 $("metaBtn").addEventListener("click", e => { e.stopPropagation(); const m = $("cmenu"); if (!m.hidden && m.dataset.kind === "meta"){ closeMenu(); return; } if (!S.pages.length) return;
   const o = (S.opts.meta ||= {}); m.dataset.kind = "meta"; m.style.width = "320px";
   m.innerHTML = `<div class="mh">Metadata</div><div class="lpick" id="metaTop"></div><div class="lpick">
@@ -3541,7 +3917,7 @@ function updTitleShow(){ if (document.activeElement !== $("titleInline")) $("tit
 $("titleInline").addEventListener("input", e => { $("docTitle").value = e.target.value; updDirty(); });
 $("titleInline").addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter" || e.key === "Escape") e.target.blur(); });
 $("docTitle").addEventListener("input", updTitleShow);
-$("weldLink").addEventListener("click", weldImages);
+
 $("doneFix").addEventListener("click", () => { $("backCheck").hidden = true; drawOverlays(); });
 $("backCheckBtn").addEventListener("click", () => { $("backCheck").hidden = true; $("cpanel").hidden = false; S.showContrast = true; renderContrast(); drawOverlays(); });
 $("cellCs").addEventListener("change", e => { const c = cellOfSel(); if (c){ c.colspan = Math.max(1, parseInt(e.target.value) || 1); after(); } });
@@ -3549,8 +3925,7 @@ $("cellRs").addEventListener("change", e => { const c = cellOfSel(); if (c){ c.r
 $("cellSc").addEventListener("change", e => { const c = cellOfSel(); if (c){ c.scope = e.target.value; after(); } });
 ["cellCs", "cellRs"].forEach(id => $(id).addEventListener("keydown", e => e.stopPropagation()));
 $("listTypeSel").addEventListener("change", e => { const L = listOfSel(); if (L){ L.numbering = e.target.value; after(); } });
-$("anchorLink").addEventListener("click", e => { const r = e.target.getBoundingClientRect(); openAnchorMenu(r.left, r.bottom + 4); });
-$("linkLink").addEventListener("click", e => { const r = e.target.getBoundingClientRect(); openLinkMenu(r.left, r.bottom + 4); });
+
 /* add an anchor where the selection is: it follows the tag if there is one */
 function openAnchorMenu(x, y){
   const ids = S.trange ? rangeSpans(S.trange).map(s => s.u.id) : selIds(); if (!ids.length && !S.focus){ toast("Select where the anchor should go first."); return; }
@@ -3616,6 +3991,9 @@ $("zoomFitMenu").addEventListener("click", e => { e.stopPropagation(); const m =
   const r = $("zoomFit").getBoundingClientRect(); m.style.width = "150px"; m.hidden = false; m.style.left = r.left + "px"; m.style.top = r.bottom + 4 + "px"; m.querySelector(".mi").focus(); });
 const togglePreview = () => { S.preview = !S.preview; S.hide = S.preview; const b = $("previewBtn"); b.classList.toggle("on", S.preview); b.setAttribute("aria-pressed", S.preview); b.textContent = S.preview ? "Exit preview" : "Preview"; drawOverlays(); rerenderVisible(); };
 $("previewBtn").addEventListener("click", togglePreview);
+$("stackBtn").addEventListener("click", () => { const m = $("cmenu"); if (!m.hidden && m.dataset.kind === "stack"){ closeMenu(); return; } const b = $("stackBtn").getBoundingClientRect();
+  m.dataset.kind = "stack"; m.style.width = "200px"; m.innerHTML = [["front", "Bring to front"], ["forward", "Bring forward"], ["backward", "Send backward"], ["back", "Send to back"]].map(([k, t]) => `<button class="mi" data-z="${k}">${t}</button>`).join("");
+  m.onclick = e => { const x = e.target.closest("button[data-z]"); if (x){ closeMenu(); stack(x.dataset.z); } }; m.hidden = false; m.style.left = b.left + "px"; m.style.top = b.bottom + 4 + "px"; });
 $("zBack").addEventListener("click", () => stack("back"));
 $("zBackward").addEventListener("click", () => stack("backward"));
 $("zForward").addEventListener("click", () => stack("forward"));
@@ -3626,34 +4004,38 @@ $("revertBtn").addEventListener("click", revertWork);
 $("docTitle").addEventListener("input", updDirty); $("docLang").addEventListener("change", e => pickLang(e.target, S.docLang, v => { setDocLang(v); updDirty(); }, false));
 $("redoBtn").addEventListener("click", redo);
 $("targetClear").addEventListener("click", () => { S.focus = null; S.rows.clear(); renderAll(); });
-$("wrapSel").addEventListener("change", e => { const v = e.target.value; e.target.value = ""; if (v) wrapRows(v); });
-$("unwrapBtn").addEventListener("click", unwrapRows);
-$("mvbLink").addEventListener("click", () => openMoveDlg("before")); $("mvaLink").addEventListener("click", () => openMoveDlg("after"));
 
 
-$("mergeBtn").addEventListener("click", mergeRows);
+
+$("fileBtn").addEventListener("click", () => { if (!$("cmenu").hidden && $("cmenu").dataset.kind === "file") closeMenu(); else openFileMenu(); });
+$("editBtn").addEventListener("click", () => setEditMode(!S.editMode));
+$("addImg").addEventListener("change", e => { insertImage(e.target.files[0]); e.target.value = ""; });
 let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (S.fit && S.pages.length) rezoom(); }, 150); });
 document.addEventListener("keydown", e => {
   if ((e.metaKey || e.ctrlKey) && !e.target.closest("input,textarea")){
     const k = e.key.toLowerCase();
     if (k === "z"){ e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
     if (k === "y"){ e.preventDefault(); redo(); return; }
-    if (k === "k" && (S.trange || selIds().length)){ e.preventDefault(); const r = $("linkLink").getBoundingClientRect(); openLinkMenu(r.left || innerWidth / 2, (r.bottom || innerHeight / 3) + 4); return; }
+    if (k === "k" && (S.trange || selIds().length)){ e.preventDefault(); const r = $("linkLink")?.getBoundingClientRect() || {}; openLinkMenu(r.left || innerWidth / 2, (r.bottom || innerHeight / 3) + 4); return; }
     if (k === "s"){ e.preventDefault(); saveWork(); return; }
   }
   if (e.target.closest("input,select,textarea,.snip") || e.metaKey || e.ctrlKey) return;
   const codeKey = /^Key([A-Z])$/.exec(e.code)?.[1]?.toLowerCase() ?? /^Digit(\d)$/.exec(e.code)?.[1];
   if (e.altKey){ const ta = TAG_BTNS.find(x => x.key === codeKey && !x.lv); if (ta && selIds().length){ e.preventDefault(); applyTagEach(ta.t); } return; }
-  const k = e.key.toLowerCase(); const t = TAG_BTNS.find(x => x.key === k);
+  const k = e.key.toLowerCase(); const t = (e.shiftKey && TAG_BTNS.find(x => x.skey === k)) || TAG_BTNS.find(x => x.key === k);
   if (t && t.lv && selIds().length){ e.preventDefault(); if (canWrap(t.t)) wrapRows(t.t); else toast(`Select ${WRAPS[t.t].filter(x => x !== "Caption").join(" or ")} tags to wrap them in ${t.t}.`); }
   else if (t && selIds().length){ e.preventDefault(); if (!canTagContent()){ toast("Several tags are selected. Use a Wrap in button, or select one tag or untagged content."); } else $("eachChk").checked ? applyTagEach(t.t) : applyTag(t.t); }
   else if (k === "v"){ togglePreview(); }
   else if (k === "z" && S.pages.length){ setZoomTool(!S.zoomTool); }
+  else if (k === "e" && S.pages.length){ setEditMode(!S.editMode); }
+  else if (k === "escape" && S.editMode){ if (S.esel.length){ S.esel = []; S.sel.clear(); renderAll(); } else setEditMode(false); }
   else if (k === "escape" && S.linkSrc){ S.linkSrc = null; document.body.classList.remove("picking"); toast("Link canceled."); }
   else if (k === "escape" && S.zoomTool){ setZoomTool(false); }
   else if (k === "escape" && S.trange){ S.trange = null; drawOverlays(); renderSel(); }
   else if (k === "escape"){ if (!exitLevel()){ S.sel.clear(); S.rows.clear(); S.focus = null; } renderAll(); }
-  else if ((k === "delete" || k === "backspace") && S.sel.size){ e.preventDefault(); untag(); }
+  /* Delete removes the selection from the PDF (Undo brings it back); A makes it an artifact */
+  else if ((k === "delete" || k === "backspace") && S.sel.size){ e.preventDefault(); deleteSel(); }
+  else if (k === "a" && S.sel.size){ e.preventDefault(); untag(); }
   else if ((k === "arrowdown" || k === "arrowup") && (S.sel.size || S.focus)){ e.preventDefault(); walk1(k === "arrowdown" ? 1 : -1); }
   else if (k === "arrowright" || k === "pagedown") showPage(S.cur + 1);
   else if (k === "arrowleft" || k === "pageup") showPage(S.cur - 1);
@@ -3663,7 +4045,7 @@ window.addEventListener("dragenter", e => { if ([...(e.dataTransfer?.types || []
 window.addEventListener("dragleave", () => { if (--dragDepth <= 0){ dragDepth = 0; $("drop").hidden = true; } });
 window.addEventListener("dragover", e => { if ([...(e.dataTransfer?.types || [])].includes("Files")) e.preventDefault(); });
 window.addEventListener("drop", async e => { if (!e.dataTransfer?.files?.length) return; e.preventDefault(); dragDepth = 0; $("drop").hidden = true; const f = e.dataTransfer.files[0]; if (!/pdf$/i.test(f.type) && !/\.pdf$/i.test(f.name)) return toast("That file isn't a PDF."); await loadPDF(new Uint8Array(await f.arrayBuffer()), f.name); });
-window.__S = S; window.__dbg = { nodeOfUnit, indexUnits, textOf, fileCheck, openOpt, divergence0, readingRank, pageItems, orderItems, buildOutput, flat, renderAll, itemsOf };
+window.__S = S; window.__dbg = { emptyArts, syncRowsFromSel, openMenu, applyTag, wrapRows, loadSample, after, groupColumns, leaveColumns, nodeOfUnit, indexUnits, textOf, fileCheck, openOpt, divergence0, readingRank, pageItems, orderItems, buildOutput, flat, renderAll, itemsOf };
 /* start screen, and closing a document */
 const showStart = () => { $("startScr").hidden = !!S.pages.length; $("closeBtn").disabled = !S.pages.length; };
 
@@ -3682,6 +4064,5 @@ $("closeBtn").addEventListener("click", () => {
   closeArm = 0; $("closeBtn").textContent = "Close"; closeDoc(); });
 if (location.hash === "#sample") loadSample().then(showStart); else showStart();
 </script>
-
 
 </body></html>
