@@ -347,7 +347,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
 .ci{border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;cursor:pointer}
 .ci:hover{border-color:var(--muted)}
 .ci.on{border-color:var(--accent)}
-.ci .t1{display:flex;gap:8px;align-items:baseline;font-size:13px}
+.ci .t1{display:flex;gap:8px;align-items:center;font-size:13px}.ci .t1 .btn{font-size:11px;padding:2px 8px}
 .ci .t1 .snp{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ci .rt{font:600 12px var(--mono);color:var(--danger);white-space:nowrap}
 .ci .need{font-size:11px;color:var(--muted)}
@@ -375,7 +375,9 @@ body.zooming .sheet svg:active{cursor:crosshair}
 .prop select{border:1px solid var(--line);background:var(--bg);border-radius:5px;font-size:12px}
 .ck.ok{color:var(--t-p)}
 .ck.bad{color:var(--danger)}
-.chars{display:flex;flex-direction:column;gap:4px;max-height:180px;overflow:auto}
+.chars{display:flex;flex-direction:column;gap:0}
+.chars > .chr{padding:5px 0;border-bottom:1px solid color-mix(in srgb,var(--line) 70%,transparent)}.chars > .chr:last-child{border-bottom:0}
+#csum > .ck{padding:6px 0;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
 .chr{display:flex;gap:6px;align-items:center;font-size:12px}
 .chr .lb{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
 .chr input{width:56px;border:1px solid var(--line);background:var(--bg);border-radius:5px;padding:2px 6px}
@@ -496,7 +498,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <span class="splitbtn"><button class="btn" id="zoomFit" title="Fit to the page width">Fit width</button><button class="btn" id="zoomFitMenu" aria-haspopup="menu" aria-label="Choose fit width or fit height">▾</button></span>
         <span class="splitbtn"><button class="btn" id="zoomTool" aria-pressed="false" title="Zoom tool (Z): click to zoom, drag a box to zoom to it. Option flips in and out. Turns off after one zoom." aria-label="Zoom tool"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path class="zplus" d="M10 10l4 4M4.5 6.5h4M6.5 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><button class="btn" id="zoomMode" aria-haspopup="menu" aria-label="Choose zoom in or zoom out">▾</button></span>
         <button class="btn" id="editBtn" aria-pressed="false" title="Edit (E): drag to move. Drag a corner to resize (Shift keeps the shape), Option-drag a corner to crop. Double-click text to fix a line." aria-label="Edit">✎</button>
-        <span class="editbar" id="editBar" hidden><button class="btn" id="alignBtn" aria-haspopup="menu" title="Align and distribute the selected items">Align ▾</button><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*" hidden></label></span>
+        <span class="editbar" id="editBar" hidden><button class="btn" id="alignBtn" aria-haspopup="menu" title="Align and distribute the selected items">Align ▾</button><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*,.svg" hidden></label></span>
         <span class="sep"></span>
         <button class="btn" id="previewBtn" aria-pressed="false" title="Hide tags and show pages as they will export (V)">Preview</button>
         <span class="sep"></span>
@@ -591,24 +593,29 @@ const TAG_BTNS = [
   { t:"H1", key:"1" }, { t:"H2", key:"2" }, { t:"H3", key:"3" }, { t:"H4", key:"4" }, { t:"H5", key:"5" }, { t:"H6", key:"6" },
   { t:"P", key:"p" }, { t:"Lbl", key:"b" }, { t:"LBody", key:"i" },
   { t:"TH", key:"h" }, { t:"TD", key:"t" }, { t:"Quote", key:"q" },
-  { t:"Image", key:"g" }, { t:"Caption", key:"c" }, { t:"Artifact", kbd:"A" },
+  { t:"Image", key:"g" }, { t:"Caption", key:"c" }, { t:"Label", key:"o" }, { t:"Artifact", kbd:"A" },
   /* wrapping levels: each one only wraps the level below */
-  { t:"LI", key:"l", lv:2 }, { t:"TR", key:"r", lv:2 }, { t:"Figure", key:"f", lv:2 }, { t:"TOCI", lv:2 },
+  { t:"LI", key:"l", lv:2 }, { t:"TR", key:"r", lv:2 }, { t:"Figure", key:"f", lv:2 }, { t:"Field", key:"d", lv:2 }, { t:"TOCI", lv:2 },
   { t:"L", lv:3, skey:"l" }, { t:"TOC", lv:3, skey:"c" }, { t:"THead", lv:3, skey:"h" }, { t:"TBody", lv:3, skey:"b" }, { t:"TFoot", lv:3, skey:"f" },
   { t:"Table", lv:4, skey:"t" },
   { t:"Sect", lv:5, skey:"s" },
 ];
 const BLOCK = ["H1","H2","H3","H4","H5","H6","P","L","TOC","Table","Figure","Caption","Quote","Note","Formula","Reference","Sect","Link","Form","Annot"];
-const WRAPS = { Figure:["Image","Caption"], TOCI:["P","Lbl","Reference","Link","TOC"], TOC:["TOCI","Caption"], Sect:BLOCK, LI:["Lbl","LBody"], TR:["TH","TD"], L:["LI","Caption"], THead:["TR"], TBody:["TR"], TFoot:["TR"], Table:["TR","THead","TBody","TFoot","Caption"] };
+const WRAPS = { Figure:["Image","Caption"], Field:["Label","P","Form"], TOCI:["P","Lbl","Reference","Link","TOC"], TOC:["TOCI","Caption"], Sect:BLOCK, LI:["Lbl","LBody"], TR:["TH","TD"], L:["LI","Caption"], THead:["TR"], TBody:["TR"], TFoot:["TR"], Table:["TR","THead","TBody","TFoot","Caption"] };
 /* content tags apply to untagged content or one content tag; several tags or a group need a wrap level */
 function canTagContent(){ if (!selIds().length) return false; const nodes = pickedTop(); if (!nodes.length) return true; if (nodes.some(n => n.obj)) return false;
   /* with Tag each, several content tags can be retagged at once, like TD cells to TH */
   return nodes.every(n => !isGroup(n)) && (nodes.length === 1 || $("eachChk").checked); }
 /* can the selected tags be wrapped in this tag? */
-function canWrap(tag){ if (!selIds().length && !S.rows.size) return false; const nodes = pickedTop(); if (tag === "Figure" && !nodes.length && canTagContent()) return true; if (nodes.length === 1 && tag === "Sect" && nodes[0].obj) return false; if (!nodes.length || !nodes.every(n => WRAPS[tag].includes(n.tag)) || nodes.every(n => n.tag === "Caption")) return false;
+/* the form field closest to a label: on the same line to the right, or just below */
+function nearestField(lab){ const nb = nodeBox(lab); if (!nb) return null; const b = nb.b, cy = (b[1] + b[3]) / 2, hh = b[3] - b[1]; let best = null, bd = Infinity;
+  walk(n => { if (n.tag !== "Form" || !n.obj) return; const W = S.pages[nb.pg]?.widgets?.find(w => w.key === n.obj); if (!W) return; const r = W.rect; const wy = (r[1] + r[3]) / 2;
+    const same = Math.abs(wy - cy) < Math.max(hh, (r[3] - r[1])) && r[0] >= b[0] - 4; const below = r[3] <= b[1] + 4 && b[1] - r[3] < 40 && r[0] < b[2] + 40;
+    const d = same ? Math.max(0, r[0] - b[2]) : below ? 200 + (b[1] - r[3]) : Infinity; if (d < bd){ bd = d; best = n; } }); return bd < 400 ? best : null; }
+function canWrap(tag){ if (!selIds().length && !S.rows.size) return false; const nodes = pickedTop(); if ((tag === "Figure" || tag === "Field") && !nodes.length && canTagContent()) return true; if (nodes.length === 1 && tag === "Sect" && nodes[0].obj) return false; if (!nodes.length || !nodes.every(n => WRAPS[tag].includes(n.tag)) || nodes.every(n => n.tag === "Caption")) return false;
   if (tag === "LI" && (nodes.filter(n => n.tag === "Lbl").length > 1 || nodes.filter(n => n.tag === "LBody").length > 1)) return false;
   const cover = new Set(nodes.flatMap(allUnits)); return selIds().every(id => cover.has(id)); }
-const ALL_TAGS = ["H1","H2","H3","H4","H5","H6","P","Image","Figure","Caption","L","LI","Lbl","LBody","TOC","TOCI","Table","THead","TBody","TFoot","TR","TH","TD","Quote","Note","Reference","Formula","Sect"];
+const ALL_TAGS = ["H1","H2","H3","H4","H5","H6","P","Image","Figure","Caption","Label","Field","L","LI","Lbl","LBody","TOC","TOCI","Table","THead","TBody","TFoot","TR","TH","TD","Quote","Note","Reference","Formula","Sect"];
 const COLORVAR = t => /^H\d$/.test(t) ? "--t-h" : t === "P" ? "--t-p" : t === "Figure" || t === "Image" || t === "Formula" ? "--t-fig" : t === "Caption" ? "--t-cap"
   : ["L","LI","Lbl","LBody"].includes(t) ? "--t-li" : ["Table","THead","TBody","TFoot","TR","TH","TD"].includes(t) ? "--t-tb" : t === "Sect" ? "--t-sec" : "--t-q";
 /* any CSS color you type: hex (with or without #), a name like navy, or rgb()/rgba(); transparency is ignored since text and fills here are solid */
@@ -623,8 +630,8 @@ const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).
 const colorCache = new Map(); const tagColor = t => { const k = COLORVAR(t); if (!colorCache.has(k)) colorCache.set(k, css(k)); return colorCache.get(k); };
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => { colorCache.clear(); drawOverlays(); });
 new MutationObserver(() => { colorCache.clear(); }).observe(document.documentElement, { attributes:true, attributeFilter:["data-theme"] });
-const ONLY_IN = { TOCI:["TOC"], LI:["L"], Lbl:["LI"], LBody:["LI"], TR:["Table","THead","TBody","TFoot"], THead:["Table"], TBody:["Table"], TFoot:["Table"], TH:["TR"], TD:["TR"], Caption:["Figure","Table","L"], Image:["Figure"] };
-const FLOW = new Set(["ROOT","Sect","LBody","LI","TH","TD","Quote","Note","TOCI"]);
+const ONLY_IN = { TOCI:["TOC"], LI:["L"], Lbl:["LI"], LBody:["LI"], TR:["Table","THead","TBody","TFoot"], THead:["Table"], TBody:["Table"], TFoot:["Table"], TH:["TR"], TD:["TR"], Caption:["Figure","Table","L"], Image:["Figure"], Label:["Field"] };
+const FLOW = new Set(["Field","ROOT","Sect","LBody","LI","TH","TD","Quote","Note","TOCI"]);
 const OBJ_TAGS = new Set(["Link","Form","Annot"]);
 const accepts = (parent, child) => OBJ_TAGS.has(child) ? !["L","Table","THead","TBody","TFoot","TR"].includes(parent) : ONLY_IN[child] ? ONLY_IN[child].includes(parent) : FLOW.has(parent);
 /* a group holds other tags; links, fields and annotations inside a paragraph don't make it one */
@@ -632,7 +639,7 @@ const isGroup = n => n.kids.some(k => !k.obj);
 const FOCUS_NEW = new Set(["L","LI","LBody","Table","THead","TBody","TFoot","TR","Figure","Sect"]);
 const LINK_ICON = `<svg width="12" height="12" viewBox="-6 -6 12 12" aria-hidden="true"><path d="M-1.2 2.6l-1.4 1.4a1.9 1.9 0 0 1-2.7-2.7l1.4-1.4M1.2-2.6l1.4-1.4a1.9 1.9 0 0 1 2.7 2.7l-1.4 1.4M-1.8 1.8l3.6-3.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`;
 const IMG_ICON = `<svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span class="sr-only">Image</span>`;
-const NAMES = { Image:"Image", TOC:"Table of contents", TOCI:"Contents entry", Link:"Link", Form:"Form field", Annot:"Annotation", L:"List", LI:"List item", Table:"Table", TR:"Table row", Sect:"Section", Figure:"Figure", LBody:"List body", TH:"Header cell", TD:"Cell", THead:"Table head", TBody:"Table body", TFoot:"Table foot" };
+const NAMES = { Label:"Form label", Field:"Form field and label", Image:"Image", TOC:"Table of contents", TOCI:"Contents entry", Link:"Link", Form:"Form field", Annot:"Annotation", L:"List", LI:"List item", Table:"Table", TR:"Table row", Sect:"Section", Figure:"Figure", LBody:"List body", TH:"Header cell", TD:"Cell", THead:"Table head", TBody:"Table body", TFoot:"Table foot" };
 
 /* ---------- state ---------- */
 const S = {
@@ -827,7 +834,7 @@ function analyzePage(P){
     const s = Math.abs(gs.size); const y0 = gs.rise - 0.22 * s, y1 = gs.rise + 0.86 * s;
     const M = mul(Tm, gs.ctm);
     const pts = [ap(M,0,y0), ap(M,adv,y0), ap(M,0,y1), ap(M,adv,y1)];
-    add("text", k, k, pts, { gl, M, y0, y1, two:!!fi.two, opn:ops[k].op, fres:res, fname:gs.font, h: s * Math.hypot(M[2], M[3]), fill:gs.fill ? gs.fill.map(c => Math.max(0, Math.min(1, c))) : null, bold:/bold|black|heavy|ultra/i.test(fi.base || "") || gs.Tr === 2, tr:gs.Tr || 0, fcs:gs.fcs, font:(fi.base || "").replace(/^[A-Z]{6}\+/, ""), uni:fi.uni !== false });
+    add("text", k, k, pts, { gl, M, y0, y1, two:!!fi.two, opn:ops[k].op, fres:res, fname:gs.font, h: s * Math.hypot(M[2], M[3]), fill:gs.fill ? gs.fill.map(c => Math.max(0, Math.min(1, c))) : null, bold:/bold|black|heavy|ultra/i.test(fi.base || "") || gs.Tr === 2, tr:gs.Tr || 0, fcs:gs.fcs, font:(fi.base || "").replace(/^[A-Z]{6}\+/, ""), uni:fi.uni !== false, ctm:gs.ctm.slice(), fsize:gs.size, th:gs.Th, rise:gs.rise || 0 });
     Tm = mul([1,0,0,1,adv,0], Tm);
   };
   for (let k = 0; k < ops.length; k++){
@@ -1111,7 +1118,8 @@ function drawOverlay(pi){
   const ov = v.svg; ov.replaceChildren(); const vp = v.vp;
   const P = S.pages[pi]; indexUnits();
   const gTags = mk("g", { class:S.hide || S.editMode ? "ov-hidden" : "" }, ov);
-  for (const u of [...P.units].filter(u => u.bbox && !isDel(u) && !nodeOfUnit.has(u.id)).sort((a, b) => area(b.bbox) - area(a.bbox))){
+  const blk = new Map(); for (const u of P.units){ if (!u.bbox || isDel(u) || nodeOfUnit.has(u.id)) continue; const j = joinOf(u.id); const k = j ? j[0] : u.id; blk.set(k, { bbox:union(blk.get(k)?.bbox, u.bbox) }); }
+  for (const u of [...blk.values()].sort((a, b) => area(b.bbox) - area(a.bbox))){
     const [x, y, w, h] = vrect(u.bbox, vp);
     mk("rect", { class:"ov-blk", x:x-1, y:y-1, width:Math.max(w+2, 3), height:Math.max(h+2, 3) }, gTags);
   }
@@ -1338,8 +1346,9 @@ function wirePointer(v){
     if (!hit){ if (!d.add){ S.sel.clear(); S.rows.clear(); S.focus = null; S.enter = null; S.iso = null; } renderAll(); return; }
     indexUnits(); const node = nodeOfUnit.get(hit.id);
     if (!node){
-      if (d.add){ if (S.sel.has(hit.id)) S.sel.delete(hit.id); else S.sel.add(hit.id); syncRowsFromSel(); }
-      else { S.sel = new Set([hit.id]); S.rows.clear(); }
+      const grp = (joinOf(hit.id) || [hit.id]).filter(id => !nodeOfUnit.has(id));
+      if (d.add){ if (S.sel.has(hit.id)) grp.forEach(id => S.sel.delete(id)); else grp.forEach(id => S.sel.add(id)); syncRowsFromSel(); }
+      else { S.sel = new Set(grp); S.rows.clear(); }
       renderAll(); return;
     }
     if (!inEntered(node)) return; /* outside the group you're in: locked, like Illustrator isolation */
@@ -1367,7 +1376,7 @@ const rectXf = (r, m) => bboxOf([ap(m, r[0], r[1]), ap(m, r[2], r[1]), ap(m, r[0
 const isect = (a, b) => [Math.max(a[0], b[0]), Math.max(a[1], b[1]), Math.min(a[2], b[2]), Math.min(a[3], b[3])];
 const normR = r => [Math.min(r[0], r[2]), Math.min(r[1], r[3]), Math.max(r[0], r[2]), Math.max(r[1], r[3])];
 const formCtm = u => u?.inst ? S.pages[u.page]?.forms.find(f => f.inst === u.inst)?.ctm || null : null;
-const hasEdits = () => ["xf","crop","txt"].some(k => Object.keys(S.opts?.[k] || {}).length);
+const hasEdits = () => ["xf","crop","txt","outline"].some(k => Object.keys(S.opts?.[k] || {}).length);
 /* fonts: which characters a font can draw, from its ToUnicode map or its simple encoding */
 function fontEnc(u){
   if (u._fe !== undefined) return u._fe; u._fe = null;
@@ -1389,7 +1398,9 @@ function encodeText(u, str){ const fe = fontEnc(u); if (!fe) return { missing:[.
   return { hex, missing:[...new Set(miss)] }; }
 const origText = u => { const g = glyphText(u); return g.trim() ? g : textOf([u.id], true); };
 /* text width after an edit, so the box fits the new words */
-function txtRatio(u){ const t = S.opts?.txt?.[u.id]; const fe = t != null && fontEnc(u); if (!fe) return 1; const fi = fontInfo(u.fres, u.fname);
+function txtRatio(u){ const t = S.opts?.txt?.[u.id]; const tb = S.opts?.tfont?.[u.id];
+  if (t != null && tb && fkFonts.has(tb) && u.gl?.length){ const f = fkFonts.get(tb); const size = Math.abs((u.y1 - u.y0) / 1.08) || 10; const old = u.gl[u.gl.length - 1].a1 - u.gl[0].a0; return old > 0 ? f.layout(t).advanceWidth / f.unitsPerEm * size / old : 1; }
+  const fe = t != null && fontEnc(u); if (!fe) return 1; const fi = fontInfo(u.fres, u.fname);
   const adv = s => [...s].reduce((a, ch) => a + (fe.inv.has(ch) ? fi.w(fe.inv.get(ch)) : 0.5), 0); const old = adv(origText(u)); return old > 0 ? adv(t) / old : 1; }
 /* every box = its original, plus your edits */
 function geomAll(){
@@ -1411,6 +1422,11 @@ function editedBody(c){ const t = S.opts.txt?.[c.id]; const u = S.units.get(c.id
 /* read an image file as PNG or JPEG bytes plus its size */
 async function readImage(file){
   const buf = new Uint8Array(await file.arrayBuffer()); const isJ = buf[0] === 0xFF && buf[1] === 0xD8, isP = buf[0] === 0x89 && buf[1] === 0x50;
+  const isSvg = /svg/i.test(file.type) || /\.svg$/i.test(file.name || "");
+  if (isSvg){ const url = URL.createObjectURL(new Blob([buf], { type:"image/svg+xml" })); const img = new Image(); await new Promise((ok, bad) => { img.onload = ok; img.onerror = bad; img.src = url; });
+    const k = Math.min(8, 2400 / Math.max(img.naturalWidth || 300, img.naturalHeight || 150)); const cv = document.createElement("canvas"); cv.width = Math.round((img.naturalWidth || 300) * k); cv.height = Math.round((img.naturalHeight || 150) * k);
+    cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height); URL.revokeObjectURL(url); const png = new Uint8Array(await (await new Promise(r => cv.toBlob(r, "image/png"))).arrayBuffer());
+    const id = "i" + Date.now().toString(36); S.blobs.set(id, { bytes:png, type:"png", w:cv.width, h:cv.height }); return id; }
   const bmp = await createImageBitmap(new Blob([buf], { type:file.type || "image/png" })); let bytes = buf, type = isJ ? "jpg" : "png";
   if (!isJ && !isP){ const cv = document.createElement("canvas"); cv.width = bmp.width; cv.height = bmp.height; cv.getContext("2d").drawImage(bmp, 0, 0);
     bytes = new Uint8Array(await (await new Promise(r => cv.toBlob(r, "image/png"))).arrayBuffer()); type = "png"; }
@@ -1474,7 +1490,8 @@ function editText(v, id){
   Object.assign(inp.style, { left:x + "px", top:(y - 2) + "px", width:Math.max(160, w + 16) + "px", fontSize:Math.max(11, (u.h || 10) * S.scale * 0.8) + "px" });
   v.sheet.appendChild(inp); inp.focus(); inp.select(); let done = false;
   const finish = ok => { if (done) return; done = true; const val = inp.value; inp.remove(); if (!ok || val === (S.opts.txt?.[id] ?? origText(u))) return;
-    const e = encodeText(u, val); if (e.missing.length){ toast(`This font doesn't have: ${e.missing.join(" ")}. Use letters that are already in this text's font.`, 5000); return; }
+    const tb = S.opts.tfont?.[id]; const has = tb && fkFonts.has(tb) ? [...val].every(ch => !ch.trim() || fkFonts.get(tb).hasGlyphForCodePoint(ch.codePointAt(0))) : false;
+    const e = encodeText(u, val); if (e.missing.length && !has){ missingFontMenu(u, val, e.missing); return; }
     (S.opts.txt ||= {})[id] = val; after(); };
   inp.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter"){ e.preventDefault(); finish(true); } if (e.key === "Escape") finish(false); });
   inp.addEventListener("blur", () => finish(true));
@@ -1505,8 +1522,103 @@ function openAlignMenu(){ const m = $("cmenu"); if (!m.hidden && m.dataset.kind 
     + "<hr>" + it("dh", "Distribute horizontally", n < 3) + it("dv", "Distribute vertically", n < 3);
   m.onclick = e => { const b = e.target.closest("button[data-a]"); if (!b || b.disabled) return; closeMenu(); alignObjs(b.dataset.a); };
   m.hidden = false; m.style.left = r.left + "px"; m.style.top = r.bottom + 4 + "px"; }
+/* the line needs letters its font doesn't have: pick a font file for that line, like the same family installed on your computer */
+function missingFontMenu(u, val, miss){ const m = $("cmenu"); const r = vrect(u.bbox, S.views[u.page].vp), sr = S.views[u.page].svg.getBoundingClientRect(), k = sr.width / S.views[u.page].vp.width;
+  m.dataset.kind = "fontmiss"; m.style.width = "300px";
+  m.innerHTML = `<div class="mh">Missing letters</div><div class="lpick"><div class="need" style="font-size:12px">This line's font (${esc(fontBaseOf(u) || "embedded font")}) doesn't have: <b>${esc(miss.join(" "))}</b>. PDFs often keep only the letters they use. Choose a font file for this line, like the same font from your computer.</div>
+    <div class="lrow"><button type="button" class="btn primary" id="mfPick">Choose font file…</button><button type="button" class="btn" id="mfNo">Cancel</button></div></div>`;
+  m.hidden = false; m.style.left = Math.min(sr.left + r[0] * k, innerWidth - 310) + "px"; m.style.top = Math.min(sr.top + (r[1] + r[3]) * k + 6, innerHeight - 160) + "px";
+  $("mfNo").onclick = closeMenu; $("mfPick").onclick = async () => { closeMenu(); const blob = await pickFontFile(); if (!blob) return; const f = fkFonts.get(blob);
+    const still = [...val].filter(ch => ch.trim() && !f.hasGlyphForCodePoint(ch.codePointAt(0))); if (still.length){ toast(`${S.blobs.get(blob).name} doesn't have ${still.join(" ")} either.`, 5000); return; }
+    (S.opts.tfont ||= {})[u.id] = blob; (S.opts.txt ||= {})[u.id] = val; after(); toast(`This line now uses ${S.blobs.get(blob).name}.`); }; }
 function setEditMode(on){ S.editMode = on; $("editBtn").classList.toggle("on", on); $("editBtn").setAttribute("aria-pressed", on); $("editBar").hidden = !on; document.body.classList.toggle("editing", on);
   if (on){ if (S.zoomTool) setZoomTool(false); S.esel = []; S.sel.clear(); S.rows.clear(); S.focus = null; toast("Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to fix a line. E or Esc to finish.", 5000); } else S.esel = []; renderAll(); }
+
+/* ---------- font files you add: replace a font that isn't embedded, or type letters a font doesn't have ---------- */
+/* S.opts.fsub[font name] = font file for every line in that font; S.opts.tfont[line id] = font file for one edited line */
+let fontkitP = null;
+const loadFontkit = () => fontkitP ||= new Promise((ok, bad) => { if (window.fontkit) return ok(window.fontkit); const sc = document.createElement("script"); sc.src = "https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js"; sc.onload = () => ok(window.fontkit); sc.onerror = () => { fontkitP = null; bad(new Error("Could not load the font reader.")); }; document.head.appendChild(sc); });
+const fkFonts = new Map();
+async function fkFont(blob){ if (fkFonts.has(blob)) return fkFonts.get(blob); const fk = await loadFontkit(); const f = fk.create(S.blobs.get(blob).bytes); fkFonts.set(blob, f); return f; }
+function pickFontFile(){ return new Promise(res => { const i = document.createElement("input"); i.type = "file"; i.accept = ".ttf,.otf,font/ttf,font/otf"; i.onchange = async () => { const f = i.files[0]; if (!f) return res(null);
+  const id = "f" + Date.now().toString(36); try { const bytes = new Uint8Array(await f.arrayBuffer()); S.blobs.set(id, { bytes, type:"font", name:f.name }); await fkFont(id); res(id); } catch (e){ console.error(e); S.blobs.delete(id); fkFonts.delete(id); toast(/font reader/.test(e.message) ? "Couldn't load the font reader. Check your internet connection and try again." : "Couldn't read that font file. Use a .ttf or .otf file."); res(null); } }; i.click(); }); }
+const fontBaseOf = u => (u?.fres && u.fname ? fontInfo(u.fres, u.fname)?.base || "" : "").replace(/^[A-Z]{6}\+/, "");
+/* symbol fonts with no Unicode map: the common bullets and checks */
+const DINGBAT = { 108:"●", 110:"■", 117:"◆", 51:"✓", 52:"✔", 72:"★", 113:"❑", 111:"❏", 112:"❐", 118:"❖", 109:"❍", 115:"▲", 116:"▼" };
+const SYMBOL = { 183:"•", 176:"°", 180:"×", 177:"±" };
+function unitText(u){ if (S.opts.txt?.[u.id] != null) return S.opts.txt[u.id]; if (S.actual[u.id]) return S.actual[u.id];
+  const b = fontBaseOf(u); if (/ZapfDingbats|Dingbats/i.test(b)) return (u.gl || []).map(g => DINGBAT[g.c] || String.fromCharCode(g.c)).join(""); if (/^Symbol/i.test(b)) return (u.gl || []).map(g => SYMBOL[g.c] || String.fromCharCode(g.c)).join("");
+  return glyphText(u); }
+/* which font file a line uses on export, if any */
+const swapFont = u => u?.kind === "text" ? (S.opts.tfont?.[u.id] || S.opts.fsub?.[fontBaseOf(u)] || null) : null;
+const fontsInUse = () => [...new Set([...Object.values(S.opts?.fsub || {}), ...Object.values(S.opts?.tfont || {})])].filter(b => S.blobs.has(b));
+async function replaceFont(base){ const blob = await pickFontFile(); if (!blob) return; (S.opts.fsub ||= {})[base] = blob; after(); renderContrast?.();
+  const f = await fkFont(blob); const miss = new Set(); for (const u of S.units.values()) if (u.kind === "text" && fontBaseOf(u) === base) for (const ch of unitText(u)) if (ch.trim() && !f.hasGlyphForCodePoint(ch.codePointAt(0))) miss.add(ch);
+  toast(miss.size ? `Using ${S.blobs.get(blob).name}, but it's missing: ${[...miss].slice(0, 12).join(" ")}. Pick a font that has them.` : `${base} will be replaced with ${S.blobs.get(blob).name} on export.`, 5000); }
+
+/* ---------- text to outlines: reads TrueType outlines straight from the PDF's embedded font ---------- */
+/* works for TrueType fonts (FontFile2); other font types give a clear error instead */
+function ttfParse(bytes){
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength); const u16 = o => dv.getUint16(o), i16 = o => dv.getInt16(o), u32 = o => dv.getUint32(o);
+  const n = u16(4); const T = {}; for (let i = 0; i < n; i++){ const o = 12 + i * 16; T[String.fromCharCode(...bytes.subarray(o, o + 4))] = { off:u32(o + 8), len:u32(o + 12) }; }
+  if (!T.glyf || !T.loca || !T.head) throw new Error("no TrueType outlines");
+  const upm = u16(T.head.off + 18), longLoca = i16(T.head.off + 50) === 1; const nG = T.maxp ? u16(T.maxp.off + 4) : (T.loca.len / (longLoca ? 4 : 2)) - 1;
+  const loca = g => longLoca ? [u32(T.loca.off + g * 4), u32(T.loca.off + g * 4 + 4)] : [u16(T.loca.off + g * 2) * 2, u16(T.loca.off + g * 2 + 2) * 2];
+  /* cmaps: platform/encoding -> code -> glyph */
+  const cmaps = {}; if (T.cmap){ const c0 = T.cmap.off, nt = u16(c0 + 2);
+    for (let i = 0; i < nt; i++){ const pid = u16(c0 + 4 + i * 8), eid = u16(c0 + 6 + i * 8), so = c0 + u32(c0 + 8 + i * 8), fmt = u16(so); const m = new Map();
+      if (fmt === 0) for (let c = 0; c < 256; c++) m.set(c, bytes[so + 6 + c]);
+      else if (fmt === 4){ const sx2 = u16(so + 6), seg = sx2 / 2, ends = so + 14, starts = ends + sx2 + 2, deltas = starts + sx2, ros = deltas + sx2;
+        for (let s = 0; s < seg; s++){ const e = u16(ends + s * 2), st = u16(starts + s * 2), d = i16(deltas + s * 2), ro = u16(ros + s * 2); if (st === 0xFFFF) continue;
+          for (let c = st; c <= e && c - st < 65536; c++){ let g; if (!ro) g = (c + d) & 0xFFFF; else { const go = ros + s * 2 + ro + (c - st) * 2; g = u16(go); if (g) g = (g + d) & 0xFFFF; } if (g) m.set(c, g); } } }
+      else if (fmt === 6){ const first = u16(so + 6), cnt = u16(so + 8); for (let k = 0; k < cnt; k++) m.set(first + k, u16(so + 10 + k * 2)); }
+      else if (fmt === 12){ const ng = u32(so + 12); for (let k = 0; k < ng; k++){ const a = u32(so + 16 + k * 12), b = u32(so + 20 + k * 12), g = u32(so + 24 + k * 12); for (let c = a; c <= b && c - a < 65536; c++) m.set(c, g + c - a); } }
+      cmaps[pid + "," + eid] = m; } }
+  const cache = new Map();
+  /* a glyph as contours of points {x, y, on} in font units */
+  const glyph = (g, depth = 0) => { if (cache.has(g)) return cache.get(g); if (g >= nG || depth > 8) return []; const [a, b] = loca(g); if (b <= a){ cache.set(g, []); return []; }
+    const o = T.glyf.off + a, nc = i16(o); let out = [];
+    if (nc >= 0){ const endPts = []; for (let i = 0; i < nc; i++) endPts.push(u16(o + 10 + i * 2)); const np = nc ? endPts[nc - 1] + 1 : 0; let p = o + 10 + nc * 2; p += 2 + u16(p);
+      const flags = []; while (flags.length < np){ const f = bytes[p++]; flags.push(f); if (f & 8){ let r = bytes[p++]; while (r--) flags.push(f); } }
+      const xs = [], ys = []; let v = 0; for (const f of flags){ if (f & 2){ const d = bytes[p++]; v += f & 16 ? d : -d; } else if (!(f & 16)){ v += i16(p); p += 2; } xs.push(v); }
+      v = 0; for (const f of flags){ if (f & 4){ const d = bytes[p++]; v += f & 32 ? d : -d; } else if (!(f & 32)){ v += i16(p); p += 2; } ys.push(v); }
+      let s = 0; for (const e of endPts){ const c = []; for (let i = s; i <= e; i++) c.push({ x:xs[i], y:ys[i], on:!!(flags[i] & 1) }); out.push(c); s = e + 1; } }
+    else { let p = o + 10, more = true; while (more){ const fl = u16(p), gi = u16(p + 2); p += 4; let dx, dy; if (fl & 1){ dx = i16(p); dy = i16(p + 2); p += 4; } else { dx = (bytes[p] << 24) >> 24; dy = (bytes[p + 1] << 24) >> 24; p += 2; }
+        let m = [1, 0, 0, 1]; const f2 = q => i16(q) / 16384; if (fl & 8){ const s1 = f2(p); m = [s1, 0, 0, s1]; p += 2; } else if (fl & 64){ m = [f2(p), 0, 0, f2(p + 2)]; p += 4; } else if (fl & 128){ m = [f2(p), f2(p + 2), f2(p + 4), f2(p + 6)]; p += 8; }
+        if (!(fl & 2)) dx = dy = 0; for (const c of glyph(gi, depth + 1)) out.push(c.map(pt => ({ x:pt.x * m[0] + pt.y * m[2] + dx, y:pt.x * m[1] + pt.y * m[3] + dy, on:pt.on }))); more = !!(fl & 32); } }
+    cache.set(g, out); return out; };
+  return { upm, cmaps, glyph, nG };
+}
+/* the embedded font program behind a text run, parsed once */
+const ttfCache = new Map();
+function fontProgram(u){ const key = (u.fres?.toString?.() || "") + "/" + u.fname; const fd0 = lk(lk(u.fres, "Font"), u.fname); if (!(fd0 instanceof PDFDict)) throw new Error("font not found");
+  const cid = nm(lk(fd0, "Subtype")) === "Type0"; const fd = cid ? lk(fd0, "DescendantFonts")?.lookup?.(0) : fd0; const desc = lk(fd, "FontDescriptor");
+  const ff = lk(desc, "FontFile2"); const name = (nm(lk(fd0, "BaseFont")) || u.fname).replace(/^[A-Z]{6}\+/, "");
+  if (!(ff instanceof PDFRawStream)) throw new Error(`${name} isn't a TrueType font embedded in the file${lk(desc, "FontFile3") ? " (it's a CFF/OpenType font)" : lk(desc, "FontFile") ? " (it's a Type 1 font)" : " (it isn't embedded)"}`);
+  if (ttfCache.has(ff)) return ttfCache.get(ff);
+  const t = ttfParse(L.decodePDFRawStream(ff).decode()); let gidOf;
+  if (cid){ const m = lk(fd, "CIDToGIDMap"); if (m instanceof PDFRawStream){ const b = L.decodePDFRawStream(m).decode(); gidOf = c => (b[c * 2] << 8) | b[c * 2 + 1]; } else gidOf = c => c; }
+  else { const um = fontUni(u.fres, u.fname); gidOf = c => t.cmaps["3,0"]?.get(0xF000 + c) || t.cmaps["3,0"]?.get(c) || t.cmaps["1,0"]?.get(c) || (um.get(c) && t.cmaps["3,1"]?.get(um.get(c).codePointAt(0))) || t.cmaps["3,1"]?.get(c) || 0; }
+  const r = { ...t, gidOf, name }; ttfCache.set(ff, r); return r; }
+/* the PDF path for one run of text, in the run's own coordinates; throws if its font can't be outlined */
+function outlinePath(u, Trel){ const f = fontProgram(u); const k = u.fsize / f.upm; const parts = []; const P = (x, y) => ap(Trel, x, y).map(fmtNum).join(" ");
+  for (const g of u.gl){ const gid = f.gidOf(g.c); if (!gid && g.c !== 32) throw new Error(`can't find a letter's shape in ${f.name}`);
+    for (const c of f.glyph(gid)){ if (!c.length) continue; const pt = (q) => [g.a0 + q.x * k * u.th, u.rise + q.y * k];
+      /* TrueType curves are quadratic: turn them into PDF's cubic curves */
+      let start = c.findIndex(q => q.on); let pts = c; if (start < 0){ pts = []; c.forEach((q, i) => { const n2 = c[(i + 1) % c.length]; pts.push(q, { x:(q.x + n2.x) / 2, y:(q.y + n2.y) / 2, on:true }); }); start = 1; }
+      const seq = [...pts.slice(start), ...pts.slice(0, start)]; const [sx, sy] = pt(seq[0]); parts.push(`${P(sx, sy)} m`); let cur = [sx, sy];
+      for (let i = 1; i <= seq.length; i++){ const q = seq[i % seq.length]; if (q.on){ const [x, y] = pt(q); parts.push(`${P(x, y)} l`); cur = [x, y]; continue; }
+        let nq = seq[(i + 1) % seq.length]; const [cx, cy] = pt(q); let end; if (nq.on){ end = pt(nq); i++; } else end = pt({ x:(q.x + nq.x) / 2, y:(q.y + nq.y) / 2 });
+        const c1 = [cur[0] + 2 / 3 * (cx - cur[0]), cur[1] + 2 / 3 * (cy - cur[1])], c2 = [end[0] + 2 / 3 * (cx - end[0]), end[1] + 2 / 3 * (cy - end[1])];
+        parts.push(`${P(...c1)} ${P(...c2)} ${P(...end)} c`); cur = end; }
+      parts.push("h"); } }
+  return parts.join("\n"); }
+/* convert the selected text: checked right away, so a font that can't be outlined says so now */
+function outlineSel(){ const ids = (S.editMode ? S.esel : selIds()).filter(id => S.units.get(id)?.kind === "text"); if (!ids.length){ toast("Select text to convert."); return; }
+  const bad = new Set(); const ok = []; for (const id of ids){ const u = S.units.get(id); try { if (u.piece) throw new Error("split text can't be outlined"); if (u.tr && u.tr !== 0) throw new Error("outlined or invisible text can't be converted"); outlinePath(u, [1, 0, 0, 1, 0, 0]); ok.push(id); } catch (e){ bad.add(e.message); } }
+  if (ok.length){ const grp = "o" + Date.now().toString(36); S.opts.outline ||= {}; ok.forEach(id => S.opts.outline[id] = grp); after(); }
+  toast(ok.length ? `Converted ${ok.length} text run${ok.length > 1 ? "s" : ""} to shapes${bad.size ? `. Skipped some: ${[...bad].join("; ")}` : ""}. Screen readers still get the words.` : `Can't convert: ${[...bad].join("; ")}.`, 6000); }
+function unoutlineSel(){ const ids = new Set(S.editMode ? S.esel : selIds()); for (const id of ids) delete S.opts.outline?.[id]; after(); }
 
 /* ---------- welded images: several image pieces become one image ---------- */
 S.blobs = new Map();
@@ -1518,6 +1630,25 @@ function syncAdds(){
   for (const P of S.pages) P.units = P.units.filter(u => !u.add);
   (S.opts?.adds || []).forEach((a, i) => { const P = S.pages[a.page]; if (!P) return; const u = { id:a.id, page:a.page, inst:0, kind:a.kind === "rect" ? "path" : "image", add:true, seq:a.seq ?? 1e6 + i, bbox:a.rect.slice(), fill:a.fill ? hexRgb(a.fill) : null }; P.units.push(u); S.units.set(u.id, u); });
 }
+/* save an image as it looks on the page, at print resolution */
+async function renderUnitsPNG(ids, box){ const pg = S.units.get(ids[0]).page; const saved = S.opts.del; S.opts.del = { ...(saved || {}) }; for (const u of S.pages[pg].units) if (!ids.includes(u.id)) S.opts.del[u.id] = 1;
+  let bytes; try { bytes = await buildOutput(); } finally { S.opts.del = saved; }
+  const pdf = await (await getDoc({ data:bytes })).promise; const page = await pdf.getPage(pg + 1);
+  const vp0 = page.getViewport({ scale:1 }); const scale = Math.min(300 / 72, 6000 / Math.max(vp0.width, vp0.height)); const vp = page.getViewport({ scale });
+  const cv = document.createElement("canvas"); cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height); await page.render({ canvasContext:cv.getContext("2d"), viewport:vp, background:"rgba(0,0,0,0)" }).promise;
+  const [x, y, w, h] = vrect(box, vp); const out = document.createElement("canvas"); out.width = Math.max(1, Math.round(w)); out.height = Math.max(1, Math.round(h));
+  out.getContext("2d").drawImage(cv, Math.round(x), Math.round(y), out.width, out.height, 0, 0, out.width, out.height); pdf.destroy?.();
+  return { png:new Uint8Array(await (await new Promise(r => out.toBlob(r, "image/png"))).arrayBuffer()), w:out.width, h:out.height }; }
+async function saveImage(id){ const u = S.units.get(id); toast("Saving image…");
+  try { const { png } = await renderUnitsPNG([id], u.bbox); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([png], { type:"image/png" })); a.download = (S.name || "document").replace(/\.pdf$/i, "") + `-p${u.page + 1}-image.png`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+  catch (e){ console.error(e); toast("Could not save that image."); } }
+/* replace an image: the new one fits the same frame and takes over its tag and place in the reading order */
+function replaceImage(id){ const i = document.createElement("input"); i.type = "file"; i.accept = "image/*,.svg"; i.onchange = async () => { const f = i.files[0]; if (!f) return;
+  try { const blob = await readImage(f); const b = S.blobs.get(blob); const u = S.units.get(id); const [x0, y0, x1, y1] = u.bbox; const s2 = Math.min((x1 - x0) / b.w, (y1 - y0) / b.h); const w = b.w * s2, h = b.h * s2;
+    const a = { id:`${u.page}:r:${blob}`, page:u.page, rect:[x0 + (x1 - x0 - w) / 2, y0 + (y1 - y0 - h) / 2, x0 + (x1 - x0 + w) / 2, y0 + (y1 - y0 + h) / 2], blob, seq:u.seq };
+    indexUnits(); const host = nodeOfUnit.get(id); S.opts.del ||= {}; S.opts.del[id] = 1; if (host) host.units = host.units.map(x => x === id ? a.id : x); (S.opts.adds ||= []).push(a); syncAdds();
+    S.sel = new Set([a.id]); S.esel = S.editMode ? [a.id] : S.esel; after(); toast("Replaced the image. Undo brings the old one back."); }
+  catch (e){ console.error(e); toast("Could not read that image."); } }; i.click(); }
 async function weldImages(){
   const ids = selIds().filter(id => S.units.get(id)?.kind === "image"); if (ids.length < 2){ toast("Select two or more image pieces first. Shift-click to add pieces."); return; }
   const pg = S.units.get(ids[0]).page; if (!ids.every(id => S.units.get(id).page === pg)){ toast("Pick pieces on the same page."); return; }
@@ -1634,7 +1765,9 @@ function applySplits(){
     for (const u of P.units0){ const cuts = sp[u.id]; u.isSplit = !!cuts?.length; if (!u.isSplit){ out.push(u); continue; }
       const b = [0, ...cuts, u.gl.length];
       for (let j = 0; j + 1 < b.length; j++){ const g0 = b[j], g1 = b[j + 1]; if (g1 <= g0) continue;
-        const pc = { ...u, bbox0:null, id:`${u.id}~${g0}`, piece:true, parent:u.id, g0, g1, gl:u.gl.slice(g0, g1), bbox:glyphRect(u, g0, g1), seq:u.seq + g0 / 1e4, isSplit:false };
+        /* the box hugs the words, not the spaces around them */
+        const um = fontUni(u.fres, u.fname), ws = g => /^\s*$/.test(um.get(g.c) ?? String.fromCharCode(g.c)); let t0 = g0, t1 = g1; while (t0 < t1 - 1 && ws(u.gl[t0])) t0++; while (t1 > t0 + 1 && ws(u.gl[t1 - 1])) t1--;
+        const pc = { ...u, bbox0:null, id:`${u.id}~${g0}`, piece:true, parent:u.id, g0, g1, gl:u.gl.slice(g0, g1), bbox:glyphRect(u, t0, t1), seq:u.seq + g0 / 1e4, isSplit:false };
         out.push(pc); S.units.set(pc.id, pc); } }
     P.units = out; }
 }
@@ -1708,6 +1841,12 @@ function syncRowsFromSel(){
 }
 function selIds(){ return [...S.sel].filter(id => S.units.get(id)?.bbox).sort(bySeq); }
 /* split a selection into separate items: runs on a line with no real gap, and lines that sit tight together */
+/* untagged text you joined acts as one item: one box, one click, one tag. The page itself doesn't change */
+const joinOf = id => (S.opts?.tjoin || []).find(g => g.includes(id));
+const joinable = () => { indexUnits(); const ids = selIds().filter(id => S.units.get(id)?.kind === "text" && !nodeOfUnit.has(id)); return ids.length > 1 && new Set(ids.map(id => S.units.get(id).page)).size === 1 && !(joinOf(ids[0]) && ids.every(id => joinOf(id) === joinOf(ids[0]))) ? ids : null; };
+function joinText(){ const ids = joinable(); if (!ids) return; const all = new Set(ids); (S.opts.tjoin || []).forEach(g => { if (g.some(id => all.has(id))) g.forEach(id => all.add(id)); });
+  S.opts.tjoin = [...(S.opts.tjoin || []).filter(g => !g.some(id => all.has(id))), [...all]]; S.sel = all; after(); toast(`Joined ${all.size} pieces into one item. It looks the same; it just selects and tags as one.`); }
+function unjoinText(){ const ids = new Set(selIds()); S.opts.tjoin = (S.opts.tjoin || []).filter(g => !g.some(id => ids.has(id))); after(); toast("Unjoined."); }
 function itemsOf(ids){
   const us = ids.map(id => S.units.get(id)).filter(u => u?.bbox); const out = [];
   const byPage = new Map(); us.forEach(u => { if (!byPage.has(u.page)) byPage.set(u.page, []); byPage.get(u.page).push(u); });
@@ -1715,7 +1854,7 @@ function itemsOf(ids){
     const hs = list.filter(u => u.kind === "text").map(u => u.bbox[3] - u.bbox[1]).sort((a, b) => a - b); const H = hs[hs.length >> 1] || 10;
     const parent = new Map(list.map(u => [u.id, u.id])); const find = x => { while (parent.get(x) !== x) x = parent.get(x); return x; };
     for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++){
-      const a = list[i], b = list[j]; if (a.piece && b.piece && a.parent === b.parent) continue; /* pieces you split apart stay apart */
+      const a = list[i], b = list[j]; { const ja = joinOf(a.id); if (ja && ja === joinOf(b.id)){ parent.set(find(a.id), find(b.id)); continue; } } if (a.piece && b.piece && a.parent === b.parent) continue; /* pieces you split apart stay apart */
       if (a.kind !== "text" || b.kind !== "text"){ if (a.kind !== "text" && b.kind !== "text" && Math.max(a.bbox[0], b.bbox[0]) - Math.min(a.bbox[2], b.bbox[2]) <= 1 && Math.max(a.bbox[1], b.bbox[1]) - Math.min(a.bbox[3], b.bbox[3]) <= 1) parent.set(find(a.id), find(b.id)); continue; }
       const gx = Math.max(a.bbox[0], b.bbox[0]) - Math.min(a.bbox[2], b.bbox[2]);
       const gy = Math.max(a.bbox[1], b.bbox[1]) - Math.min(a.bbox[3], b.bbox[3]);
@@ -1853,11 +1992,11 @@ async function recentOpen(key){ try { const [f, r] = await Promise.all([rtx("fil
 async function openFileMenu(){ const m = $("cmenu"); const list = await recentList(); const b = $("fileBtn").getBoundingClientRect(); const has = !!S.pages.length; const dirty = $("keepBtn").classList.contains("dirty");
   m.dataset.kind = "file"; m.style.width = "300px"; const when = t => new Date(t).toLocaleString([], { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" });
   const item = (act, label, sub, dis) => `<button class="mi" data-f="${act}" ${dis ? "disabled" : ""}>${label}${sub ? ` <span class="need" style="font-size:10px">${sub}</span>` : ""}</button>`;
-  m.innerHTML = item("open", "Import PDF…") + (has ? item("keep", "Save", "Cmd+S") + item("revert", "Revert to last save", "", $("revertBtn").disabled) + item("export", "Export PDF…") + item("close", $("closeBtn").textContent === "Close" ? "Close" : $("closeBtn").textContent) : "")
+  m.innerHTML = item("open", "Import PDF…") + (has ? item("keep", "Save", "Cmd+S") + item("revert", "Revert to last save", "", $("revertBtn").disabled) + item("export", "Export PDF…") + item("layout", "Export for layout editor…", "Illustrator, InDesign") + item("close", $("closeBtn").textContent === "Close" ? "Close" : $("closeBtn").textContent) : "")
     + `<hr><div class="mh">Recent PDFs</div>` + (list.length ? list.map(r => `<button class="mi" data-k="${esc(r.key)}" title="Reopen with your latest changes"><span style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.name)}</span><span class="need" style="font-size:11px">${when(r.at)}${r.pages ? ` · ${r.pages} page${r.pages > 1 ? "s" : ""}` : ""}</span></button>`).join("") + `<button class="mi" data-k="" style="font-size:12px;color:var(--muted)">Clear recent list</button>`
       : `<div class="need" style="padding:4px 8px 8px;font-size:12px">PDFs you import show up here, kept in this browser only.</div>`);
   m.onclick = async e => { const f = e.target.closest("button[data-f]"); if (f){ const act = f.dataset.f; if (act !== "close") closeMenu();
-      if (act === "open") $("fileInput").click(); else if (act === "keep") saveWork(); else if (act === "revert") revertWork(); else if (act === "export") exportPDF(); else { $("closeBtn").click(); if (S.pages.length) f.textContent = $("closeBtn").textContent; else closeMenu(); } return; }
+      if (act === "open") $("fileInput").click(); else if (act === "keep") saveWork(); else if (act === "revert") revertWork(); else if (act === "export") exportPDF(); else if (act === "layout") exportLayout(); else { $("closeBtn").click(); if (S.pages.length) f.textContent = $("closeBtn").textContent; else closeMenu(); } return; }
     const x = e.target.closest("button[data-k]"); if (!x) return; closeMenu(); if (x.dataset.k) recentOpen(x.dataset.k); else { try { await rtx(["files", "work"], "readwrite", (f2, w) => { f2.clear(); w.clear(); }); toast("Cleared the recent list."); } catch {} } };
   m.hidden = false; m.style.left = Math.max(8, Math.min(b.left, innerWidth - 308)) + "px"; m.style.top = b.bottom + 4 + "px"; }
 function restore(st){ const o = JSON.parse(st); S.tree = o.tree; S.zc = o.zc; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (!$("cpanel").hidden) renderContrast(); if (S.focus && !findNode(S.focus)) S.focus = null; S.rows = new Set([...S.rows].filter(id => findNode(id))); S.sel.clear(); changed(); renderAll(); updUndo(); }
@@ -1865,7 +2004,7 @@ function undo(){ if (H.i <= 0) return; H.i--; restore(H.stack[H.i]); toast("Undo
 function redo(){ if (H.i >= H.stack.length - 1) return; H.i++; restore(H.stack[H.i]); toast("Redone."); }
 function updUndo(){ $("undoBtn").disabled = H.i <= 0; $("redoBtn").disabled = H.i >= H.stack.length - 1; updDirty(); }
 /* save / revert: work is kept in this browser, keyed to the PDF's contents */
-const workState = () => JSON.stringify({ blobs:Object.fromEntries((S.opts?.adds || []).filter(a => S.blobs.has(a.blob)).map(a => { const b = S.blobs.get(a.blob); return [a.blob, { d:b64(b.bytes), w:b.w, h:b.h, type:b.type }]; })), tree:S.tree, zc:S.zc, fix:S.fix, actual:S.actual, opts:S.opts, fieldDesc:S.fieldDesc, title:$("docTitle").value, lang:S.docLang });
+const workState = () => JSON.stringify({ blobs:Object.fromEntries([...(S.opts?.adds || []).map(a => a.blob), ...fontsInUse()].filter(k => S.blobs.has(k)).map(k => { const b = S.blobs.get(k); return [k, { d:b64(b.bytes), w:b.w, h:b.h, type:b.type, name:b.name }]; })), tree:S.tree, zc:S.zc, fix:S.fix, actual:S.actual, opts:S.opts, fieldDesc:S.fieldDesc, title:$("docTitle").value, lang:S.docLang });
 function updDirty(){ const has = !!S.pages.length; const dirty = has && workState() !== S.savedWork; $("fileMain").innerHTML = `${dirty ? `<span class="ddot" aria-hidden="true"></span>` : ""}Save`; $("fileMain").disabled = !has; $("fileMain").title = dirty ? "You have changes since your last save. Save them in this browser (Cmd+S)" : "Save your work in this browser (Cmd+S)"; const b = $("keepBtn"); b.disabled = !has; b.textContent = dirty ? "Set checkpoint •" : "Set checkpoint"; b.classList.toggle("dirty", dirty); $("revertBtn").disabled = !dirty; }
 async function fileKey(bytes){ try { const h = await crypto.subtle.digest("SHA-256", bytes); return "pts:" + [...new Uint8Array(h)].slice(0, 16).map(b => b.toString(16).padStart(2, "0")).join(""); } catch { return "pts:" + S.name + ":" + bytes.length; } }
 function saveWork(){
@@ -1874,7 +2013,7 @@ function saveWork(){
   try { localStorage.setItem(S.fileKey, JSON.stringify({ w, at:Date.now(), name:S.name })); S.savedWork = w; updDirty(); toast("Saved in this browser. Reopen it from File ▸ Recent to pick up where you left off."); }
   catch { S.savedWork = w; updDirty(); toast("Saved for this session. This browser blocked long-term storage, so export when you're done."); }
 }
-function applyWork(w){ const o = JSON.parse(w); for (const [k, b] of Object.entries(o.blobs || {})) if (!S.blobs.has(k)) S.blobs.set(k, { bytes:unb64(b.d), w:b.w, h:b.h, type:b.type }); S.tree = o.tree || []; S.zc = o.zc || []; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (o.title != null) $("docTitle").value = o.title; if (o.lang) setDocLang(o.lang); S.focus = null; S.rows.clear(); S.sel.clear(); syncObjs(); changed(); renderAll(); }
+function applyWork(w){ const o = JSON.parse(w); for (const [k, b] of Object.entries(o.blobs || {})) if (!S.blobs.has(k)) S.blobs.set(k, { bytes:unb64(b.d), w:b.w, h:b.h, type:b.type, name:b.name }); S.tree = o.tree || []; S.zc = o.zc || []; S.fix = o.fix || {}; S.actual = o.actual || {}; if (o.opts) S.opts = o.opts; if (o.fieldDesc) S.fieldDesc = o.fieldDesc; if (o.title != null) $("docTitle").value = o.title; if (o.lang) setDocLang(o.lang); S.focus = null; S.rows.clear(); S.sel.clear(); syncObjs(); changed(); renderAll(); }
 function revertWork(){ if (S.savedWork == null) return; applyWork(S.savedWork); record(); toast("Reverted to your last save. Undo brings your changes back."); }
 function loadSavedWork(){ try { const raw = localStorage.getItem(S.fileKey); if (!raw) return false; const o = JSON.parse(raw); applyWork(o.w); S.savedWork = o.w; toast(`Restored your save from ${new Date(o.at).toLocaleString()}.`, 4000); return true; } catch { return false; } }
 
@@ -1988,9 +2127,14 @@ function wrapRows(tag){
       if (prev?.tag === "LI" && !nodes.includes(prev)){ nodes.forEach(detach); const sub = subListOf(prev); sub.kids.push(...nodes); prune(); done(sub); S.open.add(prev.id); after(); toast("Made a sub-list inside the item above. Set its list type below."); return; }
       if (nodes.length === arr.filter(k => k.tag === "LI").length){ toast("These items are already a list."); return; } } }
   if (!nodes.length && tag === "Figure" && selIds().length){ applyTag("Image"); if (pickedTop().length === 1 && pickedTop()[0].tag === "Image") wrapRows("Figure"); return; }
+  if (tag === "Field"){ if (!nodes.length && selIds().length){ applyTag("Label"); return wrapRows("Field"); }
+    const lab = nodes.find(n => n.tag === "Label" || n.tag === "P"); if (lab && !nodes.some(n => n.tag === "Form")){ const f = nearestField(lab); if (f){ nodes.push(f); S.rows.add(f.id); } } }
   if (!nodes.length){ const untagged = selIds().length; toast(untagged ? "Tag the selected content first, or use Build from selection." : "Select tagged items on the page, or rows in the list."); return; }
   const f0 = findNode(nodes[0].id); const arr = kidsOf(f0.p); const g = mkNode(tag);
   arr.splice(arr.indexOf(nodes[0]), 0, g); nodes.forEach(detach); g.kids = nodes; partOrder(g); prune();
+  if (tag === "Field"){ const lab = nodes.find(n => n.tag === "Label" || n.tag === "P"), fm = nodes.find(n => n.tag === "Form"); g.kids = [...nodes.filter(n => n.tag !== "Form"), ...nodes.filter(n => n.tag === "Form")];
+    if (lab && fm && !(S.fieldDesc[fm.obj] ?? "").trim()){ const t = textOf(allUnits(lab)).replace(/[:*\s]+$/, "").trim(); if (t) S.fieldDesc[fm.obj] = t; }
+    if (!fm) toast("No form field found next to this label. Drag its Form row into the group."); }
   if (tag === "Figure"){ const im = nodes.find(n => n.tag === "Image"); if (im?.place){ g.place = im.place; delete im.place; } }
   done(g); after();
 }
@@ -2120,7 +2264,7 @@ function userOverrides(){ const rank = readingRank(); return S.zc.filter(c => ra
 /* ---------- side panel ---------- */
 function buildTagButtons(box = $("tagBtns"), done = null){
   box.replaceChildren(); const go = fn => e => { done?.(); fn(e); };
-  const LV = { 1:"Tag content", 2:"Wrap into a list item, table row, figure or contents entry", 3:"Wrap into a list, table section or contents", 4:"Wrap into a table", 5:"Wrap into a section" };
+  const LV = { 1:"Tag content", 2:"Wrap into a list item, table row, figure, form field or contents entry", 3:"Wrap into a list, table section or contents", 4:"Wrap into a table", 5:"Wrap into a section" };
   for (const lv of [1, 2, 3, 4, 5]){
     const head = document.createElement("div"); head.className = "tlv-h"; head.textContent = LV[lv]; box.appendChild(head);
     const row = document.createElement("div"); row.className = "tlv tlv" + lv; box.appendChild(row);
@@ -2819,7 +2963,7 @@ function streamChunks(src, ops, res, gs0, cur, depth, pi, ctr){
       if (fi.two){ for (let j = 0; j + 1 < b.length; j += 2){ const code = (b[j] << 8) | b[j+1]; adv += (fi.w(code) * gs.size + gs.Tc) * gs.Th; } }
       else for (const code of b) adv += (fi.w(code) * gs.size + gs.Tc + (code === 32 ? gs.Tw : 0)) * gs.Th; }
     Tm = mul([1,0,0,1,adv,0], Tm); };
-  const chunk = (id, body) => chunks.push({ id, pre:pre(), body, oc:oc.slice() });
+  const chunk = (id, body) => chunks.push({ id, pre:pre(), body, oc:oc.slice(), res });
   for (let k = 0; k < ops.length; k++){
     const o = ops[k], a = o.args, t = src.slice(o.start, o.end);
     switch (o.op){
@@ -2918,12 +3062,20 @@ function fixAnnotExtras(an, desc){
       if (!lk(clip, "CT")){ const f = fs instanceof PDFDict ? lk(fs, "UF") || lk(fs, "F") : fs; const ext = String(f?.decodeText ? f.decodeText() : f || "").split(".").pop().toLowerCase(); if (MIME[ext]) clip.set(PDFName.of("CT"), PDFString.of(MIME[ext])); }
       if (!lk(clip, "Alt")) clip.set(PDFName.of("Alt"), an.context.obj([PDFHexString.fromText(""), PDFHexString.fromText(desc)])); } }
 }
-async function buildOutput(){
+async function buildOutput(opts = {}){
   const doc = await PDFDocument.load(S.bytes, { updateMetadata:false });
   const ctx = doc.context; const pages = doc.getPages();
   const blobRef = new Map(); let imgN = 0;
   for (const a of S.opts.adds || []){ const b = S.blobs.get(a.blob); if (b && !blobRef.has(a.blob)) blobRef.set(a.blob, (await (b.type === "jpg" ? doc.embedJpg(b.bytes) : doc.embedPng(b.bytes))).ref); }
-  const contentTag = t => t === "Quote" ? "BlockQuote" : t === "Image" ? "Figure" : t;
+  /* stand-in tags: Image is the Figure's content, a form Label is a P, and a Field groups a label with its form field as a Div */
+  const contentTag = t => t === "Quote" ? "BlockQuote" : t === "Image" ? "Figure" : t === "Label" ? "P" : t === "Field" ? "Div" : t;
+  /* font files you added: embedded once, then named in each resource dictionary that needs them */
+  const ffonts = new Map(); if (fontsInUse().length){ doc.registerFontkit(await loadFontkit()); for (const b of fontsInUse()) ffonts.set(b, await doc.embedFont(S.blobs.get(b).bytes, { subset:true })); }
+  const fontName = (res, blob) => { const f = ffonts.get(blob); if (!f || !(res instanceof PDFDict)) return null; let fd = lk(res, "Font"); if (!(fd instanceof PDFDict)){ fd = ctx.obj({}); res.set(N("Font"), fd); }
+    for (const [k, v] of fd.entries()) if (v === f.ref) return k.asString().slice(1); let i = 1; while (fd.get(N("TSF" + i))) i++; fd.set(N("TSF" + i), f.ref); return "TSF" + i; };
+  const fontBody = c => { const u = S.units.get(c.id); const blob = swapFont(u); if (!blob) return null; const nm2 = fontName(c.res, blob); if (!nm2) return null;
+    const L2 = c.body.split("\n"); const tf = /\/(\S+)\s+([\d.+-]+)\s+Tf/.exec([...(c.pre || "").matchAll(/\/\S+\s+[\d.+-]+\s+Tf/g)].pop()?.[0] || ""); const size = tf ? +tf[2] : Math.abs((u.y1 - u.y0) / 1.08) || 10;
+    const op = L2.slice(2, -1).join("\n"); return [L2[0], L2[1], `/${nm2} ${fmtNum(size)} Tf`, (/['"]\s*$/.test(op) ? "T* " : "") + `${ffonts.get(blob).encodeText(unitText(u)).toString()} Tj`, "ET"].join("\n"); };
   const rank = readingRank(); indexUnits();
   const GS0 = { font:null, size:0, Tc:0, Tw:0, Th:1, TL:0, rise:0 };
   const SKIP = ["/Length", "/Filter", "/DecodeParms", "/StructParents", "/StructParent"];
@@ -2959,6 +3111,33 @@ async function buildOutput(){
     return out;
   };
   /* pass B: write streams top-down, numbering marked content per stream */
+  /* export for a layout editor: each paragraph's scattered bits of text are rewritten as one text object, line by line, looking the same */
+  const lgrp = new Map();
+  if (opts.layout){ const cand = new Map();
+    for (const u of S.units.values()){ if (u.kind !== "text" || !u.bbox || u.piece || u.isSplit || u.add || isDel(u) || u.th == null) continue;
+      if (S.fix[u.id] || S.opts.txt?.[u.id] != null || S.opts.xf?.[u.id] || S.opts.crop?.[u.id] || swapFont(u) || S.actual[u.id]) continue;
+      const n = nodeOfUnit.get(u.id), j = joinOf(u.id); const k = n && !isGroup(n) ? "n" + n.id : j ? "j" + j[0] : null; if (!k) continue;
+      const kk = k + "|" + u.page + "|" + u.inst; if (!cand.has(kk)) cand.set(kk, []); cand.get(kk).push(u); }
+    for (const us of cand.values()){ if (us.length < 2 || us.some(u => fontInfo(u.fres, u.fname)?.sub === "Type3" || Math.abs(u.M[1]) + Math.abs(u.M[2]) > 1e-3 * (Math.abs(u.M[0]) + Math.abs(u.M[3])))) continue;
+      const g = { us }; us.forEach(u => lgrp.set(u.id, g)); } }
+  const fillOps = pre => (pre || "").split("\n").filter(l => /\s(rg|g|k|sc|scn|cs)$/.test(l.trim()) || /^\/\S+\s+cs$/.test(l.trim())).join("\n");
+  const layoutBlock = (g, cmap, c0) => {
+    const u0 = S.units.get(c0.id); const inv0 = invM(u0.ctm); const rel = u => mul(u.M, inv0); const th0 = u0.th;
+    if (g.us.some(u => !cmap.has(u.id) || u.th !== th0)) return null;
+    const ys = [...g.us].sort((a, b) => b.M[5] - a.M[5] || a.M[4] - b.M[4]); const lines = [];
+    for (const u of ys){ const l = lines[lines.length - 1]; const hgt = Math.max(2, (u.h || 10) * 0.45); if (l && Math.abs(l.y - u.M[5]) < hgt) l.us.push(u); else lines.push({ y:u.M[5], us:[u] }); }
+    const out = ["BT", "0 Tc", "0 Tw", `${fmtNum(th0 * 100)} Tz`]; let font = null, size = null, fill = null, rise = null, tr = null;
+    for (const l of lines){ l.us.sort((a, b) => a.M[4] - b.M[4]); const Tl = rel(l.us[0]); const inv = invM(Tl); out.push(`${mtx(Tl)} Tm`); let x = 0; const arr = []; const flush = () => { if (arr.length){ out.push(`[${arr.join(" ")}] TJ`); arr.length = 0; } };
+      for (const u of l.us){ const Tu = rel(u); const sc = Tu[3] / Tl[3]; if (!(sc > 0) || Math.abs(Tu[0] / Tl[0] - sc) > 0.01 * sc) return null; const sz = u.fsize * sc; const fi = fontInfo(u.fres, u.fname);
+        const fo = fillOps(cmap.get(u.id).pre); if (fo !== fill){ flush(); if (fo) out.push(fo); fill = fo; }
+        if (u.fname !== font || Math.abs(sz - size) > 1e-6){ flush(); out.push(`/${u.fname} ${fmtNum(sz)} Tf`); font = u.fname; size = sz; }
+        if (u.rise * sc !== rise){ flush(); out.push(`${fmtNum(u.rise * sc)} Ts`); rise = u.rise * sc; }
+        if (u.tr !== tr){ flush(); out.push(`${u.tr} Tr`); tr = u.tr; }
+        for (const gl of u.gl){ const px = ap(inv, ...ap(Tu, gl.a0, 0))[0]; const d = px - x; if (Math.abs(d) > 1e-4) arr.push(fmtNum(Math.round(-d * 1000 / (sz * th0) * 1000) / 1000));
+          arr.push(`<${gl.c.toString(16).padStart(u.two ? 4 : 2, "0")}>`); x = px + fi.w(gl.c) * sz * th0; } }
+      flush(); }
+    out.push("ET"); return out.join("\n"); };
+  const outDone = new Set();
   let cloneN = 0; const replacedForms = new Set(), formDicts = new Set(); const unitStream = new Map(); const counts = new Map(); const clones = [];
   /* a split line: each piece gets its own marked content, drawn from where its first glyph sits */
   const splitBodies = (c, pcs, key, pi, stm) => {
@@ -2980,13 +3159,25 @@ async function buildOutput(){
     for (const pc of pieces){
       if (pc.type === "own"){
         const c = pc.chunk; if (S.opts.del?.[c.id]) continue;
+        { const lg = lgrp.get(c.id); if (lg && !lg.bad){ if (lg.done) continue;
+            const cmap = new Map(pieces.filter(x => x.type === "own").map(x => [x.chunk.id, x.chunk])); const blk = layoutBlock(lg, cmap, c);
+            if (!blk) lg.bad = true; else { lg.done = true; out.push(...c.oc); const node = nodeOfUnit.get(c.id);
+              if (node && !pc.art){ const m = counts.get(key) || 0; counts.set(key, m + 1); lg.us.forEach(u => unitStream.set(u.id, { key, m, pi, stm })); out.push(`/${contentTag(node.tag)} <</MCID ${m}>> BDC`); } else out.push("/Artifact BMC");
+              out.push("q"); if (c.pre) out.push(c.pre); out.push(blk, "Q", "EMC"); c.oc.forEach(() => out.push("EMC")); continue; } } }
+        { const og = S.opts.outline?.[c.id]; const u = S.units.get(c.id); if (og && u?.kind === "text"){
+            const mates = pieces.filter(x => x.type === "own" && S.opts.outline?.[x.chunk.id] === og && fillOps(x.chunk.pre) === fillOps(c.pre) && !S.opts.del?.[x.chunk.id]).map(x => x.chunk);
+            if (outDone.has(c.id)) continue; const inv0 = invM(u.ctm); let path = "";
+            try { path = mates.map(m => { const um = S.units.get(m.id); outDone.add(m.id); return outlinePath(um, mul(um.M, inv0)); }).join("\n"); } catch (e){ console.warn(e); mates.forEach(m => outDone.delete(m.id)); path = ""; }
+            if (path){ out.push(...c.oc); const node = nodeOfUnit.get(c.id); const words = mates.map(m => S.actual[m.id] || unitText(S.units.get(m.id))).join(" "); const act = words ? ` /ActualText ${hexText(words)}` : "";
+              if (node && !pc.art){ const m = counts.get(key) || 0; counts.set(key, m + 1); mates.forEach(x => { if (nodeOfUnit.get(x.id) === node) unitStream.set(x.id, { key, m, pi, stm }); }); out.push(`/${contentTag(node.tag)} <</MCID ${m}${act}>> BDC`); } else out.push(act ? `/Artifact <<${act.trim()}>> BDC` : "/Artifact BMC");
+              out.push("q"); { const gp = geomPrefix(c.id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); out.push(path, "f", "Q", "EMC"); c.oc.forEach(() => out.push("EMC")); continue; } } }
         const pcs = splitIds(c.id); if (pcs){ out.push(...splitBodies(c, pcs, key, pi, stm)); continue; }
         out.push(...c.oc);
         const node = nodeOfUnit.get(c.id);
         const act = S.actual[c.id] ? ` /ActualText ${hexText(S.actual[c.id])}` : "";
         if (node && !pc.art){ const m = counts.get(key) || 0; counts.set(key, m + 1); unitStream.set(c.id, { key, m, pi, stm }); out.push(`/${contentTag(node.tag)} <</MCID ${m}${act}>> BDC`); }
         else out.push(act ? `/Artifact <<${act.trim()}>> BDC` : "/Artifact BMC");
-        out.push("q"); { const gp = geomPrefix(c.id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); out.push(editedBody(c)); out.push("Q"); out.push("EMC");
+        out.push("q"); { const gp = geomPrefix(c.id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); out.push(fontBody(c) || editedBody(c)); out.push("Q"); out.push("EMC");
         c.oc.forEach(() => out.push("EMC"));
       } else {
         const fc = pc.form.c; const ref = ctx.nextRef(); const ckey = "C" + (++cloneN);
@@ -3018,7 +3209,8 @@ async function buildOutput(){
     const ref = ctx.nextRef(); const type = contentTag(n.tag);
     const K = [];
     /* an Image is the Figure's content: it isn't a tag of its own in the PDF */
-    const into = (m, out) => { for (const it of seqItems(m)){ if (it.u){ const r = mcr(it.u, ref); if (r) out.push(r); } else if (n.tag === "Figure" && it.k.tag === "Image") into(it.k, out); else out.push(build(it.k, ref)); } };
+    const seenM = new Set();
+    const into = (m, out) => { for (const it of seqItems(m)){ if (it.u){ const s0 = unitStream.get(it.u); const kk = s0 ? s0.key + ":" + s0.m : null; if (kk && seenM.has(kk)) continue; if (kk) seenM.add(kk); const r = mcr(it.u, ref); if (r) out.push(r); } else if (n.tag === "Figure" && it.k.tag === "Image") into(it.k, out); else out.push(build(it.k, ref)); } };
     into(n, K);
     /* links, form fields and annotations get finished below, once their annotation is known */
     if (n.obj){ objEls.set(n.obj, { ref, n, parent:parentRef, K }); return ref; }
@@ -3163,6 +3355,10 @@ async function exportPDF(){
   catch (e){ console.error(e); toast("Could not export: " + (e.message || e), 5000); }
   finally { btn.disabled = false; btn.textContent = label; }
 }
+/* a copy for Illustrator or InDesign: same look, with each paragraph's text rebuilt as one text object */
+async function exportLayout(){ toast("Building the layout copy…");
+  try { const bytes = await buildOutput({ layout:true }); await deliver((S.name.replace(/\.pdf$/i, "") || "document") + "-layout.pdf", bytes); }
+  catch (e){ console.error(e); toast("Could not export: " + (e.message || e), 5000); } }
 async function deliver(fname, bytes){
   window.__exportBytes = bytes;
   if (window.claude?.use){
@@ -3554,7 +3750,9 @@ function otherChecksHTML(){
       : `<div class="ck ok">✓ ${at.length} comment${at.length > 1 ? "s" : ""}, attachment${at.length > 1 ? "s" : ""} or media item${at.length > 1 ? "s" : ""} will be tagged as Annot on export. <button type="button" class="btn" id="annEdit">Edit</button></div>`;
     if (traps.length) h += `<div class="ck ok">✓ ${traps.length} trap network annotation${traps.length > 1 ? "s" : ""} (not allowed in PDF/UA) will be removed on export.</div>`; }
   h += links ? `<div class="ck ok">✓ ${links} link${links > 1 ? "s" : ""} will be tagged on export, with a description from the link text.</div>` : "";
-  h += notEmb.length ? `<div class="ck bad">✗ ${notEmb.length} font${notEmb.length > 1 ? "s aren't" : " isn't"} embedded: ${notEmb.map(f => esc(f.name)).join(", ")}. This can't be fixed here, because the font file isn't in the PDF. Export the PDF again from the app that made it, with fonts embedded.</div>` : `<div class="ck ok">✓ All fonts are embedded.</div>`;
+  { const open2 = notEmb.filter(f => !S.opts.fsub?.[f.name]), done2 = notEmb.filter(f => S.opts.fsub?.[f.name]);
+    h += open2.length ? `<div class="ck bad">✗ ${open2.length} font${open2.length > 1 ? "s aren't" : " isn't"} embedded. Replace each with a font file, like the same font from your computer, or export again from the app that made the PDF with fonts embedded.</div>` : notEmb.length ? "" : `<div class="ck ok">✓ All fonts are embedded.</div>`;
+    if (notEmb.length) h += `<div class="chars">${notEmb.map(f => { const b = S.opts.fsub?.[f.name]; return `<div class="chr fnt" data-f="${esc(f.name)}"><span class="lb">${b ? "✓ " : ""}${esc(f.name)}${b ? ` → ${esc(S.blobs.get(b)?.name || "font file")}` : ""}</span><button type="button" class="btn fshow">Show</button>${b ? `<button type="button" class="btn fundo">Undo</button>` : `<button type="button" class="btn frep">Replace…</button>`}</div>`; }).join("")}</div>`; void done2; }
   if (open.length){
     h += `<div class="ck bad">✗ ${open.length} tag${open.length > 1 ? "s have" : " has"} characters with no Unicode, usually symbol-font bullets${noUni.length ? ` (${noUni.map(f => esc(f.name)).join(", ")})` : ""}. Give each one replacement text.</div><div class="chars">`;
     open.forEach((g, i) => { const lbl = g.node ? `${g.node.tag}${textOf(g.units) ? " · " + esc(textOf(g.units).slice(0, 30)) : ""}` : "Untagged"; const def = g.node && g.node.tag === "Lbl" ? "•" : "";
@@ -3564,6 +3762,12 @@ function otherChecksHTML(){
   S._charOpen = open; return h;
 }
 function wireOtherChecks(){
+  document.querySelectorAll("#csum .chr.fnt").forEach(row => { const base = row.dataset.f;
+    row.querySelector(".fshow").addEventListener("click", () => { const us = [...S.units.values()].filter(u => u.kind === "text" && u.bbox && fontBaseOf(u) === base).sort((a, b) => a.page - b.page || a.seq - b.seq); if (!us.length) return;
+      const pgs = [...new Set(us.map(u => u.page))]; const i = row._i = ((row._i ?? -1) + 1) % pgs.length; const here = us.filter(u => u.page === pgs[i]);
+      S.sel = new Set(here.map(u => u.id)); syncRowsFromSel(); renderAll(); scrollToUnit(here[0]); toast(`${base}: page ${pgs[i] + 1}${pgs.length > 1 ? ` (${i + 1} of ${pgs.length} pages, click Show again for the next)` : ""}.`, 2500); });
+    row.querySelector(".frep")?.addEventListener("click", () => replaceFont(base));
+    row.querySelector(".fundo")?.addEventListener("click", () => { delete S.opts.fsub[base]; after(); renderContrast(); }); });
   $("ufDel")?.addEventListener("click", () => { S.opts.dropForms = [...new Set([...(S.opts.dropForms || []), ...(S.unusedForms || []).map(f => f.key)])]; record(); renderContrast(); toast("They'll be left out of the export. Undo brings them back."); });
   $("ufKeep")?.addEventListener("click", () => { S.opts.dropForms = []; record(); renderContrast(); });
   $("setAllFields")?.addEventListener("click", () => { document.querySelectorAll("#csum .chr.fd").forEach(row => { const v = row.querySelector("input").value.trim(); if (v) S.fieldDesc[row.dataset.k] = v; }); record(); renderContrast(); });
@@ -3585,7 +3789,7 @@ function wireOtherChecks(){
   document.querySelectorAll("#csum .sshow").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); revealTag(b.dataset.id); }));
   document.querySelectorAll("#csum .chr.sw .lb").forEach(lb => lb.addEventListener("click", () => { const row = lb.closest(".chr"); const id = row.dataset.id; const f = findNode(id); if (!f) return; reveal(id); S.focus = id; S.rows = new Set([id]); S.sel = new Set(allUnits(f.n)); renderAll(); setTimeout(() => scrollRow(id), 0); const u = S.units.get(allUnits(f.n)[0]); if (u) scrollToUnit(u); }));
 
-  document.querySelectorAll("#csum .chr:not(.sw):not(.fd):not(.ut):not(.dvr)").forEach(row => { const g = S._charOpen[+row.dataset.i];
+  document.querySelectorAll("#csum .chr:not(.sw):not(.fd):not(.ut):not(.dvr):not(.fnt)").forEach(row => { const g = S._charOpen[+row.dataset.i];
     row.querySelector("button").addEventListener("click", () => { const v = row.querySelector("input").value; if (!v.trim()){ toast("Type the character this symbol stands for, like •."); return; } g.units.forEach(id => S.actual[id] = v); after(); renderContrast(); });
     row.querySelector(".lb").addEventListener("click", () => { S.sel = new Set(g.units); S.rows.clear(); renderAll(); scrollToUnit(S.units.get(g.units[0])); });
   });
@@ -3616,7 +3820,7 @@ function renderContrast(){
     const fixed = isFixed(g); const bgFixed = g.bgUnit && S.fix[g.bgUnit];
     const [nowFg, nowBg] = nowOf(g);
     const d = document.createElement("div"); d.className = "ci" + (fixed ? " done" : ""); d.dataset.key = "cx:" + g.units[0];
-    d.innerHTML = `<div class="t1"><span class="snp"></span><span class="rt">${fixed ? "Fixed" : g.r.toFixed(1) + ":1"}</span></div>
+    d.innerHTML = `<div class="t1"><span class="snp"></span><span class="rt">${fixed ? "Fixed" : g.r.toFixed(1) + ":1"}</span><button type="button" class="btn cxshow">Show</button></div>
       <div class="pair"><span class="sw"><i style="background:${hexOf(g.fg)}"></i></span><span class="need">text on</span><span class="sw"><i style="background:${hexOf(g.bg)}"></i></span><span class="need">background ·</span>
         <span class="need">${fixed ? `now ${bgFixed ? "background " + S.fix[g.bgUnit] : S.fix[g.units[0]]}, ${cratio(nowFg, nowBg).toFixed(1)}:1` : `needs ${g.target}:1`}</span></div>
       <div class="acts">${fixed ? `<button type="button" class="btn undoFix">Undo fix</button>`
@@ -3625,6 +3829,7 @@ function renderContrast(){
           ${g.bgUnit ? "" : `<span class="need" style="font-size:11px">${g.bgKind ? `The background is a ${g.bgKind}, which can't be recolored here. This adds a solid box behind the text instead.` : "The background is the blank page. This adds a solid box behind the text."}</span>`}`}
         <span class="need cxnow"></span></div>`;
     d.querySelector(".snp").textContent = (textOf(g.units) || "(text)") + ` · p. ${g.u.page + 1}`;
+    d.querySelector(".cxshow").addEventListener("click", ev => { ev.stopPropagation(); S.sel = new Set(g.units); syncRowsFromSel(); S.focus = S.rows.size === 1 ? [...S.rows][0] : null; renderAll(); scrollToUnit(g.u); });
     d.querySelector(".doFix")?.addEventListener("click", ev => { ev.stopPropagation(); g.units.forEach(id => S.fix[id] = hexOf(g.fix)); after(); renderContrast(); });
     /* pick any color: the ratio updates as you pick, and it's saved when you let go */
     d.querySelectorAll(".cxpick").forEach(pk => { const show = () => { const [nf, nb] = nowOf(g); const fg = pk.dataset.w === "fg" ? hexRgb(pk.value) : nf, bg = pk.dataset.w === "bg" ? hexRgb(pk.value) : nb; const r = cratio(fg, bg); d.querySelector(".cxnow").textContent = `${r.toFixed(1)}:1 ${r >= g.target ? "✓ passes" : "· needs " + g.target + ":1"}`; };
@@ -3879,6 +4084,10 @@ function selActions(){
   const at = e => { const r = e.currentTarget.getBoundingClientRect(); return [e.clientX || r.left, (e.clientY || r.bottom) + 4]; };
   if (canCombine(pt)) add("comb", `⧉ Combine into one ${pt[0].tag}`, "Join the selected tags into one tag, like a paragraph or list split across pages or columns", mergeRows, { side:true });
   if (gapBases().length) add("gaps", "⫼ Split at gaps", "Split text spaced out into a row, like captions under images, into separate pieces", splitGaps);
+  { const tx = (S.editMode ? S.esel : sel).filter(id => S.units.get(id)?.kind === "text"); if (tx.length){ if (tx.every(id => S.opts.outline?.[id])) add("unoutline", "Back to live text", "Undo the conversion to shapes", unoutlineSel); else add("outline", "Convert text to outlines", "Turn the selected text into shapes, welded together when they share a color. Screen readers still get the words", outlineSel); } }
+  if (joinable()) add("join", "⧉ Join into one item", "Make these pieces of untagged text select and tag as one. The page doesn't change", joinText);
+  if (sel.some(id => joinOf(id))) add("unjoin", "Unjoin text", "Make joined text separate pieces again", unjoinText);
+  { const im = sel.map(id => S.units.get(id)).filter(u => u?.kind === "image"); if (im.length === 1 && sel.length === 1){ add("saveimg", "⤓ Save image…", "Save this image as a PNG", () => saveImage(im[0].id)); add("repimg", "Replace image…", "Swap in a different image file, sized to fit the same frame, keeping its tag", () => replaceImage(im[0].id)); } }
   if (sel.filter(id => S.units.get(id)?.kind === "image").length > 1) add("weld", "⧉ Weld images", "Join the selected image pieces into one image, in the same spot and tag", weldImages);
   if (colSelBox()) add("cola", "▥ Create column from selection", "Keep these tags together in the Tags list (N)", () => addColumn("after"), { menu:true });
   if (pt.some(isGroup)) add("ungroup", "Ungroup", "Remove the group and keep what's inside", unwrapRows);
@@ -4102,7 +4311,7 @@ document.addEventListener("keydown", e => {
   if (e.target.closest("input,select,textarea,.snip") || e.metaKey || e.ctrlKey) return;
   if (e.altKey) return;
   const k = e.key.toLowerCase(); const t = (e.shiftKey && TAG_BTNS.find(x => x.skey === k)) || TAG_BTNS.find(x => x.key === k);
-  if (t && t.lv && selIds().length){ e.preventDefault(); if (canWrap(t.t)) wrapRows(t.t); else toast(`Select ${WRAPS[t.t].filter(x => x !== "Caption").join(" or ")} tags to wrap them in ${t.t}.`); }
+  if (t && t.lv && (selIds().length || S.rows.size)){ e.preventDefault(); if (canWrap(t.t)) wrapRows(t.t); else toast(`Select ${WRAPS[t.t].filter(x => x !== "Caption").join(" or ")} tags to wrap them in ${t.t}.`); }
   else if (t && selIds().length){ e.preventDefault(); if (!canTagContent()){ toast("Several tags are selected. Use a Wrap in button, or select one tag or untagged content."); } else $("eachChk").checked ? applyTagEach(t.t) : applyTag(t.t); }
   else if (k === "v"){ togglePreview(); }
   else if (k === "z" && S.pages.length){ setZoomTool(!S.zoomTool); }
