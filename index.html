@@ -1,4 +1,4 @@
-<!doctype html><html><head><link rel="icon" href="images/favicon.ico" sizes="48x48"><link rel="icon" href="images/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="images/apple-touch-icon.png"><link rel="manifest" href="images/site.webmanifest"><meta property="og:title" content="PDF Tag Studio"><meta property="og:description" content="Tag PDFs for accessibility, right in your browser"><meta property="og:image" content="https://terencelarson-usu.github.io/PDF-Tag-Studio/images/social-preview.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:image:alt" content="PDF Tag Studio logo, a blue price tag shaped like a document"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#2457d6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1b2029" media="(prefers-color-scheme: dark)"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html lang="en"><head><link rel="icon" href="images/favicon.ico" sizes="48x48"><link rel="icon" href="images/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="images/apple-touch-icon.png"><link rel="manifest" href="images/site.webmanifest"><meta property="og:title" content="PDF Tag Studio"><meta property="og:description" content="Tag PDFs for accessibility, right in your browser"><meta property="og:image" content="https://terencelarson-usu.github.io/PDF-Tag-Studio/images/social-preview.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><meta property="og:image:alt" content="PDF Tag Studio logo, a blue price tag shaped like a document"><meta name="twitter:card" content="summary_large_image"><meta name="theme-color" content="#2457d6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1b2029" media="(prefers-color-scheme: dark)"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>PDF Tag Studio</title>
 <script>if(!document.querySelector('link[rel~="icon"][href*="images/favicon"]')){document.querySelectorAll('link[rel~="icon"]').forEach(x=>x.remove());const l=document.createElement("link");l.rel="icon";l.type="image/svg+xml";l.href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cstyle%3E.t%7Bfill:%23fff%7D.g%7Bstroke:%232457d6%7D%40media %28prefers-color-scheme:dark%29%7B.t%7Bfill:%231b2029%7D.g%7Bstroke:%236b95ff%7D%7D%3C/style%3E%3Crect class='t' width='20' height='20' rx='4.5'/%3E%3Cg transform='translate%2810 10%29 scale%28.72%29 translate%28-10 -10%29' fill='none' class='g' stroke-width='2' stroke-linecap='round'%3E%3Cpath stroke-linejoin='round' d='M8.2 1.4H11.8L16.6 6.2V17.4A1.4 1.4 0 0 1 15.2 18.8H4.8A1.4 1.4 0 0 1 3.4 17.4V6.2Z'/%3E%3Ccircle cx='10' cy='5.2' r='1.2' stroke-width='1.6'/%3E%3Cpath stroke-width='1.4' d='M10.9 4.3C12.6 2 15.5 .2 18.6 .4'/%3E%3Cpath d='M6.6 9.6h6.8M6.6 12.6h6.8M6.6 15.6h5.1'/%3E%3C/g%3E%3C/svg%3E";document.head.appendChild(l);}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -475,9 +475,9 @@ body.zooming .sheet svg:active{cursor:crosshair}
     <button class="btn" id="undoBtn" title="Undo (Cmd+Z)" disabled>Undo</button>
     <button class="btn" id="redoBtn" title="Redo (Shift+Cmd+Z)" disabled>Redo</button>
     <span class="splitbtn"><button class="btn" id="fileMain" title="Save your work in this browser (Cmd+S). Undo still works after.">Save</button><button class="btn" id="fileBtn" aria-haspopup="menu" title="File: import, export, recent PDFs, revert and close" aria-label="File menu">▾</button></span>
-    <span hidden><label class="btn" for="fileInput" tabindex="0" id="openBtn">Import PDF</label>
+    <span hidden>
     <button class="btn" id="closeBtn" disabled title="Close this PDF">Close</button>
-    <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden>
+    <input id="fileInput" type="file" accept="application/pdf,.pdf" hidden aria-label="Choose a PDF">
     <button class="btn" id="revertBtn" title="Go back to your last checkpoint" disabled>Revert to checkpoint</button>
     <button class="btn" id="keepBtn" title="Set a checkpoint you can revert to. It is kept in this browser (Cmd+S)" disabled>Set checkpoint</button></span>
     <button class="btn primary" id="saveBtn" disabled>Export PDF</button>
@@ -513,7 +513,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
           <svg width="44" height="44" viewBox="0 0 20 20" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.2 1.4H11.8L16.6 6.2V17.4A1.4 1.4 0 0 1 15.2 18.8H4.8A1.4 1.4 0 0 1 3.4 17.4V6.2Z"/><circle cx="10" cy="5.2" r="1.2"/><path d="M10.9 4.3C12.6 2 15.5 .2 18.6 .4"/><path d="M6.6 9.6h6.8M6.6 12.6h6.8M6.6 15.6h5.1"/></g></svg>
           <h2>Import a PDF to start tagging</h2>
           <p>Drop a PDF anywhere in this window, or choose one.</p>
-          <label class="btn primary" for="fileInput" tabindex="0">Choose PDF</label>
+          <button type="button" class="btn primary" id="chooseBtn">Choose PDF</button>
           <p class="need">Your file stays in this browser. Nothing is uploaded.</p>
         </div></div>
       </div>
@@ -564,7 +564,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
 </div>
 <div class="drop" id="drop" hidden>Drop PDF to import</div>
 <div class="toast" id="toast" hidden role="status"></div>
-<div class="cmenu" id="cmenu" hidden role="menu"></div>
+<div class="cmenu" id="cmenu" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 <script type="module">
@@ -3917,8 +3917,17 @@ $("order").addEventListener("contextmenu", e => {
 
 /* ---------- wiring ---------- */
 buildTagButtons(); renderAll();
+$("chooseBtn").addEventListener("click", () => $("fileInput").click());
+/* the page's language, for screen readers */
+if (!document.documentElement.lang) document.documentElement.lang = "en";
+/* the pop-up is a menu when it holds only menu items, otherwise a small dialog; screen readers get the right role either way */
+new MutationObserver(() => { const m = $("cmenu"); if (m.hidden){ m.removeAttribute("role"); m.removeAttribute("aria-label"); return; }
+  const items = [...m.querySelectorAll("button.mi")]; const other = m.querySelector("input,select,textarea,label,.tag-btn,.lpick");
+  if (items.length && !other){ if (m.getAttribute("role") !== "menu") m.setAttribute("role", "menu"); items.forEach(b => b.getAttribute("role") !== "menuitem" && b.setAttribute("role", "menuitem")); m.querySelectorAll("hr").forEach(h => h.setAttribute("role", "separator")); }
+  else { if (m.getAttribute("role") !== "dialog") m.setAttribute("role", "dialog"); m.querySelectorAll('[role="menuitem"]').forEach(b => b.removeAttribute("role")); }
+  const lab = ({ file:"File", stack:"Stacking", zmode:"Zoom tool", fit:"Fit", opt:"Doc Settings", tag:"Tag selection" })[m.dataset.kind] || m.querySelector(".mh")?.textContent || m.querySelector(".msel")?.textContent || "Options"; if (m.getAttribute("aria-label") !== lab) m.setAttribute("aria-label", lab);
+}).observe($("cmenu"), { attributes:true, attributeFilter:["hidden"], childList:true, subtree:true });
 $("fileInput").addEventListener("change", async e => { const f = e.target.files[0]; if (f) await loadPDF(new Uint8Array(await f.arrayBuffer()), f.name); e.target.value = ""; });
-$("openBtn").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); $("fileInput").click(); } });
 $("saveBtn").addEventListener("click", exportPDF);
 $("prevBtn").addEventListener("click", () => showPage(S.cur - 1, true));
 $("nextBtn").addEventListener("click", () => showPage(S.cur + 1, true));
