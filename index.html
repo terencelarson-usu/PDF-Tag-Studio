@@ -208,6 +208,10 @@ body.picking .sheet svg{cursor:crosshair}
 .startcard{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:32px 36px;max-width:420px;width:100%;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--fg)}
 .startcard svg{color:var(--accent)}.startcard h2{margin:0;font-size:18px}.startcard p{margin:0;font-size:13px;color:var(--muted)}
 .startcard .need{font-size:11px}
+body.nofile .vtools>*,body.nofile .titlewrap,body.nofile #metaBtn,body.nofile #optBtn{visibility:hidden}body.nofile .side>*{display:none!important}
+#startRecent{width:100%;margin-top:8px;border-top:1px solid var(--line);padding-top:12px;text-align:left}#startRecent h3{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+#startRecent button{display:flex;justify-content:space-between;gap:10px;width:100%;background:none;border:0;border-radius:6px;padding:6px 8px;font:inherit;font-size:13px;color:var(--fg);cursor:pointer;text-align:left}#startRecent button:hover,#startRecent button:focus-visible{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+#startRecent .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#startRecent .need{white-space:nowrap}
 .linkbtn{border:0;background:none;color:var(--accent);text-decoration:underline;text-underline-offset:2px;font-size:13px;cursor:pointer;padding:2px}
 
 /* overlay */
@@ -548,6 +552,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
           <p>Drop a PDF anywhere in this window, or choose one.</p>
           <button type="button" class="btn primary" id="chooseBtn">Choose PDF</button>
           <p class="need">Your file stays in this browser. Nothing is uploaded.</p>
+          <div id="startRecent" hidden></div>
         </div></div>
       </div>
     </section>
@@ -4917,7 +4922,11 @@ window.addEventListener("dragover", e => { if ([...(e.dataTransfer?.types || [])
 window.addEventListener("drop", async e => { if (!e.dataTransfer?.files?.length) return; e.preventDefault(); dragDepth = 0; $("drop").hidden = true; const f = e.dataTransfer.files[0]; if (!/pdf$/i.test(f.type) && !/\.pdf$/i.test(f.name)) return toast("That file isn't a PDF."); await loadPDF(new Uint8Array(await f.arrayBuffer()), f.name); });
 window.__S = S; window.__dbg = { emptyArts, syncRowsFromSel, openMenu, applyTag, wrapRows, loadSample, after, groupColumns, leaveColumns, nodeOfUnit, indexUnits, textOf, fileCheck, openOpt, divergence0, readingRank, pageItems, orderItems, buildOutput, flat, renderAll, itemsOf, editTextBox };
 /* start screen, and closing a document */
-const showStart = () => { $("startScr").hidden = !!S.pages.length; $("closeBtn").disabled = !S.pages.length; };
+const showStart = () => { $("startScr").hidden = !!S.pages.length; document.body.classList.toggle("nofile", !S.pages.length); $("fileMain").disabled = !S.pages.length; $("closeBtn").disabled = !S.pages.length; if (!S.pages.length) startRecent(); };
+async function startRecent(){ const box = $("startRecent"); const list = (await recentList()).slice(0, 5); box.hidden = !list.length; if (!list.length) return;
+  const when = t => new Date(t).toLocaleString([], { month:"short", day:"numeric", hour:"numeric", minute:"2-digit" });
+  box.innerHTML = `<h3>Recent</h3>` + list.map(r => `<button type="button" data-k="${esc(r.key)}" title="Reopen with your latest changes"><span class="nm">${esc(r.name)}</span><span class="need">${when(r.at)}</span></button>`).join(""); }
+$("startRecent").addEventListener("click", e => { const x = e.target.closest("button[data-k]"); if (x) recentOpen(x.dataset.k); });
 
 let closeArm = 0;
 function closeDoc(){
