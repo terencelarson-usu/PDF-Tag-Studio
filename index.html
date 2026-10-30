@@ -220,9 +220,14 @@ body.picking .sheet svg{cursor:crosshair}
 .ov-drag{fill:rgb(36 87 214 / .08);stroke:#2457d6;stroke-width:1;stroke-dasharray:4 2}
 .ov-drag.ov-ghost{fill:rgb(36 87 214 / .05);stroke-dasharray:none}
 .ov-esel{fill:none;stroke:var(--accent);stroke-width:1.2}
+.ov-frame{fill:none;stroke:#7d8899;stroke-width:.8;opacity:.75}.ov-frame.tb{stroke:#2457d6;stroke-dasharray:4 2}.ov-frame.ad{stroke:#b52f7d;stroke-dasharray:2 2}
+.ov-vert{fill:#fff;stroke:#2457d6;stroke-width:1.5;cursor:move}
+.ov-pen{fill:none;stroke:#2457d6;stroke-width:1.5;stroke-dasharray:4 3}
 .ov-eh{fill:var(--panel);stroke:var(--accent);stroke-width:1.2;cursor:nwse-resize}
 .editbar{display:inline-flex;gap:4px;align-items:center}.editbar .btn,.editbar .seg button{font-size:12px}
 #editBtn.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tbedit{position:absolute;z-index:7;padding:2px;border:1.5px solid var(--accent);border-radius:2px;background:rgba(255,255,255,.96);outline:none;box-sizing:content-box;white-space:pre-wrap;overflow-wrap:break-word;cursor:text}
+.tbedit div{margin:0}.tbedit div:not(:last-child){margin-bottom:var(--pa,0)}
 .etext{position:absolute;z-index:6;font:inherit;border:1.5px solid var(--accent);background:var(--panel);color:var(--fg);padding:1px 4px;border-radius:3px}
 body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stroke-width:4;stroke-dasharray:none;rx:3}
 .ov-badge text{font:600 10px var(--mono);fill:#fff}
@@ -254,17 +259,32 @@ body.zooming .ov-drag{fill:rgb(36 87 214 / .06);stroke:rgb(36 87 214 / .45);stro
 .optbar{width:100%;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:5px 10px;font-size:12px;margin-bottom:10px}
 .optbar:hover{background:color-mix(in srgb,var(--muted) 8%,var(--panel))}.optbar .car{color:var(--muted)}
 .optbar[aria-expanded="true"]{border-radius:8px 8px 0 0;margin-bottom:0;border-bottom-color:transparent}.optbar[aria-expanded="true"] .car{transform:rotate(180deg)}
-body.editing #tagBtns,body.editing #tagOptsBtn,body.editing #tagOpts,body.editing #colSec,body.editing #target,body.editing #cellRow,body.editing #listTypeRow{display:none!important}
+body.editing #tsecWrap,body.editing #tagBtns,body.editing #tagOptsBtn,body.editing #tagOpts,body.editing #colSec,body.editing #target,body.editing #cellRow,body.editing #listTypeRow{display:none!important}
 .esec{display:none}body.editing .esec{display:block}
-body.editing .order-head,body.editing #order,body.editing #lcrumbs,body.editing #editBar,body.editing #previewBtn,body.editing #contrastBtn,body.editing #cpanel{display:none!important}
+#stackBtn,#stackSep{display:none!important}
+body.editing .order-head,body.editing #order,body.editing #lcrumbs,body.editing #editBar,body.editing #previewBtn,body.editing #contrastBtn,body.editing #cpanel,body:not(.editing) #eFramesL{display:none!important}
 .alignto{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:12px}
 .abtns{display:flex;flex-wrap:wrap;gap:4px;align-items:center}.abtn{padding:4px 6px;line-height:0}.abtn:disabled{opacity:.35}.asep{width:6px}
 #fileName{cursor:text;border-radius:4px;padding:1px 4px}#fileName:hover{background:color-mix(in srgb,var(--muted) 12%,transparent)}.fnin{font:inherit;font-size:13px;padding:1px 4px;width:220px;border:1px solid var(--accent);border-radius:4px;background:var(--panel);color:var(--fg)}
 .etx{display:grid;grid-template-columns:auto 1fr;gap:6px 8px;align-items:center;font-size:12px}.etx input{width:80px;font:inherit;padding:2px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--fg)}
-.ecorner{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px}
+.ecorner{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px}.ecorner .seg button{display:inline-flex;align-items:center;gap:5px}
 .geo{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:12px}.geo label{display:flex;align-items:center;gap:6px}.geo input{width:100%;font:inherit;padding:2px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--fg)}
-.shapebtns{display:flex;gap:4px;align-items:center;font-size:12px}.shapebtns .need{margin-right:auto}.shapebtns .btn{padding:2px 9px}.tal{padding:4px 6px;line-height:0}.tal.on{background:var(--accent);color:var(--accent-ink)}
-.etx input[type=color]{width:30px;height:22px;padding:0}
+.egrp{border-top:1px solid var(--line);margin:12px -16px 0;padding:10px 16px 0}.egrp .eh{font:600 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:4px;cursor:pointer;user-select:none}
+.egrp .eh .ehT{margin-right:auto}.egrp .eh .car{font-size:9px;width:10px}.egrp.ecoll > :not(.eh){display:none!important}.egrp.ecoll .eh{margin-bottom:0}
+.egrp.floating{position:fixed;z-index:60;width:320px;max-height:80vh;overflow:auto;margin:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgb(0 0 0 / .18);padding:10px 14px}.egrp.floating .eh{cursor:move}
+.egrp .ecorner{margin-top:0;margin-bottom:8px}.egrp #eselBox .sel-info{margin-bottom:6px}
+.erot{display:flex;align-items:center;gap:4px;margin-bottom:8px}
+.etool{line-height:0;padding:3px 7px}.etool.on{background:var(--accent);color:var(--accent-ink)}
+.shapebtns{display:flex;gap:4px;align-items:center;font-size:12px}.shapebtns .btn{line-height:0;padding:3px 7px}.shapebtns .need{margin-right:auto}.shapebtns .btn{padding:2px 9px}.tal{padding:4px 6px;line-height:0}.tal.on,.tsty.on{background:var(--accent);color:var(--accent-ink)}.tsty{padding:2px 9px;font-size:13px}.tq{padding:1px 7px;font-size:12px}.tq.on{background:var(--accent);color:var(--accent-ink)}
+.etx input.opin{width:46px;padding:2px 3px;margin-left:4px}
+.etx input[type=color]{width:30px;height:22px;padding:0;vertical-align:middle}.etx input[type=checkbox]{width:auto;vertical-align:middle;margin:0 3px 0 8px}.etx span label{display:inline-flex;align-items:center}
+.flist{max-height:260px;overflow:auto;display:flex;flex-direction:column}.fmenu{width:270px}.flist .mi{display:block;width:100%;text-align:left;border:0;background:none;padding:5px 8px;border-radius:6px;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.flist .mi:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.cpk{position:fixed;z-index:200;width:248px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgb(0 0 0 / .2);display:flex;flex-direction:column;gap:8px}
+.cpk canvas{display:block;border-radius:6px;cursor:crosshair;width:232px}.cpk-h{height:12px;cursor:ew-resize}
+.cpk-row{display:flex;align-items:center;gap:6px;font-size:11px}.cpk-row label{display:flex;flex-direction:column;align-items:center;gap:2px}.cpk-row input{width:44px;font:inherit;font-size:12px;padding:2px 4px;text-align:center;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--fg)}
+.cpk-sw{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);flex:none;margin-right:auto}.cpk-eye{padding:2px 7px}
+.cpk-hex{font:12px var(--mono);padding:4px 6px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--fg)}.cpk-hex.bad{border-color:var(--danger)}
+.sugrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.sugrow .btn{font-size:12px}.sugrow .btn:not(.primary){color:var(--fg)}.sugrow .sugg.on{border-color:var(--accent);box-shadow:inset 0 0 0 1.5px var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
 .tagopts{border:1px solid var(--line);border-top:0;border-radius:0 0 8px 8px;padding:4px 10px 2px;margin-bottom:10px}
 .placerow{cursor:default}.placerow select{font-size:12px}
 .sub{font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:12px 0 6px;font-weight:600}
@@ -436,7 +456,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
 .ov-enter{fill:none;stroke:#2457d6;stroke-width:2;stroke-dasharray:8 4;opacity:.8}
 .ov-ct{fill:none;stroke-width:1.2;stroke-dasharray:6 3}
 .ov-ctl text{font:600 9px var(--mono)}
-.cxhex{width:96px;font:12px var(--mono, monospace);padding:3px 5px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}.cxhex.bad{border-color:var(--danger)}
+.cxhex{display:none!important;width:96px;font:12px var(--mono, monospace);padding:3px 5px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}.cxhex.bad{border-color:var(--danger)}
 .wfix .wlab{font-size:12px;color:var(--muted);align-self:center;margin-right:2px}.wfin{font-size:12px;padding:3px 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}
 .wsel{font-size:12px;max-width:220px;padding:2px 4px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--fg)}
 .ov-col rect{fill:color-mix(in srgb,var(--accent) 10%,transparent);stroke:var(--accent);stroke-width:2.5}.ov-col text{font:700 30px var(--sans,sans-serif);fill:var(--accent)}
@@ -508,10 +528,10 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <button class="btn" id="zoomIn" aria-label="Zoom in">+</button>
         <span class="splitbtn"><button class="btn" id="zoomFit" title="Fit to the page width">Fit width</button><button class="btn" id="zoomFitMenu" aria-haspopup="menu" aria-label="Choose fit width or fit height">▾</button></span>
         <span class="splitbtn"><button class="btn" id="zoomTool" aria-pressed="false" title="Zoom tool (Z): click to zoom, drag a box to zoom to it. Option flips in and out. Turns off after one zoom." aria-label="Zoom tool"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path class="zplus" d="M10 10l4 4M4.5 6.5h4M6.5 4.5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button><button class="btn" id="zoomMode" aria-haspopup="menu" aria-label="Choose zoom in or zoom out">▾</button></span>
-        <button class="btn" id="editBtn" aria-pressed="false" title="Edit (E): drag to move. Drag a corner to resize (Shift keeps the shape), Option-drag a corner to crop. Double-click text to fix a line.">✎ Edit PDF</button>
+        <button class="btn" id="editBtn" aria-pressed="false" title="Edit (E): drag to move. Drag a corner to resize (Shift keeps the shape), Option-drag a corner to crop. Double-click text to fix a line.">✎ Edit PDF</button><button class="btn" id="editCancel" hidden title="Undo every change made since you opened Edit PDF, and go back to tagging">Cancel</button>
         <span class="editbar" id="editBar" hidden><button class="btn" id="alignBtn" hidden>Align</button><label class="btn" title="Add an image to this page"><svg width="14" height="12" viewBox="0 0 14 12" aria-hidden="true" style="vertical-align:-1px"><rect x=".75" y=".75" width="12.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="4.5" cy="4" r="1.2" fill="currentColor"/><path d="M1.5 10l3.5-3.5 2.5 2.5 2-2 3 3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add<input type="file" id="addImg" accept="image/*,.svg" hidden></label></span>
         <span class="sep"></span>
-        <button class="btn" id="previewBtn" aria-pressed="false" title="Hide tags and show pages as they will export (V)">Preview</button>
+        <button class="btn" id="previewBtn" aria-pressed="false" title="Hide tags and show pages as they will export (V)">Preview</button><label id="eFramesL" style="cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-size:13px;white-space:nowrap" title="Shortcut: F"><input type="checkbox" id="eFrames"> Show frames <span class="need" style="font-size:11px">faint edges around each item</span></label>
         <span class="sep"></span>
         <button class="btn" id="stackBtn" aria-haspopup="menu" hidden title="Change which item is drawn on top">Stacking ▾</button>
         <span hidden><button class="btn" id="zBack">Back</button><button class="btn" id="zBackward">Backward</button><button class="btn" id="zForward">Forward</button><button class="btn" id="zFront">Front</button></span>
@@ -534,7 +554,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
 
     <aside class="side" aria-label="Tagging">
       <div class="backcheck" id="backCheck" hidden><button type="button" class="linkbtn" id="backCheckBtn">← Back to Check</button><span class="need" style="font-size:11px;margin-left:auto">Click a red ! on the page to select it</span><button type="button" class="linkbtn" id="doneFix" title="Hide the problem markers" style="margin-left:10px">Done</button></div>
-      <div class="sec">
+      <div class="sec" id="tsecWrap">
         <h2 class="tsec-h" id="tsecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="tsecCar">▾</span><span id="tsecT">Tag selection</span></span><button type="button" class="gear" id="popBtn" aria-pressed="false" title="Pop out the tag buttons so you can move them next to your work" aria-label="Pop out tag buttons">⧉</button></h2>
         <div class="sel-info" id="selInfo">Nothing selected.</div>
         <div class="target" id="target" hidden><span>Adding into <b id="targetName"></b></span><button class="btn" id="targetClear" title="Add new tags at the top level instead">Top level</button></div>
@@ -548,7 +568,7 @@ body.zooming .sheet svg:active{cursor:crosshair}
         <div class="colorrow" id="colorRow" hidden>
           <span class="cw" id="colorWhat">Text color</span>
           <input type="color" id="colorPick" aria-label="Pick a color">
-          <input type="text" id="colorHex" placeholder="#000000" aria-label="Color: hex, name or rgb()" title="Hex like #4A5560, a name like navy, or rgb(74, 85, 96)">
+          <input type="text" id="colorHex" hidden placeholder="#000000" aria-label="Color: hex, name or rgb()" title="Hex like #4A5560, a name like navy, or rgb(74, 85, 96)">
           <button class="btn" id="colorReset" title="Back to the original color">Reset</button>
           <span class="cinfo" id="colorInfo"></span>
         </div>
@@ -557,24 +577,39 @@ body.zooming .sheet svg:active{cursor:crosshair}
       </div>
       <div class="sec esec" id="editSec">
         <h2><span>Edit tools</span></h2>
-        <div class="need" style="font-size:12px;margin-bottom:8px">Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to fix a line. Shift-click to select more.</div>
+        <div class="need" style="font-size:12px;margin-bottom:8px">Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to type in it. Shift-click or drag a box to select more.</div>
+        <div class="egrp"><div class="eh">Insert</div>
         <button type="button" class="btn" id="addImgBtn" style="width:100%"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x=".75" y="2.75" width="14.5" height="10.5" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="5" cy="6" r="1.3" fill="currentColor"/><path d="M1.5 12l4-4 3 3 2-2 4 4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg> Add image</button>
         <button type="button" class="btn" id="addTextBtn" style="width:100%;margin-top:6px">T Add text box</button>
-        <div class="shapebtns" style="margin-top:6px"><span class="need">Add shape</span><button type="button" class="btn" data-shape="rect" title="Rectangle">▭</button><button type="button" class="btn" data-shape="ellipse" title="Ellipse">◯</button><button type="button" class="btn" data-shape="tri" title="Triangle">△</button><button type="button" class="btn" data-shape="line" title="Line">╱</button></div>
-        <div class="ecorner"><span class="need">Dragging a corner</span><span class="seg ezseg" role="group" aria-label="What the corner handles do"><button type="button" class="on" data-m="resize" aria-pressed="true" title="Dragging a corner resizes. Shift keeps the shape.">Resizes</button><button type="button" data-m="crop" aria-pressed="false" title="Dragging a corner crops: it changes the frame without scaling, like an InDesign frame. Option-drag a corner does this too.">Crops</button></span><button type="button" class="btn" id="cropReset" hidden style="font-size:11px;padding:2px 8px" title="Show the whole image again">Reset crop</button></div>
-        <div id="egeo" hidden><div class="sub" style="margin:14px 0 6px">Position and size (pt)</div>
+        <div class="shapebtns" style="margin-top:6px"><button type="button" class="btn etool" data-tool="rect" data-shape="rect" title="Rectangle" aria-label="Rectangle"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"><rect x="2" y="4" width="12" height="8" rx=".5"/></g></svg></button><button type="button" class="btn etool" data-tool="ellipse" data-shape="ellipse" title="Ellipse" aria-label="Ellipse"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"><ellipse cx="8" cy="8" rx="6" ry="5"/></g></svg></button><button type="button" class="btn etool" data-tool="tri" data-shape="tri" title="Triangle" aria-label="Triangle"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"><path d="M8 2.5l6 10.5H2z"/></g></svg></button><button type="button" class="btn etool" data-tool="line" data-shape="line" title="Line" aria-label="Line"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"><path d="M2.5 13.5l11-11"/></g></svg></button><button type="button" class="btn etool" data-tool="pen" title="Polygon: click to add corners. Double-click, click the first corner or press Enter to close it" aria-label="Polygon"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2l5.5 4-2 6.5h-7L2.5 6z" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="8" cy="2" r="1.3" fill="currentColor"/><circle cx="13.5" cy="6" r="1.3" fill="currentColor"/><circle cx="11.5" cy="12.5" r="1.3" fill="currentColor"/><circle cx="4.5" cy="12.5" r="1.3" fill="currentColor"/><circle cx="2.5" cy="6" r="1.3" fill="currentColor"/></svg></button><button type="button" class="btn etool" data-tool="pencil" title="Pencil: drag to draw a freehand line" aria-label="Pencil"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l.8-3 7.5-7.5 2.2 2.2-7.5 7.5z"/><path d="M10.2 3.6l2.2 2.2M3.8 10l2.2 2.2"/></g></svg></button></div>
+        </div>
+        <div class="egrp"><div class="eh">Selection</div>
+        <div id="eselBox"></div>
+        </div>
+        <div class="egrp"><div class="eh">Transform</div>
+        <div class="ecorner"><span class="need">Corner handles</span><span class="seg ezseg" role="group" aria-label="What the corner handles do"><button type="button" class="on" data-m="resize" aria-pressed="true" title="Corner handles resize. Shift keeps the shape. For text boxes, Shift-drag scales the type."><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2h5M2 2v5M12 12H7M12 12V7M2.5 2.5l9 9" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Resize</button><button type="button" data-m="crop" aria-pressed="false" title="Corner handles crop: they change the frame without scaling, like an InDesign frame. Option-drag a corner does this too."><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3.5 0.5v10h10M0.5 3.5h10v10" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Crop</button></span><button type="button" class="btn" id="cropReset" hidden style="font-size:11px;padding:2px 8px" title="Show the whole image again">Reset crop</button></div>
+        <div class="erot"><button type="button" class="btn abtn rbtn" data-r="-90" title="Rotate 90° left" aria-label="Rotate 90 degrees left"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6a5 5 0 1 1 1 5"/><path d="M3 2.5V6h3.5"/></g></svg></button><button type="button" class="btn abtn rbtn" data-r="90" title="Rotate 90° right" aria-label="Rotate 90 degrees right"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6a5 5 0 1 0-1 5"/><path d="M13 2.5V6H9.5"/></g></svg></button><button type="button" class="btn abtn rbtn" data-r="fh" title="Flip horizontal" aria-label="Flip horizontal"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5v13" stroke-dasharray="2 2"/><path d="M6 4L2 12h4zM10 4l4 8h-4z"/></g></svg></button><button type="button" class="btn abtn rbtn" data-r="fv" title="Flip vertical" aria-label="Flip vertical"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8h13" stroke-dasharray="2 2"/><path d="M4 6L12 2v4zM4 10l8 4v-4z"/></g></svg></button><label class="need" style="font-size:12px;display:inline-flex;align-items:center;gap:4px;margin-left:6px">Rotate <input id="eRot" type="number" step="1" placeholder="°" style="width:56px;font:inherit;padding:2px 4px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--fg)"></label></div>
+        <div id="egeo" hidden>
           <div class="geo"><label>X <input id="gX" type="number" step="0.5"></label><label>Y <input id="gY" type="number" step="0.5"></label><label>W <input id="gW" type="number" min="1" step="0.5"></label><label>H <input id="gH" type="number" min="1" step="0.5"></label></div>
           <div class="need" style="font-size:11px">From the page's top left corner.</div></div>
-        <div id="etxt" hidden><div class="sub" style="margin:14px 0 6px">Text</div>
+        </div>
+        <div class="egrp" id="etxt" hidden><div class="eh">Text</div>
           <button type="button" class="btn" id="eFont" style="width:100%;margin-bottom:6px;text-align:left" title="Use a font file from your computer for the selected text">Font…</button>
-          <div class="etx"><label for="eSize">Size (pt)</label><input id="eSize" type="number" min="1" max="400" step="0.5"><label for="eLead" id="eLeadL">Line spacing (pt)</label><input id="eLead" type="number" min="1" max="400" step="0.5"><label for="eTrack" title="Letter spacing in thousandths of an em, like InDesign tracking">Tracking</label><input id="eTrack" type="number" min="-200" max="1000" step="5"><label for="eAfter" id="eAfterL" title="Space after each paragraph">Space after (pt)</label><input id="eAfter" type="number" min="0" max="400" step="0.5"></div>
-          <div class="abtns" style="margin-top:6px"><button type="button" class="btn tal" data-al="l" title="Align left" aria-label="Align left"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M2 6h6M2 9h10M2 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><button type="button" class="btn tal" data-al="c" title="Center" aria-label="Center"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M4 6h6M2 9h10M4 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><button type="button" class="btn tal" data-al="r" title="Align right" aria-label="Align right"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M6 6h6M2 9h10M6 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><button type="button" class="btn tal" data-al="j" title="Justify" aria-label="Justify"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M2 6h10M2 9h10M2 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div></div>
-        <div id="eshape" hidden><div class="sub" style="margin:14px 0 6px">Shape</div>
-          <div class="etx"><label>Fill</label><span><input type="color" id="sFill"> <label style="font-size:11px"><input type="checkbox" id="sFillNo"> None</label></span><label>Stroke</label><span><input type="color" id="sStroke"> <label style="font-size:11px"><input type="checkbox" id="sStrokeNo"> None</label></span><label for="sW">Stroke (pt)</label><input id="sW" type="number" min="0" max="50" step="0.25"></div></div>
-        <div class="sub" style="margin:14px 0 6px">Align</div>
+          <div class="etx"><label for="eSize">Size (pt)</label><input id="eSize" type="number" min="1" max="400" step="0.5"><label for="eLead" id="eLeadL">Leading (pt)</label><input id="eLead" type="number" min="1" max="400" step="0.5"><label for="eTrack" title="Letter spacing in thousandths of an em, like InDesign tracking">Tracking</label><input id="eTrack" type="number" min="-200" max="1000" step="5"><label for="eAfter" id="eAfterL" title="Extra space after each paragraph (after a hard return)">Space after (pt)</label><span><input id="eAfter" type="number" min="0" max="400" step="0.5"> <button type="button" class="btn tq" id="eAfterQ" title="Space after paragraphs: half a line, on or off" aria-label="Space after paragraphs"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2.5h12M2 5.5h12M2 8.5h8"/><rect x="2" y="11" width="12" height="3.5" stroke-dasharray="2 1.5" stroke-width="1"/></svg></button></span></div>
+          <div class="abtns" style="margin-top:6px"><button type="button" class="btn tsty" data-st="b" title="Bold" aria-label="Bold" style="font-weight:700">B</button><button type="button" class="btn tsty" data-st="i" title="Italic" aria-label="Italic" style="font-style:italic;font-family:Georgia,serif">I</button><button type="button" class="btn tsty" data-st="u" title="Underline" aria-label="Underline" style="text-decoration:underline">U</button><span class="asep"></span><button type="button" class="btn tal" data-al="l" title="Align left" aria-label="Align left"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M2 6h6M2 9h10M2 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><button type="button" class="btn tal" data-al="c" title="Center" aria-label="Center"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M4 6h6M2 9h10M4 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><button type="button" class="btn tal" data-al="r" title="Align right" aria-label="Align right"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M6 6h6M2 9h10M6 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><button type="button" class="btn tal" data-al="j" title="Justify" aria-label="Justify"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 3h10M2 6h10M2 9h10M2 12h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button></div></div>
+        <div class="egrp" id="eapp" hidden><div class="eh">Appearance</div>
+        <div id="eshape" hidden>
+          <div class="etx"><label>Fill</label><span><input type="color" id="sFill"> <input type="number" id="sFillOp" class="opin" min="0" max="100" step="5" title="Fill opacity (%)" aria-label="Fill opacity percent">% <label style="font-size:11px"><input type="checkbox" id="sFillNo"> None</label></span><label>Stroke</label><span><input type="color" id="sStroke"> <input type="number" id="sStrokeOp" class="opin" min="0" max="100" step="5" title="Stroke opacity (%)" aria-label="Stroke opacity percent">% <label style="font-size:11px"><input type="checkbox" id="sStrokeNo"> None</label></span><label for="sW">Stroke (pt)</label><input id="sW" type="number" min="0" max="50" step="0.25"><label for="sTri" id="sTriL">Triangle</label><select id="sTri" class="langsel"><option value="iso">Isosceles</option><option value="right">Right</option><option value="scalene">Scalene</option><option value="obtuse">Obtuse</option></select></div></div>
+        <div id="eop" hidden><div class="etx" style="margin-top:8px"><label for="eOp">Opacity (%)</label><input id="eOp" type="number" min="0" max="100" step="5"></div></div>
+        </div>
+        <div class="egrp"><div class="eh">Arrange</div>
+        <div class="abtns"><button type="button" class="btn abtn zbtn" data-z="front" title="Bring to front" aria-label="Bring to front"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1" fill="var(--panel)" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="currentColor"/></svg></button><button type="button" class="btn abtn zbtn" data-z="forward" title="Bring forward" aria-label="Bring forward"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1" fill="var(--panel)" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="currentColor" opacity=".55"/></svg></button><button type="button" class="btn abtn zbtn" data-z="backward" title="Send backward" aria-label="Send backward"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1" fill="currentColor" opacity=".55"/><rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="var(--panel)" stroke="currentColor" stroke-width="1.3"/></svg></button><button type="button" class="btn abtn zbtn" data-z="back" title="Send to back" aria-label="Send to back"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.5" y="5.5" width="9" height="9" rx="1" fill="currentColor"/><rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="var(--panel)" stroke="currentColor" stroke-width="1.3"/></svg></button></div>
+        </div>
+        <div class="egrp"><div class="eh">Align</div>
         <div class="alignto"><span class="need">Align to</span><span class="seg" role="group" aria-label="Align to"><button type="button" class="on" data-to="sel" aria-pressed="true">Selection</button><button type="button" data-to="page" aria-pressed="false">Page</button></span></div>
         <div class="abtns"><button type="button" class="btn abtn" data-a="l" title="Align left" aria-label="Align left"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 1v14"/><rect x="4" y="3" width="9" height="3.5"/><rect x="4" y="9.5" width="5.5" height="3.5"/></g></svg></button><button type="button" class="btn abtn" data-a="c" title="Align centers" aria-label="Align centers"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1v14"/><rect x="3" y="3" width="10" height="3.5"/><rect x="5" y="9.5" width="6" height="3.5"/></g></svg></button><button type="button" class="btn abtn" data-a="r" title="Align right" aria-label="Align right"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M14 1v14"/><rect x="3" y="3" width="9" height="3.5"/><rect x="6.5" y="9.5" width="5.5" height="3.5"/></g></svg></button><span class="asep"></span><button type="button" class="btn abtn" data-a="t" title="Align top" aria-label="Align top"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 2h14"/><rect x="3" y="4" width="3.5" height="9"/><rect x="9.5" y="4" width="3.5" height="5.5"/></g></svg></button><button type="button" class="btn abtn" data-a="m" title="Align middles" aria-label="Align middles"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 8h14"/><rect x="3" y="3" width="3.5" height="10"/><rect x="9.5" y="5" width="3.5" height="6"/></g></svg></button><button type="button" class="btn abtn" data-a="b" title="Align bottom" aria-label="Align bottom"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 14h14"/><rect x="3" y="3" width="3.5" height="9"/><rect x="9.5" y="6.5" width="3.5" height="5.5"/></g></svg></button><span class="asep"></span><button type="button" class="btn abtn" data-a="dh" title="Distribute horizontally" aria-label="Distribute horizontally"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1.5 2v12M14.5 2v12"/><rect x="4" y="4" width="3" height="8"/><rect x="9" y="4" width="3" height="8"/></g></svg></button><button type="button" class="btn abtn" data-a="dv" title="Distribute vertically" aria-label="Distribute vertically"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 1.5h12M2 14.5h12"/><rect x="4" y="4" width="8" height="3"/><rect x="4" y="9" width="8" height="3"/></g></svg></button></div>
         <div class="need" id="alignHint" style="font-size:11px;margin-top:4px"></div>
+        </div>
       </div>
       <div class="sec csec" id="colSec" hidden>
         <h2 class="tsec-h" id="csecH" role="button" tabindex="0" aria-expanded="true"><span><span class="car" id="csecCar">▾</span>Columns</span><button type="button" class="gear" id="cpopBtn" aria-pressed="false" title="Pop out the column tools" aria-label="Pop out column tools">⧉</button></h2>
@@ -1110,7 +1145,7 @@ let pvTimer = null;
 const isDel = u => !!S.opts?.del?.[u.id];
 const hasFixes = () => Object.keys(S.fix || {}).length > 0 || Object.keys(S.opts?.del || {}).length > 0 || (S.opts?.adds || []).length > 0 || hasEdits();
 S.chg = 0;
-function changed(){ S.chg++; applySplits(); syncAdds(); geomAll(); groupColumns(); S.previewDirty = true; if (S.preview || hasFixes() || S.hadFixes){ S.hadFixes = hasFixes(); clearTimeout(pvTimer); pvTimer = setTimeout(() => { S.pvVer++; rerenderVisible(); }, 450); } }
+function changed(){ S.chg++; applySplits(); syncAdds(); syncDups(); geomAll(); groupColumns(); S.previewDirty = true; if (S.preview || hasFixes() || S.hadFixes){ S.hadFixes = hasFixes(); clearTimeout(pvTimer); pvTimer = setTimeout(() => { S.pvVer++; rerenderVisible(); }, 450); } }
 let pvBuilding = null;
 async function ensurePreview(){
   if (!S.previewDirty && S.previewPdf) return;
@@ -1201,6 +1236,10 @@ function drawOverlay(pi){
     for (const g of S.contrast){ if (!g.tagged && !incArt) continue; if (g.units.every(id => S.fix[id])) continue; for (const id of g.units){ const u = S.units.get(id); if (u.page !== pi) continue; const [x, y, w, h] = vrect(u.bbox, vp);
       mk("rect", { class:"ov-cx", x:x-2, y:y-2, width:w+4, height:h+4 }, gc); } 
  } }
+  if (S.editMode && S.showFrames){ const gf = mk("g", { class:"ov-frames" }, ov); const seen = new Set();
+    for (const u of P.units){ if (!u.bbox || isDel(u)) continue; const pk = editPick(u); const key = pk.join("|"); if (seen.has(key)) continue; seen.add(key);
+      const b = pk.map(id => S.units.get(id)?.bbox).filter(Boolean).reduce((a, x) => union(a, x), null); if (!b) continue; const [x, y, w, h] = vrect(b, vp); mk("rect", { class:"ov-frame" + (u.tbox ? " tb" : u.add ? " ad" : ""), x:x - 1, y:y - 1, width:Math.max(w + 2, 3), height:Math.max(h + 2, 3) }, gf); } }
+  if (S.editMode){ const a = oneShape(); const vs = a && a.page === pi && shapeVerts(a); if (vs) vs.forEach(q => { const [vx, vy] = toView(q[0], q[1], vp); mk("circle", { class:"ov-vert", cx:vx, cy:vy, r:4.5 }, ov); }); }
   if (S.editMode){ const eb = eselBox(pi); if (eb){ const [x, y, w, h] = vrect(eb, vp); mk("rect", { class:"ov-esel", x, y, width:w, height:h }, ov);
       [[x, y], [x + w, y], [x, y + h], [x + w, y + h]].forEach(([hx, hy]) => mk("rect", { class:"ov-eh", x:hx - 4, y:hy - 4, width:8, height:8 }, ov)); } }
   v.dragRect = mk("rect", { class:"ov-drag" + (S.editMode ? " ov-ghost" : ""), x:0, y:0, width:0, height:0, visibility:"hidden" }, ov);
@@ -1337,7 +1376,7 @@ function wirePointer(v){
     svg.setPointerCapture(e.pointerId); const p = pt(e);
     if (!S.zoomTool && !(e.shiftKey || e.metaKey || e.ctrlKey)){ const [x, y] = toPdf(...p, v.vp); const g = glyphAt(S.pages[v.i], x, y); S.tdrag = g ? { v, a:g } : null; } drag = { p0:p, p1:p, moved:false, add:e.shiftKey || e.metaKey || e.ctrlKey, alt:e.altKey }; S.cur = v.i; updatePageNo(); });
   svg.addEventListener("pointermove", e => {
-    if (S.editMode && !S.zoomTool){ if (ed) editMove(v, pt(e), e); else { const [x, y] = toPdf(...pt(e), v.vp); svg.style.cursor = editHit(S.pages[v.i], x, y) ? "move" : ""; } return; }
+    if (S.editMode && !S.zoomTool){ if (ed || draw) editMove(v, pt(e), e); else { const [x, y] = toPdf(...pt(e), v.vp); svg.style.cursor = editHit(S.pages[v.i], x, y) ? "move" : ""; } return; }
     if (!drag){ const [x, y] = toPdf(...pt(e), v.vp); svg.style.cursor = S.zoomTool ? "" : S.pages[v.i].units.some(u => u.kind === "text" && u.bbox && inside(u.bbox, x, y)) ? "text" : ""; return; }
     if (S.tdrag && S.tdrag.v === v){ drag.p1 = pt(e); if (!drag.moved && Math.hypot(drag.p1[0]-drag.p0[0], drag.p1[1]-drag.p0[1]) > 4) drag.moved = true; if (!drag.moved) return;
       const [x, y] = toPdf(...drag.p1, v.vp); const g = glyphAt(S.pages[v.i], x, y); if (g){ S.trange = { page:v.i, a:S.tdrag.a, b:g }; drawOverlay(v.i); } return; } drag.p1 = pt(e);
@@ -1409,7 +1448,7 @@ const rectXf = (r, m) => bboxOf([ap(m, r[0], r[1]), ap(m, r[2], r[1]), ap(m, r[0
 const isect = (a, b) => [Math.max(a[0], b[0]), Math.max(a[1], b[1]), Math.min(a[2], b[2]), Math.min(a[3], b[3])];
 const normR = r => [Math.min(r[0], r[2]), Math.min(r[1], r[3]), Math.max(r[0], r[2]), Math.max(r[1], r[3])];
 const formCtm = u => u?.inst ? S.pages[u.page]?.forms.find(f => f.inst === u.inst)?.ctm || null : null;
-const hasEdits = () => ["xf","crop","txt","outline","track","wsp"].some(k => Object.keys(S.opts?.[k] || {}).length);
+const hasEdits = () => (S.opts?.dups || []).length > 0 || ["xf","crop","txt","outline","track","wsp","lw","sfix"].some(k => Object.keys(S.opts?.[k] || {}).length);
 /* fonts: which characters a font can draw, from its ToUnicode map or its simple encoding */
 function fontEnc(u){
   if (u._fe !== undefined) return u._fe; u._fe = null;
@@ -1482,7 +1521,7 @@ async function insertImage(file){ if (!file || !S.pages.length) return;
 let ed = null;
 const editHit = (P, x, y) => P.units.filter(u => u.bbox && !isDel(u) && inside(u.bbox, x, y, hitPad(u, 2 / S.scale))).sort((a, b) => area(a.bbox) - area(b.bbox))[0];
 /* a click on text picks its whole block: every piece of the tag it's in, on this page */
-function editPick(u){ const g = (S.opts.egroups || []).find(x => x.includes(u.id)); if (g) return g.filter(id => S.units.get(id)?.page === u.page);
+function editPick(u){ const g = (S.opts.egroups || []).find(x => x.includes(u.id)) || joinOf(u.id); if (g) return g.filter(id => S.units.get(id)?.page === u.page);
   indexUnits(); const n = nodeOfUnit.get(u.id); return n && !n.obj && !isGroup(n) && u.kind === "text" ? n.units.filter(id => S.units.get(id)?.page === u.page) : [u.id]; }
 /* groups, like Illustrator: grouped items select and move together. It doesn't change the page or the tags */
 function groupSel(){ const ids = S.esel.filter(id => S.units.has(id)); if (ids.length < 2) return; const all = new Set(ids); (S.opts.egroups || []).forEach(g => { if (g.some(id => all.has(id))) g.forEach(id => all.add(id)); });
@@ -1494,19 +1533,45 @@ function explodeWords(){ const bases = [...new Set(S.esel.map(id => S.units.get(
     u.gl.forEach((g, i) => { if (i > 0 && !sp(g) && sp(u.gl[i - 1])){ cutUnit(id, i); n++; } }); }
   S.esel = []; S.sel.clear(); after(); toast(n ? `Split into ${n + bases.length} pieces.` : "Nothing to split."); }
 const eselBox = pi => S.esel.map(id => S.units.get(id)).filter(u => u && u.page === pi && u.bbox).reduce((a, u) => union(a, u.bbox), null);
+/* pen and pencil */
+S.etool = null; let draw = null; const SHAPE_TOOLS = { rect:"a rectangle", ellipse:"an ellipse", tri:"a triangle", line:"a line" };
+/* shape tools: drag from corner to corner (a click makes a default size there) */
+function shapeEnd(d, q, shift){ let [dx, dy] = [q[0] - d.q0[0], q[1] - d.q0[1]];
+  if (shift){ if (d.kind === "line"){ const ang = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * Math.PI / 4, len = Math.hypot(dx, dy); dx = Math.cos(ang) * len; dy = Math.sin(ang) * len; } else { const m = Math.max(Math.abs(dx), Math.abs(dy)); dx = Math.sign(dx || 1) * m; dy = Math.sign(dy || 1) * m; } }
+  return [d.q0[0] + dx, d.q0[1] + dy]; }
+function shapePrev(d){ const [a, b] = [d.q0, d.q1]; d.pts = d.kind === "line" ? [a, b] : [a, [b[0], a[1]], b, [a[0], b[1]], a]; penPreview(d.v); }
+function setTool(t){ S.etool = S.etool === t ? null : t; draw = null; document.querySelectorAll(".etool").forEach(b => b.classList.toggle("on", b.dataset.tool === S.etool)); drawOverlays();
+  if (SHAPE_TOOLS[S.etool]) toast(`Drag on the page to draw ${SHAPE_TOOLS[S.etool]}. ${S.etool === "line" ? "Shift keeps it straight" : "Shift keeps it even"}. Esc cancels.`, 4000);
+  else if (S.etool) toast(S.etool === "pen" ? "Polygon: click to add corners. Double-click, click the first corner or press Enter to close it. Esc cancels." : "Pencil: drag to draw. It ends when you let go.", 4000); }
+function finishPen(close){ if (!draw || draw.tool !== "pen") return; const d = draw; draw = null; v0Clear(d.v); if (d.pts.length > 1) addPoly(d.v.i, d.pts, close && d.pts.length > 2); }
+const v0Clear = v => v?.penLine?.setAttribute("points", "");
+function penPreview(v, extra){ if (!v.penLine){ v.penLine = mk("polyline", { class:"ov-pen" }, v.svg); } if (v.penLine.parentNode !== v.svg) v.svg.appendChild(v.penLine);
+  const pts = [...(draw?.pts || []), ...(extra ? [extra] : [])].map(q => toView(q[0], q[1], v.vp).join(",")).join(" "); v.penLine.setAttribute("points", pts); }
 function editDown(v, p, e){
+  if (S.etool){ const q = toPdf(...p, v.vp);
+    if (S.etool === "pencil"){ draw = { tool:"pencil", v, pts:[q] }; return; }
+    if (SHAPE_TOOLS[S.etool]){ draw = { tool:"shape", kind:S.etool, v, q0:q, q1:q, pts:[] }; return; }
+    if (!draw || draw.v !== v) draw = { tool:"pen", v, pts:[] }; const first = draw.pts[0];
+    if (first && draw.pts.length > 2 && Math.hypot(...vSub(toView(...first, v.vp), p)) < 8){ finishPen(true); return; }
+    const now = performance.now(); if (draw.last && now - draw.last < 350 && draw.pts.length > 1){ finishPen(true); return; } draw.last = now; draw.pts.push(q); penPreview(v); return; }
   const P = S.pages[v.i]; const [x, y] = toPdf(...p, v.vp); S.cur = v.i; const eb = eselBox(v.i);
+  { const a = oneShape(); const vs = a && a.page === v.i && shapeVerts(a); const vi = vs ? vs.findIndex(q => { const [vx, vy] = toView(q[0], q[1], v.vp); return Math.hypot(vx - p[0], vy - p[1]) < 7; }) : -1;
+    if (vi >= 0){ ed = { mode:"vertex", vi, a, v, p0:p, p1:p, ids:[a.id] }; return; } }
   if (eb){ const [rx, ry, rw, rh] = vrect(eb, v.vp); const hi = [[rx, ry], [rx + rw, ry], [rx, ry + rh], [rx + rw, ry + rh]].findIndex(([hx, hy]) => Math.abs(hx - p[0]) < 7 && Math.abs(hy - p[1]) < 7);
     if (hi >= 0){ ed = { mode:e.altKey ? "crop" : S.edit, h:hi, v, p0:p, p1:p, ids:[...S.esel] }; return; } }
-  const hit = editHit(P, x, y); if (!hit){ S.esel = []; S.sel.clear(); renderAll(); ed = null; return; }
+  /* empty spot: drag a box to select everything in it (Shift adds) */
+  const hit = editHit(P, x, y); if (!hit){ ed = { mode:"marquee", v, p0:p, p1:p, add:e.shiftKey }; return; }
   const grp = editPick(hit);
   if (e.shiftKey){ const on = grp.every(id => S.esel.includes(id)); S.esel = on ? S.esel.filter(i => !grp.includes(i)) : [...new Set([...S.esel, ...grp])]; S.sel = new Set(S.esel); renderAll(); ed = null; return; }
   if (!grp.every(id => S.esel.includes(id))){ S.esel = grp; S.sel = new Set(grp); renderAll(); }
   const now = performance.now(); const dbl = v.eLast?.id === hit.id && now - v.eLast.t < 450; v.eLast = { id:hit.id, t:now };
-  ed = { mode:"move", v, p0:p, p1:p, ids:[...S.esel], dbl:dbl && hit.kind === "text" ? hit.id : null };
+  const shp = hit.add && (S.opts.adds || []).find(z => z.id === hit.id && (z.kind === "poly" || z.kind === "tri" || z.kind === "line" || z.kind === "rect"));
+  if (!S.esel.includes(S.ptEdit)) S.ptEdit = null;
+  ed = { mode:"move", v, p0:p, p1:p, ids:[...S.esel], dbl:dbl && hit.kind === "text" ? hit.id : null, dblShape:dbl && shp ? shp.id : null };
 }
 function editRect(){
   const { v, p0, p1 } = ed; const dx = p1[0] - p0[0], dy = p1[1] - p0[1];
+  if (ed.mode === "marquee") return [Math.min(p0[0], p1[0]), Math.min(p0[1], p1[1]), Math.abs(dx), Math.abs(dy)];
   const b = ed.ids.map(id => S.units.get(id)).filter(u => u?.page === v.i && u.bbox).reduce((a, u) => union(a, u.bbox), null); if (!b) return null;
   const [x, y, w, h] = vrect(b, v.vp); if (ed.mode === "move") return [x + dx, y + dy, w, h];
   const L0 = ed.h % 2 === 0, T0 = ed.h < 2; let x0 = x, y0 = y, x1 = x + w, y1 = y + h;
@@ -1514,20 +1579,37 @@ function editRect(){
   if (ed.mode === "resize" && ed.shift){ const s = Math.max((x1 - x0) / w, (y1 - y0) / h); if (L0) x0 = x1 - w * s; else x1 = x0 + w * s; if (T0) y0 = y1 - h * s; else y1 = y0 + h * s; }
   return [Math.min(x0, x1), Math.min(y0, y1), Math.abs(x1 - x0), Math.abs(y1 - y0)];
 }
+const vSub = (a, b) => [a[0] - b[0], a[1] - b[1]];
+/* fewer points for a freehand line, same look (Ramer-Douglas-Peucker) */
+function simplifyPts(pts, tol){ if (pts.length < 3) return pts; const [a, b] = [pts[0], pts[pts.length - 1]]; let idx = 0, dm = 0;
+  for (let i = 1; i < pts.length - 1; i++){ const p = pts[i]; const d = Math.abs((b[1] - a[1]) * p[0] - (b[0] - a[0]) * p[1] + b[0] * a[1] - b[1] * a[0]) / (Math.hypot(b[0] - a[0], b[1] - a[1]) || 1); if (d > dm){ dm = d; idx = i; } }
+  return dm > tol ? [...simplifyPts(pts.slice(0, idx + 1), tol).slice(0, -1), ...simplifyPts(pts.slice(idx), tol)] : [a, b]; }
 function editMove(v, p, e){
+  if (ed?.mode === "vertex" && ed.v === v){ ed.p1 = p; ed.moved = true; moveVert(ed.a, ed.vi, toPdf(...p, v.vp)); syncAdds(); drawOverlay(v.i); return; }
+  if (S.etool && draw && draw.v === v){ const q = toPdf(...p, v.vp); if (draw.tool === "shape"){ draw.q1 = shapeEnd(draw, q, e.shiftKey); shapePrev(draw); return; } if (draw.tool === "pencil"){ const l = draw.pts[draw.pts.length - 1]; if (Math.hypot(q[0] - l[0], q[1] - l[1]) > 1.5){ draw.pts.push(q); penPreview(v); } } else penPreview(v, q); return; }
   if (!ed || ed.v !== v) return; ed.p1 = p; ed.shift = e.shiftKey; if (Math.hypot(p[0] - ed.p0[0], p[1] - ed.p0[1]) > 3) ed.moved = true; if (!ed.moved) return;
   const r = editRect(); if (!r || !v.dragRect) return; const [x, y, w, h] = r; Object.entries({ x, y, width:w, height:h, visibility:"visible" }).forEach(([k, val]) => v.dragRect.setAttribute(k, val));
 }
 function editUp(v, p, e){
+  if (ed?.mode === "vertex"){ const m = ed; ed = null; if (m.moved){ moveVert(m.a, m.vi, toPdf(...p, v.vp)); after(); } return; }
+  if (S.etool && draw?.tool === "shape" && draw.v === v){ const d = draw; draw = null; v0Clear(v); const q1 = shapeEnd(d, toPdf(...p, v.vp), e.shiftKey); const [x0, y0] = d.q0, [x1, y1] = q1; const s1 = S.etool; setTool(s1);
+    const tiny = Math.abs(x1 - x0) < 3 && Math.abs(y1 - y0) < 3; const r = tiny ? (d.kind === "line" ? [x0, y0, x0 + 160, y0] : [x0, y0 - 80, x0 + 120, y0]) : d.kind === "line" ? [x0, y0, x1, y1] : [Math.min(x0, x1), Math.min(y0, y1), Math.max(x0, x1), Math.max(y0, y1)];
+    addBox(d.kind, v.i, r); return; }
+  if (S.etool){ if (draw?.tool === "pencil" && draw.v === v){ const d = draw; draw = null; v0Clear(v); addPoly(v.i, simplifyPts(d.pts, 0.8), false); } return; }
   if (!ed || ed.v !== v){ ed = null; return; } ed.p1 = p; ed.shift = e.shiftKey; v.dragRect?.setAttribute("visibility", "hidden"); const o = S.opts;
-  if (!ed.moved){ const d = ed.dbl; ed = null; if (d){ const tb = S.units.get(d)?.tbox; if (tb) editTextBox(tb); else editText(v, d); } return; }
-  const r = editRect(); const mode = ed.mode; const ids = ed.ids.filter(id => S.units.get(id)?.page === v.i); ed = null; if (!r || !ids.length) return;
+  if (ed.mode === "marquee"){ const m = ed; ed = null; if (!m.moved){ if (!m.add){ S.esel = []; S.sel.clear(); renderAll(); } return; }
+    const a = toPdf(...m.p0, v.vp), b2 = toPdf(...m.p1, v.vp); const box = normR([...a, ...b2]);
+    const ids = new Set(m.add ? S.esel : []); for (const u of S.pages[v.i].units) if (u.bbox && !isDel(u) && inside(box, (u.bbox[0] + u.bbox[2]) / 2, (u.bbox[1] + u.bbox[3]) / 2)) editPick(u).forEach(id => ids.add(id));
+    S.esel = [...ids]; S.sel = new Set(S.esel); renderAll(); return; }
+  if (!ed.moved && ed.dblShape){ const id = ed.dblShape; ed = null; S.ptEdit = S.ptEdit === id ? null : id; drawOverlays(); if (S.ptEdit) toast("Drag a corner point to reshape it. Double-click again or press Esc when done.", 3500); return; }
+  if (!ed.moved){ const d = ed.dbl; ed = null; if (d){ const tb = S.units.get(d)?.tbox; if (tb) editTextBox(tb); else { const box = toTextBox(textBlock(S.units.get(d))); if (box) editTextBox(box, false, true); } } return; }
+  const r = editRect(); const mode = ed.mode, shiftK = ed.shift; const ids = ed.ids.filter(id => S.units.get(id)?.page === v.i); ed = null; if (!r || !ids.length) return;
   const [x, y, w, h] = r; const nb = normR([...toPdf(x, y + h, v.vp), ...toPdf(x + w, y, v.vp)]);
   const old = ids.map(i => S.units.get(i).bbox).reduce((a, b) => union(a, b), null);
   const sx = (nb[2] - nb[0]) / ((old[2] - old[0]) || 1), sy = (nb[3] - nb[1]) / ((old[3] - old[1]) || 1);
   const M = mode === "move" ? [1, 0, 0, 1, nb[0] - old[0], nb[1] - old[1]] : [sx, 0, 0, sy, nb[0] - old[0] * sx, nb[1] - old[1] * sy];
   for (const id of ids){ const u = S.units.get(id);
-    if (u.add){ const a = (o.adds || []).find(z => z.id === id); if (a && mode !== "crop"){ if (a.kind === "text"){ if (mode === "move"){ a.x += M[4]; a.y += M[5]; } else { const nr = normR([...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]); a.y += nr[3] - a.rect[3]; a.x = nr[0]; a.w = Math.max(20, nr[2] - nr[0]); } a.rect = tboxRect(a); } else { const r = [...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]; a.rect = a.kind === "line" ? r : normR(r); } } continue; }
+    if (u.add){ const a = (o.adds || []).find(z => z.id === id); if (a && mode !== "crop"){ if (a.kind === "text"){ if (mode === "move"){ a.x += M[4]; a.y += M[5]; } else { const nr = normR([...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]); if (shiftK){ const k = (nr[2] - nr[0]) / ((a.rect[2] - a.rect[0]) || 1); a.size = Math.max(2, a.size * k); if (a.lead) a.lead *= k; if (a.after) a.after *= k; } a.y += nr[3] - a.rect[3]; a.x = nr[0]; a.w = Math.max(20, nr[2] - nr[0]); if (!shiftK) a.h = Math.max(4, nr[3] - nr[1]); } a.rect = tboxRect(a); } else { const r = [...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]; a.rect = a.kind === "line" ? r : normR(r); } } continue; }
     if (mode === "crop"){ const back = rectXf(nb, invM(o.xf?.[id] || [1, 0, 0, 1, 0, 0])); (o.crop ||= {})[id] = isect(back, u.bbox0 || u.bbox); continue; }
     (o.xf ||= {})[id] = mul(o.xf?.[id] || [1, 0, 0, 1, 0, 0], M); }
   after();
@@ -1547,7 +1629,7 @@ function editText(v, id){
 }
 /* align and distribute: one item lines up with the page, several line up with each other */
 function editObjs(){ indexUnits(); const m = new Map();
-  for (const id of S.esel){ const u = S.units.get(id); if (!u?.bbox) continue; const n = u.kind === "text" ? nodeOfUnit.get(id) : null; const k = (n && !n.obj && !isGroup(n) ? n.id : id) + "@" + u.page;
+  for (const id of S.esel){ const u = S.units.get(id); if (!u?.bbox) continue; const n = u.kind === "text" ? nodeOfUnit.get(id) : null; const j = joinOf(id) || (S.opts.egroups || []).find(x => x.includes(id)); const k = (j ? "g" + j[0] : n && !n.obj && !isGroup(n) ? n.id : id) + "@" + u.page;
     if (!m.has(k)) m.set(k, { ids:[], b:null, page:u.page }); const o = m.get(k); o.ids.push(id); o.b = union(o.b, u.bbox); }
   return [...m.values()]; }
 function moveObj(o, dx, dy){ if (!dx && !dy) return; const M = [1, 0, 0, 1, dx, dy];
@@ -1571,23 +1653,25 @@ const xfOf = id => S.opts.xf?.[id] || [1, 0, 0, 1, 0, 0];
 const curSize = u => u.fsize * Math.abs(u.M[3]) * Math.abs(xfOf(u.id)[3]);
 const baseY = u => ap(xfOf(u.id), u.M[4], u.M[5])[1];
 function textLines(us){ const ls = []; for (const u of [...us].sort((a, b) => baseY(b) - baseY(a))){ const l = ls[ls.length - 1]; if (l && Math.abs(l.y - baseY(u)) < curSize(u) * 0.4) l.us.push(u); else ls.push({ y:baseY(u), us:[u] }); } return ls; }
-function updText(){ const us = S.editMode ? selText() : [], tbs = S.editMode ? selBoxes() : []; $("etxt").hidden = !us.length && !tbs.length; updShape(); updGeo(); if ($("etxt").hidden) return;
+function updText(){ const us = S.editMode ? selText() : [], tbs = S.editMode ? selBoxes() : []; updShape(); updGeo(); updOpacity();
+  /* the Text section always shows; with no text selected, the font box picks or loads the font for new text boxes */
+  $("etxt").hidden = !S.editMode; const none = !us.length && !tbs.length; $("etxt").querySelectorAll(".etx input, .tal, .tsty").forEach(el => { el.disabled = none; });
+  if (none){ $("eFont").textContent = "Font for new text: " + (S.lastFont && S.blobs.get(S.lastFont) ? S.blobs.get(S.lastFont).name.replace(/\.(ttf|otf)$/i, "") : "choose or load…") + " ▾"; return; }
   const r1 = v => Math.round(v * 10) / 10; const one = (id, vals) => { const v = [...new Set(vals)]; if (document.activeElement !== $(id)) $(id).value = v.length === 1 ? v[0] : ""; $(id).placeholder = v.length > 1 ? "mixed" : ""; };
   one("eSize", [...us.map(u => r1(curSize(u))), ...tbs.map(a => a.size)]); one("eTrack", [...us.map(u => S.opts.track?.[u.id] || 0), ...tbs.map(a => a.track || 0)]);
   const ls = textLines(us); one("eLead", [...(ls.length > 1 ? [r1((ls[0].y - ls[ls.length - 1].y) / (ls.length - 1))] : []), ...tbs.map(a => r1(a.lead || a.size * 1.2))]);
-  one("eAfter", tbs.map(a => a.after || 0)); const fonts = [...new Set([...us.map(u => S.opts.tfont?.[u.id] ? S.blobs.get(S.opts.tfont[u.id])?.name : fontBaseOf(u)), ...tbs.map(a => S.blobs.get(a.font)?.name)])];
-  $("eFont").textContent = "Font: " + (fonts.length === 1 ? fonts[0] || "?" : "mixed") + " ▾"; const als = [...new Set(tbs.map(a => a.align || "l"))]; document.querySelectorAll(".tal").forEach(b => b.classList.toggle("on", als.length === 1 && b.dataset.al === als[0])); }
+  one("eAfter", tbs.map(a => a.after || 0)); $("eAfterQ").classList.toggle("on", !!tbs.length && tbs.every(a => a.after)); const fonts = [...new Set([...us.map(u => S.opts.tfont?.[u.id] ? S.blobs.get(S.opts.tfont[u.id])?.name : fontBaseOf(u)), ...tbs.map(a => a.pfont ? fontBaseOf(S.units.get(a.pfont)) : S.blobs.get(a.font)?.name)])];
+  $("eFont").textContent = "Font: " + (fonts.length === 1 ? fonts[0] || "?" : "mixed") + " ▾"; const als = [...new Set(tbs.map(a => a.align || "l"))]; document.querySelectorAll(".tal").forEach(b => b.classList.toggle("on", als.length === 1 && b.dataset.al === als[0]));
+  document.querySelectorAll(".tsty").forEach(b => { b.hidden = !tbs.length; b.classList.toggle("on", !!tbs.length && tbs.every(a => a[b.dataset.st])); }); }
 function setTextSize(v){ v = +v; if (!(v > 0)) return; selBoxes().forEach(a => { a.size = v; a.rect = tboxRect(a); }); for (const o of editObjs()){ const us = o.ids.map(id => S.units.get(id)).filter(u => u.kind === "text" && !u.add); if (!us.length) continue;
     const k = v / curSize(us[0]); const x0 = o.b[0], y1 = o.b[3]; const M = [k, 0, 0, k, x0 - k * x0, y1 - k * y1]; o.ids.forEach(id => { if (!S.units.get(id).add) (S.opts.xf ||= {})[id] = mul(xfOf(id), M); }); } after(); }
 function setTracking(v){ v = +v || 0; selBoxes().forEach(a => { a.track = v; a.rect = tboxRect(a); }); for (const u of selText()){ if (v) (S.opts.track ||= {})[u.id] = v; else delete S.opts.track?.[u.id]; } after(); }
 function setLeading(v){ v = +v; if (!(v > 0)) return; selBoxes().forEach(a => { a.lead = v; a.rect = tboxRect(a); }); const ls = textLines(selText()); if (ls.length > 1){ const top = ls[0].y;
   ls.forEach((l, i) => { const dy = top - i * v - l.y; if (Math.abs(dy) > 1e-3) l.us.forEach(u => { (S.opts.xf ||= {})[u.id] = mul(xfOf(u.id), [1, 0, 0, 1, 0, dy]); }); }); } after(); }
 /* space after paragraphs: on the page, each tag in the selection is a paragraph; later ones move down or up */
-function setAfter(v){ v = +v || 0; selBoxes().forEach(a => { a.after = v; a.rect = tboxRect(a); }); indexUnits(); const us = selText(); if (us.length){
-    const paras = [...new Map(us.map(u => [nodeOfUnit.get(u.id)?.id || u.id, null])).keys()].map(k => us.filter(u => (nodeOfUnit.get(u.id)?.id || u.id) === k)).map(g => ({ us:g, ls:textLines(g) })).sort((a, b) => b.ls[0].y - a.ls[0].y);
-    let shift = 0; for (let i = 1; i < paras.length; i++){ const prev = paras[i - 1], cur = paras[i]; const pl = prev.ls; const lead = pl.length > 1 ? (pl[0].y - pl[pl.length - 1].y) / (pl.length - 1) : curSize(prev.us[0]) * 1.2;
-      const want = pl[pl.length - 1].y - shift - lead - v; const dy = want - cur.ls[0].y; shift = cur.ls[0].y - want + 0; cur.us.forEach(u => { (S.opts.xf ||= {})[u.id] = mul(xfOf(u.id), [1, 0, 0, 1, 0, dy]); }); shift = 0; cur.ls.forEach(l => l.y += dy); } }
-  after(); }
+function paraSpace(k, v){ v = Math.max(0, +v || 0); if (!selBoxes().length && selText().length){ const box = toTextBox(); if (!box) return; S.esel = [box.id]; S.sel = new Set([box.id]); }
+  selBoxes().forEach(a => { a[k] = v; a.rect = tboxRect(a); }); after(); }
+function setAfter(v){ paraSpace("after", v); }
 /* alignment: text boxes rewrap; page text lines line up inside the selection's width, and justified lines get wider word spaces */
 function setTextAlign(al){ selBoxes().forEach(a => { if (!a.w) a.w = a.rect[2] - a.rect[0]; a.align = al; a.rect = tboxRect(a); }); const us = selText(); if (us.length){ indexUnits();
     const box = us.reduce((b, u) => union(b, u.bbox), null); const ls = textLines(us); const lastOf = new Set(); { const seen = new Map(); ls.forEach((l, i) => l.us.forEach(u => seen.set(nodeOfUnit.get(u.id)?.id || "x", i))); seen.forEach(i => lastOf.add(i)); }
@@ -1597,29 +1681,68 @@ function setTextAlign(al){ selBoxes().forEach(a => { if (!a.w) a.w = a.rect[2] -
         if (tot && extra > 0){ const per = extra / tot; let acc = 0; l.us.forEach((u, k) => { const sc = Math.abs(u.M[0] * xfOf(u.id)[0]) || 1; if (sp[k]) (S.opts.wsp ||= {})[u.id] = per / sc; (S.opts.xf ||= {})[u.id] = mul(xfOf(u.id), [1, 0, 0, 1, box[0] - lx0 + acc, 0]); acc += sp[k] * per; }); return; } }
       if (Math.abs(dx) > 1e-3) l.us.forEach(u => { (S.opts.xf ||= {})[u.id] = mul(xfOf(u.id), [1, 0, 0, 1, dx, 0]); }); }); }
   after(); }
-async function setTextFont(){ const blob = await pickFontFile(true); if (!blob) return; let m; try { m = ttfMetrics(blob); } catch (e){ toast("Can't use that font: " + e.message + "."); return; } S.lastFont = blob;
+async function setTextFont(anchor){ const blob = await pickFont(anchor?.getBoundingClientRect ? anchor : $("eFont"));
+  if (blob && !selText().length && !selBoxes().length){ try { ttfMetrics(blob); S.lastFont = blob; updText(); toast(`New text boxes will use ${S.blobs.get(blob).name.replace(/\.(ttf|otf)$/i, "")}.`); } catch (e){ toast("Can't use that font: " + e.message + "."); } return; } if (!blob) return; let m; try { m = ttfMetrics(blob); } catch (e){ toast("Can't use that font: " + e.message + "."); return; } S.lastFont = blob;
   const bad = new Set(); selBoxes().forEach(a => { a.font = blob; a.rect = tboxRect(a); });
   for (const u of selText()){ const t = unitText(u); if (!fitsOwn(m, t)){ [...t].filter(ch => ch.trim() && !m.gid(ch)).forEach(ch => bad.add(ch)); if (!bad.size) bad.add("(this font type needs plain letters)"); continue; } (S.opts.tfont ||= {})[u.id] = blob; }
   after(); toast(bad.size ? `Some text kept its font because ${S.blobs.get(blob).name} can't show: ${[...bad].slice(0, 12).join(" ")}` : `Now using ${S.blobs.get(blob).name}.`, 5000); }
 /* position and size of one selected item, in points from the page's top left */
-function updGeo(){ const os = S.editMode ? editObjs() : []; $("egeo").hidden = os.length !== 1; if (os.length !== 1) return; const o = os[0], H = S.pages[o.page].vp1.viewBox[3]; const r1 = v => Math.round(v * 10) / 10;
+function updGeo(){ const os = (S.editMode ? editObjs() : []).filter((o, i, a) => o.page === a[0].page); $("egeo").hidden = !os.length; if (!os.length) return; const o = { page:os[0].page, b:os.reduce((a, x) => union(a, x.b), null) }, H = S.pages[o.page].vp1.viewBox[3]; const r1 = v => Math.round(v * 10) / 10;
   [["gX", o.b[0]], ["gY", H - o.b[3]], ["gW", o.b[2] - o.b[0]], ["gH", o.b[3] - o.b[1]]].forEach(([id, v]) => { if (document.activeElement !== $(id)) $(id).value = r1(v); }); }
-function setGeo(k, v){ v = +v; const os = editObjs(); if (os.length !== 1 || !isFinite(v)) return; const o = os[0], b = o.b, H = S.pages[o.page].vp1.viewBox[3];
-  if (k === "x" || k === "y"){ moveObj(o, k === "x" ? v - b[0] : 0, k === "y" ? (H - v) - b[3] : 0); after(); return; }
+/* rotate and flip around the selection's center; items you added keep their angle and flips, page content gets it in its transform */
+function addMatrix(a){ const r = a.rect; if (!r || (!a.rot && !a.fx && !a.fy)) return null; const cx = (r[0] + r[2]) / 2, cy = (r[1] + r[3]) / 2, t = (a.rot || 0) * Math.PI / 180, c = Math.cos(t), s2 = Math.sin(t);
+  const M = mul(mul([1, 0, 0, 1, -cx, -cy], [a.fx ? -1 : 1, 0, 0, a.fy ? -1 : 1, 0, 0]), [c, -s2, s2, c, 0, 0]); return mul(M, [1, 0, 0, 1, cx, cy]); }
+/* the corner points of a selected shape, on the page */
+function shapeVerts(a){ if (!a) return null; let pts;
+  if (a.kind === "poly") pts = polyPts(a); else if (a.kind === "line") pts = [[a.rect[0], a.rect[1]], [a.rect[2], a.rect[3]]];
+  else if (a.kind === "tri"){ const [x0, y0, x1, y1] = a.rect, w = x1 - x0, t = a.tri || "iso"; pts = t === "right" ? [[x0, y0], [x1, y0], [x0, y1]] : t === "scalene" ? [[x0, y0], [x1, y0], [x0 + w * 0.3, y1]] : t === "obtuse" ? [[x0 + w * 0.4, y0], [x1, y0], [x0, y1]] : [[x0, y0], [x1, y0], [x0 + w / 2, y1]]; }
+  else if (a.kind === "rect"){ const [x0, y0, x1, y1] = a.rect; pts = [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]; } else return null;
+  const am = addMatrix(a); return am ? pts.map(q => ap(am, q[0], q[1])) : pts; }
+/* corner points show after you double-click a shape (like a direct-select tool); otherwise corners resize */
+S.ptEdit = null;
+const oneShape = () => { if (S.esel.length !== 1 || S.ptEdit !== S.esel[0]) return null; const a = (S.opts.adds || []).find(z => z.id === S.esel[0]); return a && (a.kind === "poly" || a.kind === "tri" || a.kind === "line" || a.kind === "rect") ? a : null; };
+function moveVert(a, i, q){ const vs = shapeVerts(a); const am = addMatrix(a); const local = am ? ap(invM(am), q[0], q[1]) : q; const base = (am ? vs.map(v2 => ap(invM(am), v2[0], v2[1])) : vs); base[i] = local;
+  if (a.kind === "line"){ a.rect = [...base[0], ...base[1]]; return; }
+  /* a triangle or box with a moved corner becomes a free shape with the same look */
+  const xs = base.map(v2 => v2[0]), ys = base.map(v2 => v2[1]); const r = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; const w = (r[2] - r[0]) || 1, h = (r[3] - r[1]) || 1;
+  const keepC = am ? [(a.rect[0] + a.rect[2]) / 2, (a.rect[1] + a.rect[3]) / 2] : null; a.kind = "poly"; a.closed = true; delete a.tri; a.pts = base.map(([x, y]) => [(x - r[0]) / w, (y - r[1]) / h]); a.rect = r;
+  if (am){ /* keep it where it was when it's turned: move the box so the unmoved corners stay put */ const now = shapeVerts(a); const j = i === 0 ? 1 : 0; const d = [vs[j][0] - now[j][0], vs[j][1] - now[j][1]]; a.rect = [r[0] + d[0], r[1] + d[1], r[2] + d[0], r[3] + d[1]]; void keepC; } }
+function rotateSel(how){ const os = editObjs().filter((o, i, a) => o.page === a[0].page); if (!os.length) return; const b = os.reduce((a, x) => union(a, x.b), null); const cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2;
+  const deg = how === "fh" || how === "fv" ? 0 : +how; const t = -deg * Math.PI / 180, c = Math.cos(t), s2 = Math.sin(t);
+  const L = how === "fh" ? [-1, 0, 0, 1, 0, 0] : how === "fv" ? [1, 0, 0, -1, 0, 0] : [c, s2, -s2, c, 0, 0]; const M = mul(mul([1, 0, 0, 1, -cx, -cy], L), [1, 0, 0, 1, cx, cy]);
+  for (const o of os) for (const id of o.ids){ const u = S.units.get(id); if (u.add){ const a = (S.opts.adds || []).find(z => z.id === id); if (!a) continue;
+      /* the item's center moves with the turn; its own angle and flips change too */
+      const [nx, ny] = ap(M, (a.rect[0] + a.rect[2]) / 2, (a.rect[1] + a.rect[3]) / 2); const dx = nx - (a.rect[0] + a.rect[2]) / 2, dy = ny - (a.rect[1] + a.rect[3]) / 2;
+      a.rect = [a.rect[0] + dx, a.rect[1] + dy, a.rect[2] + dx, a.rect[3] + dy]; if (a.kind === "text"){ a.x += dx; a.y += dy; }
+      /* turning adds to the angle; a flip mirrors the angle too */
+      if (how === "fh"){ a.fx = !a.fx; a.rot = (360 - (a.rot || 0)) % 360; } else if (how === "fv"){ a.fy = !a.fy; a.rot = (360 - (a.rot || 0)) % 360; } else a.rot = (((a.rot || 0) + deg) % 360 + 360) % 360; continue; }
+    (S.opts.xf ||= {})[id] = mul(xfOf(id), M); }
+  after(); }
+function setGeo(k, v){ v = +v; const os = editObjs().filter((o, i, a) => o.page === a[0].page); if (!os.length || !isFinite(v)) return; const b = os.reduce((a, x) => union(a, x.b), null), H = S.pages[os[0].page].vp1.viewBox[3];
+  if (k === "x" || k === "y"){ os.forEach(o => moveObj(o, k === "x" ? v - b[0] : 0, k === "y" ? (H - v) - b[3] : 0)); after(); return; }
+  const o = { ids:os.flatMap(x => x.ids) };
   if (!(v > 0)) return; const sx = k === "w" ? v / ((b[2] - b[0]) || 1) : 1, sy = k === "h" ? v / ((b[3] - b[1]) || 1) : 1; const M = [sx, 0, 0, sy, b[0] - sx * b[0], b[3] - sy * b[3]];
   for (const id of o.ids){ const u = S.units.get(id); if (u.add){ const a = (S.opts.adds || []).find(z => z.id === id); if (!a) continue;
-      if (a.kind === "text"){ if (k === "w"){ a.w = v; a.rect = tboxRect(a); } continue; } const r = [...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]; a.rect = a.kind === "line" ? r : normR(r); continue; }
+      if (a.kind === "text"){ if (k === "w") a.w = v; else a.h = v; a.rect = tboxRect(a); continue; } const r = [...ap(M, a.rect[0], a.rect[1]), ...ap(M, a.rect[2], a.rect[3])]; a.rect = a.kind === "line" ? r : normR(r); continue; }
     (S.opts.xf ||= {})[id] = mul(xfOf(id), M); }
   after(); }
 /* shapes you added: fill, stroke and stroke width */
 const selShapes = () => S.esel.map(id => (S.opts.adds || []).find(a => a.id === id)).filter(a => a && a.kind !== "text" && !a.blob);
-function updShape(){ const sh = S.editMode ? selShapes() : []; $("eshape").hidden = !sh.length; if (!sh.length) return; const a = sh[0];
-  $("sFill").value = a.fill || "#ffffff"; $("sFillNo").checked = !a.fill; $("sStroke").value = a.stroke || "#222222"; $("sStrokeNo").checked = !a.stroke; if (document.activeElement !== $("sW")) $("sW").value = a.sw ?? 1; }
-function setShape(k, v){ selShapes().forEach(a => { a[k] = v; }); after(); }
-function addBox(kind = "rect"){ if (!S.pages.length) return; const pg = S.cur; const [, , W, H] = S.pages[pg].vp1.viewBox; const r = kind === "line" ? [W / 2 - 80, H / 2, W / 2 + 80, H / 2] : [W / 2 - 60, H / 2 - 40, W / 2 + 60, H / 2 + 40];
+/* lines and shapes already in the PDF: stroke color and thickness (fill color is in the color box) */
+const selPaths = () => S.esel.map(id => S.units.get(id)).filter(u => u?.kind === "path" && !u.add);
+function updShape(){ const sh = S.editMode ? selShapes() : [], ps = S.editMode && !sh.length ? selPaths() : []; $("eshape").hidden = !sh.length && !ps.length;
+  [$("sFill").closest("span"), $("sFill").closest("span")?.previousElementSibling].forEach(el => { if (el) el.hidden = !!ps.length; }); $("sStrokeNo").parentElement.hidden = !!ps.length;
+  if (ps.length){ const u = ps[0]; $("sStroke").value = S.opts.sfix?.[u.id] || (u.stroke && u.fill ? toHex(u.fill.map(v => v * 255)).toLowerCase() : "#222222"); if (document.activeElement !== $("sW")) $("sW").value = S.opts.lw?.[u.id] ?? ""; $("sW").placeholder = "as is"; return; }
+  $("sTri").hidden = $("sTriL").hidden = !(sh.length && sh.every(x => x.kind === "tri")); if (sh[0]?.kind === "tri") $("sTri").value = sh[0].tri || "iso";
+  if (!sh.length) return; const a = sh[0];
+  $("sFill").value = a.fill || "#ffffff"; $("sFillNo").checked = !a.fill; [["sFillOp", "fillOp", !a.fill], ["sStrokeOp", "strokeOp", !a.stroke]].forEach(([id, k, off]) => { const el = $(id); el.disabled = off; if (document.activeElement !== el) el.value = off ? "" : Math.round((a[k] ?? 1) * 100); el.placeholder = off ? "—" : ""; }); $("sStroke").value = a.stroke || "#222222"; $("sStrokeNo").checked = !a.stroke; $("sW").disabled = !a.stroke && a.kind !== "line"; $("sW").placeholder = $("sW").disabled ? "—" : ""; if (document.activeElement !== $("sW")) $("sW").value = $("sW").disabled ? "" : a.sw ?? 1; }
+const selAdds = () => S.esel.map(id => (S.opts.adds || []).find(a => a.id === id)).filter(Boolean);
+function updOpacity(){ const as = S.editMode ? selAdds().filter(a => !SHAPES.has(a.kind)) : []; $("eop").hidden = !as.length; queueMicrotask(() => { $("eapp").hidden = $("eop").hidden && $("eshape").hidden; }); if (as.length && document.activeElement !== $("eOp")){ const v = [...new Set(as.map(a => Math.round((a.opacity ?? 1) * 100)))]; $("eOp").value = v.length === 1 ? v[0] : ""; } }
+function setShape(k, v){ const ps = selShapes().length ? [] : selPaths(); if (ps.length){ ps.forEach(u => { if (k === "stroke" && v) (S.opts.sfix ||= {})[u.id] = v; if (k === "sw") (S.opts.lw ||= {})[u.id] = v; }); after(); return; } selShapes().forEach(a => { a[k] = v; }); after(); }
+function addBox(kind = "rect", pg = S.cur, r0){ if (!S.pages.length) return; const [, , W, H] = S.pages[pg].vp1.viewBox; const r = r0 || (kind === "line" ? [W / 2 - 80, H / 2, W / 2 + 80, H / 2] : [W / 2 - 60, H / 2 - 40, W / 2 + 60, H / 2 + 40]);
   const a = { id:`${pg}:shp:${Date.now().toString(36)}`, page:pg, kind, rect:r, fill:kind === "line" ? null : "#E8EEF3", stroke:kind === "line" ? "#222222" : null, sw:1 };
-  (S.opts.adds ||= []).push(a); after(); S.esel = [a.id]; S.sel = new Set([a.id]); renderAll(); toast("Added a shape. Drag to move it, drag a corner to size it, and set its fill and stroke in Edit tools. It's decorative unless you tag it."); }
-function updAlign(){ updText(); const n = S.editMode ? editObjs().length : 0; document.querySelectorAll(".abtn").forEach(b => b.disabled = b.dataset.a.startsWith("d") ? n < 3 : !n);
+  (S.opts.adds ||= []).push(a); after(); S.esel = [a.id]; S.sel = new Set([a.id]); renderAll(); }
+function updAlign(){ updText(); const n = S.editMode ? editObjs().length : 0; document.querySelectorAll(".abtn").forEach(b => b.disabled = b.dataset.z || b.dataset.r ? !n : b.dataset.a.startsWith("d") ? n < 3 : !n);
   $("alignHint").textContent = !n ? "Select items to align them." : n === 1 || S.alignTo === "page" ? `Aligns ${n === 1 ? "the item" : "each item"} to the page.` : `Aligns ${n} items to each other.`; }
 function openAlignMenu(){ const m = $("cmenu"); if (!m.hidden && m.dataset.kind === "align"){ closeMenu(); return; } const n = editObjs().length; const r = $("alignBtn").getBoundingClientRect();
   const it = (k, t, dis) => `<button type="button" class="mi" data-a="${k}" ${dis ? "disabled" : ""}>${t}</button>`; const to = n === 1 ? " to page" : "";
@@ -1633,13 +1756,27 @@ function openAlignMenu(){ const m = $("cmenu"); if (!m.hidden && m.dataset.kind 
 function missingFontMenu(u, val, miss){ const m = $("cmenu"); const r = vrect(u.bbox, S.views[u.page].vp), sr = S.views[u.page].svg.getBoundingClientRect(), k = sr.width / S.views[u.page].vp.width;
   m.dataset.kind = "fontmiss"; m.style.width = "300px";
   m.innerHTML = `<div class="mh">Missing letters</div><div class="lpick"><div class="need" style="font-size:12px">This line's font (${esc(fontBaseOf(u) || "embedded font")}) doesn't have: <b>${esc(miss.join(" "))}</b>. PDFs often keep only the letters they use. Choose a font file for this line, like the same font from your computer.</div>
-    <div class="lrow"><button type="button" class="btn primary" id="mfPick">Choose font file…</button><button type="button" class="btn" id="mfNo">Cancel</button></div></div>`;
+    <div class="lrow"><button type="button" class="btn primary" id="mfPick">Choose a font…</button><button type="button" class="btn" id="mfNo">Cancel</button></div></div>`;
   m.hidden = false; m.style.left = Math.min(sr.left + r[0] * k, innerWidth - 310) + "px"; m.style.top = Math.min(sr.top + (r[1] + r[3]) * k + 6, innerHeight - 160) + "px";
-  $("mfNo").onclick = closeMenu; $("mfPick").onclick = async () => { closeMenu(); const blob = await pickFontFile(); if (!blob) return; const f = fkFonts.get(blob);
+  $("mfNo").onclick = closeMenu; $("mfPick").onclick = async () => { const anc = $("mfPick").getBoundingClientRect(); closeMenu(); const blob = await pickFont({ getBoundingClientRect:() => anc }); if (!blob) return; const f = fkFonts.get(blob);
     const still = [...val].filter(ch => ch.trim() && !f.hasGlyphForCodePoint(ch.codePointAt(0))); if (still.length){ toast(`${S.blobs.get(blob).name} doesn't have ${still.join(" ")} either.`, 5000); return; }
     (S.opts.tfont ||= {})[u.id] = blob; (S.opts.txt ||= {})[u.id] = val; after(); toast(`This line now uses ${S.blobs.get(blob).name}.`); }; }
-function setEditMode(on){ S.editMode = on; queueMicrotask(updAlign); if (on && S.preview) togglePreview(); $("tsecT").textContent = on ? "Edit selection" : "Tag selection"; $("editBtn").classList.toggle("on", on); $("editBtn").setAttribute("aria-pressed", on); $("editBar").hidden = !on; document.body.classList.toggle("editing", on);
-  if (on){ if (S.zoomTool) setZoomTool(false); S.esel = []; S.sel.clear(); S.rows.clear(); S.focus = null; toast("Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to fix a line. E or Esc to finish.", 5000); } else S.esel = []; renderAll(); }
+/* copy and paste in Edit PDF: shapes, text boxes and images you added are copied as is; page content is drawn again in a new spot */
+S.clip = [];
+function copySel(){ S.clip = [...S.esel]; toast(S.clip.length ? `Copied ${S.clip.length} item${S.clip.length > 1 ? "s" : ""}.` : "Select something to copy."); }
+function pasteClip(dx = 12, dy = -12){ if (!S.clip.length) return; const made = []; const stamp = Date.now().toString(36); let k = 0;
+  for (const id of S.clip){ const u = S.units.get(id); if (!u) continue; const nid = `${u.page}:cp${stamp}${k++}`;
+    if (u.add){ const a = (S.opts.adds || []).find(z => z.id === id); if (!a) continue; const b = JSON.parse(JSON.stringify(a)); b.id = nid; if (b.kind === "text"){ b.x += dx; b.y += dy; } else b.rect = [b.rect[0] + dx, b.rect[1] + dy, b.rect[2] + dx, b.rect[3] + dy]; (S.opts.adds ||= []).push(b); made.push(nid); continue; }
+    const src = u.dup || id; (S.opts.dups ||= []).push({ id:nid, src }); (S.opts.xf ||= {})[nid] = mul(xfOf(id), [1, 0, 0, 1, dx, dy]); if (S.opts.crop?.[id]) S.opts.crop[nid] = S.opts.crop[id].slice(); made.push(nid); }
+  after(); S.esel = made; S.sel = new Set(made); S.clip = made; renderAll(); toast(`Pasted ${made.length} item${made.length === 1 ? "" : "s"}. Copies of page content are decorative until you tag them.`); }
+/* while editing, the selection's info, color and actions sit in Edit tools, and the Tag selection panel steps aside */
+function moveSelUI(on){ ["selInfo", "colorRow", "selActs"].forEach(id => { const el = $(id); if (!el) return; let ph = document.querySelector(`[data-ph="${id}"]`);
+    if (!ph){ ph = document.createElement("span"); ph.hidden = true; ph.dataset.ph = id; el.before(ph); } if (on) $("eselBox").appendChild(el); else ph.after(el); }); }
+/* Edit PDF opens a session: Done keeps the changes, Cancel changes puts the file back as it was */
+function cancelEdits(){ if (S.editSnap == null) return setEditMode(false); const st = S.editSnap; setEditMode(false); restore(st); record(); toast("Edits canceled. Undo brings them back."); }
+function setEditMode(on){ S.editMode = on; moveSelUI(on); if (on) S.editSnap = snapState(); else S.editSnap = null;
+  $("editBtn").textContent = on ? "Confirm changes & exit" : "✎ Edit PDF"; $("editBtn").title = on ? "Keep your edits and go back to tagging (E)" : "Edit PDF (E): move, resize, crop, retype, add images, text and shapes"; $("editCancel").hidden = !on; queueMicrotask(updAlign); if (on && S.preview) togglePreview(); $("tsecT").textContent = on ? "Edit selection" : "Tag selection"; $("editBtn").classList.toggle("on", on); $("editBtn").setAttribute("aria-pressed", on); $("editBar").hidden = !on; document.body.classList.toggle("editing", on);
+  if (on){ if (S.zoomTool) setZoomTool(false); S.esel = []; S.sel.clear(); S.rows.clear(); S.focus = null; toast("Drag to move. Drag a corner to resize, Option-drag a corner to crop. Double-click text to type in it. E or Esc to finish.", 5000); } else S.esel = []; renderAll(); }
 
 /* ---------- font files you add: replace a font that isn't embedded, or type letters a font doesn't have ---------- */
 /* S.opts.fsub[font name] = font file for every line in that font; S.opts.tfont[line id] = font file for one edited line */
@@ -1749,46 +1886,109 @@ function ttfMetrics(blob){ if (fontMetrics.has(blob)) return fontMetrics.get(blo
   const m = { upm, asc:dv.getInt16(T.hhea + 4), desc:dv.getInt16(T.hhea + 6), bbox:[dv.getInt16(T.head + 36), dv.getInt16(T.head + 38), dv.getInt16(T.head + 40), dv.getInt16(T.head + 42)], cff:T["CFF "] != null,
     gid:ch => cm.get(ch.codePointAt(0)) || 0, w:ch => adv(cm.get(ch.codePointAt(0)) || 0) / upm }; fontMetrics.set(blob, m); return m; }
 /* text box layout: paragraphs wrap inside the box width, with alignment, line spacing, tracking and space after each paragraph */
-function tboxLayout(a){ const m = ttfMetrics(a.font); const sz = a.size, tc = (a.track || 0) / 1000 * sz, lead = a.lead || sz * 1.2, after = a.after || 0;
+function boxFont(a){ if (a.pfont){ const u = S.units.get(a.pfont); const fe = u && fontEnc(u), fi = u && fontInfo(u.fres, u.fname); if (fe && fi) return { w:ch => { const c = fe.inv.get(ch); return c == null ? 0.5 : fi.w(c); }, asc:0.8, desc:-0.2, has:ch => fe.inv.has(ch), pdf:u, fe }; }
+  const m = ttfMetrics(a.font); return { w:m.w, asc:m.asc / m.upm, desc:m.desc / m.upm, has:ch => !!m.gid(ch) && winCode(ch) != null }; }
+function tboxLayout(a){ const m = boxFont(a); const sz = a.size, tc = (a.track || 0) / 1000 * sz, lead = a.lead || sz * 1.2, after = a.after || 0;
   const wOf = t => [...t].reduce((s2, ch) => s2 + m.w(ch) * sz + tc, 0) - (t.length ? tc : 0);
   const lines = []; let y = a.y; const W = a.w || null; let maxW = 0;
-  (a.text || "").split("\n").forEach((para, pi) => { const words = para.split(/ +/); const out = []; let cur = "";
-    if (W) for (const w of words){ const t = cur ? cur + " " + w : w; if (cur && wOf(t) > W){ out.push(cur); cur = w; } else cur = t; } else cur = para; out.push(cur);
-    out.forEach((t, li) => { const last = li === out.length - 1; const lw = wOf(t); maxW = Math.max(maxW, lw); const box = W || 0; let x = a.x, tw = 0;
+  const paraCount = (a.text || "").split("\n").length;
+  (a.text || "").split("\n").forEach((para, pi) => { if (pi && a.before) y -= a.before; const out = []; const hardEnd = new Set();
+    /* a soft return (Shift+Enter, stored as U+2028) breaks the line but keeps the paragraph */
+    for (const seg of para.split("\u2028")){ const words = seg.split(/ +/); let cur = "";
+      if (W) for (const w of words){ const t = cur ? cur + " " + w : w; if (cur && wOf(t) > W){ out.push(cur); cur = w; } else cur = t; } else cur = seg; out.push(cur); hardEnd.add(out.length - 1); }
+    out.forEach((t, li) => { const last = hardEnd.has(li); const lw = wOf(t); maxW = Math.max(maxW, lw); const box = W || 0; let x = a.x, tw = 0;
       if (W && a.align === "c") x += (box - lw) / 2; else if (W && a.align === "r") x += box - lw; else if (W && a.align === "j" && !last){ const sp = (t.match(/ /g) || []).length; if (sp) tw = (box - lw) / sp; }
       lines.push({ t, x, y, tw }); y -= lead; });
-    y -= after; });
-  const top = a.y + m.asc / m.upm * sz, bottom = lines[lines.length - 1].y + m.desc / m.upm * sz;
+    if (pi < paraCount - 1) y -= after; });
+  const top = a.y + m.asc * sz, bottom = Math.min(lines[lines.length - 1].y + m.desc * sz, a.h ? top - a.h : Infinity);
   return { lines, rect:[a.x, Math.min(bottom, top - 2), a.x + Math.max(W || maxW, 4), top] }; }
 const tboxRect = a => tboxLayout(a).rect;
+/* a drawn shape keeps its points relative to its box, so moving and resizing the box reshapes it */
+const polyPts = a => { const [x0, y0, x1, y1] = a.rect; return a.pts.map(([u, v]) => [x0 + u * (x1 - x0), y0 + v * (y1 - y0)]); };
+function addPoly(pg, pts, closed){ if (S.etool) setTool(S.etool); /* the tool turns off once the shape is made */ if (pts.length < 2) return; const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]); const r = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]; const w = (r[2] - r[0]) || 1, h = (r[3] - r[1]) || 1;
+  const a = { id:`${pg}:shp:${Date.now().toString(36)}`, page:pg, kind:"poly", rect:r, pts:pts.map(([x, y]) => [(x - r[0]) / w, (y - r[1]) / h]), closed, fill:closed ? "#E8EEF3" : null, stroke:"#222222", sw:1.5 };
+  (S.opts.adds ||= []).push(a); after(); S.esel = [a.id]; S.sel = new Set([a.id]); renderAll(); }
 /* shapes you add: rectangle, ellipse, triangle, line */
-const SHAPES = new Set(["rect", "ellipse", "tri", "line"]);
+const SHAPES = new Set(["rect", "ellipse", "tri", "line", "poly"]);
 function shapeBody(a, fillFix){ const f = fmtNum; const [x0, y0, x1, y1] = a.rect; const fill = a.kind === "line" ? null : (fillFix || a.fill), stroke = a.kind === "line" ? (a.stroke || "#222222") : a.stroke, sw = a.sw ?? 1;
   const col = (h, op) => hexRgb(h).map(f).join(" ") + " " + op; const head = [fill ? col(fill, "rg") : "", stroke ? col(stroke, "RG") + `\n${f(sw)} w` : ""].filter(Boolean).join("\n");
-  const op = a.kind === "line" ? "S" : fill && stroke ? "B" : fill ? "f" : stroke ? "S" : "n"; let path;
+  const op = a.kind === "line" || (a.kind === "poly" && !a.closed) ? (stroke || fill ? "S" : "n") : fill && stroke ? "B" : fill ? "f" : stroke ? "S" : "n"; let path;
+  if (a.kind === "poly" && !a.closed && !stroke && fill) return `${col(fill, "RG")}\n${f(sw)} w\n` + polyPts(a).map((q, i) => `${f(q[0])} ${f(q[1])} ${i ? "l" : "m"}`).join(" ") + " S";
   if (a.kind === "rect") path = `${f(x0)} ${f(y0)} ${f(x1 - x0)} ${f(y1 - y0)} re`;
   else if (a.kind === "line") path = `${f(a.rect[0])} ${f(a.rect[1])} m ${f(a.rect[2])} ${f(a.rect[3])} l`;
-  else if (a.kind === "tri") path = `${f(x0)} ${f(y0)} m ${f(x1)} ${f(y0)} l ${f((x0 + x1) / 2)} ${f(y1)} l h`;
+  else if (a.kind === "poly"){ const pts = polyPts(a); path = pts.map((q, i) => `${f(q[0])} ${f(q[1])} ${i ? "l" : "m"}`).join(" ") + (a.closed ? " h" : ""); }
+  else if (a.kind === "tri"){ const w = x1 - x0; const t = a.tri || "iso"; const pts = t === "right" ? [[x0, y0], [x1, y0], [x0, y1]] : t === "scalene" ? [[x0, y0], [x1, y0], [x0 + w * 0.3, y1]] : t === "obtuse" ? [[x0 + w * 0.4, y0], [x1, y0], [x0, y1]] : [[x0, y0], [x1, y0], [x0 + w / 2, y1]];
+    path = pts.map((q, i) => `${f(q[0])} ${f(q[1])} ${i ? "l" : "m"}`).join(" ") + " h"; }
   else { const k = 0.5523, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, rx = (x1 - x0) / 2, ry = (y1 - y0) / 2;
     path = `${f(cx + rx)} ${f(cy)} m ${f(cx + rx)} ${f(cy + ry * k)} ${f(cx + rx * k)} ${f(cy + ry)} ${f(cx)} ${f(cy + ry)} c ${f(cx - rx * k)} ${f(cy + ry)} ${f(cx - rx)} ${f(cy + ry * k)} ${f(cx - rx)} ${f(cy)} c ${f(cx - rx)} ${f(cy - ry * k)} ${f(cx - rx * k)} ${f(cy - ry)} ${f(cx)} ${f(cy - ry)} c ${f(cx + rx * k)} ${f(cy - ry)} ${f(cx + rx)} ${f(cy - ry * k)} ${f(cx + rx)} ${f(cy)} c h`; }
   return [head, path, op].filter(Boolean).join("\n"); }
+/* page text becomes a text box: one paragraph that rewraps, in the same font, size and color; its tag stays */
+/* the paragraph a piece of text belongs to: its tag's text on this page, text you joined, or the untagged lines that sit together */
+function textBlock(u){ indexUnits(); const P = S.pages[u.page]; const ok = x => x?.kind === "text" && x.bbox && !x.add && !isDel(x);
+  const n = nodeOfUnit.get(u.id); if (n && !n.obj && !isGroup(n)) return n.units.map(id => S.units.get(id)).filter(x => ok(x) && x.page === u.page);
+  const j = joinOf(u.id); if (j) return j.map(id => S.units.get(id)).filter(ok);
+  const loose = P.units.filter(x => ok(x) && !nodeOfUnit.has(x.id)).map(x => x.id); const g = itemsOf(loose).find(g2 => g2.includes(u.id)) || [u.id];
+  /* same font and size only: a heading right above a paragraph stays its own block */
+  const sz = curSize(u), fb = fontBaseOf(u); return g.map(id => S.units.get(id)).filter(x => ok(x) && fontBaseOf(x) === fb && Math.abs(curSize(x) - sz) < sz * 0.15); }
+function toTextBox(given){ const us = given || selText(); if (!us.length) return null; indexUnits(); const ls = textLines(us); const u0 = ls[0].us.sort((a, b) => a.bbox[0] - b.bbox[0])[0];
+  if (us.some(u => u.page !== u0.page)){ toast("Pick lines on one page."); return null; }
+  /* a font that can't be reused (Type3, or no character map): join the pieces into one item instead, so they still select and tag as one */
+  if (us.some(u => fontInfo(u.fres, u.fname)?.sub === "Type3" || !fontEnc(u)?.inv?.size)){ toast("This text's font can't be retyped here. Select it and pick a font under Text first.", 5000); return null; }
+  const lineTxt = l => l.us.sort((a, b) => a.bbox[0] - b.bbox[0]).reduce((t, u, i, arr) => { const w = unitText(u); if (!i) return w; const gap = u.bbox[0] - arr[i - 1].bbox[2]; return t + (gap > curSize(u) * 0.2 && !/\s$/.test(t) && !/^\s/.test(w) ? " " : "") + w; }, "");
+  /* a new paragraph starts at a new tag, or (untagged) after a bigger gap or where the first line is indented */
+  const gaps = ls.slice(1).map((l, i) => ls[i].y - l.y).sort((a, b) => a - b); const g0 = gaps[gaps.length >> 1] || 0; let pk = 0;
+  const brk = ls.map((l, i) => { if (!i) return 0; const gap = ls[i - 1].y - l.y; const indent = Math.min(...l.us.map(u => u.bbox[0])) - Math.min(...ls[i - 1].us.map(u => u.bbox[0])); return gap > g0 * 1.35 + 0.5 || indent > curSize(l.us[0]) * 0.8 ? ++pk : pk; });
+  const paraOf = l => { const n = nodeOfUnit.get(l.us[0].id); return n ? n.id : "u" + brk[ls.indexOf(l)]; };
+  const text = ls.map(l => ({ t:lineTxt(l).trim(), k:paraOf(l) })).reduce((acc, x, i, arr) => !i ? x.t : arr[i - 1].k !== x.k ? acc + "\n" + x.t : /-$/.test(acc) ? acc + x.t : acc + " " + x.t, "");
+  const lead = ls.length > 1 ? (ls[0].y - ls[ls.length - 1].y) / (ls.length - 1) : curSize(u0) * 1.2; const x0 = Math.min(...us.map(u => u.bbox[0])), x1 = Math.max(...us.map(u => u.bbox[2]));
+  const a = { id:`${u0.page}:tb:${Date.now().toString(36)}`, page:u0.page, kind:"text", x:x0, y:baseY(u0), w:x1 - x0 + 1, size:curSize(u0), lead, align:"l", text, pfont:u0.id, color:toHex((S.fix[u0.id] ? hexRgb(S.fix[u0.id]) : u0.fill || [0, 0, 0]).map(v => v * 255)) };
+  a.rect = tboxRect(a); const ids = new Set(us.map(u => u.id)); let placed = false;
+  walk(n => { if (n.units.some(id => ids.has(id))){ const out = []; for (const id of n.units){ if (!ids.has(id)) out.push(id); else if (!placed){ out.push(a.id); placed = true; } } n.units = out; } });
+  S.opts.del ||= {}; ids.forEach(id => S.opts.del[id] = 1); (S.opts.adds ||= []).push(a); prune(); S.esel = [a.id]; S.sel = new Set([a.id]); after(); return a; }
 /* the text box editor: words, font file, size and color */
-function tboxDialog(a, onDone){ const m = $("cmenu"); m.dataset.kind = "tbox"; m.style.width = "320px"; const fname = a.font ? S.blobs.get(a.font)?.name : S.lastFont ? S.blobs.get(S.lastFont)?.name : "";
+function tboxDialog(a, onDone){ const m = $("cmenu"); m.dataset.kind = "tbox"; m.style.width = "320px"; const fname = a.pfont ? fontBaseOf(S.units.get(a.pfont)) + " (from the PDF)" : a.font ? S.blobs.get(a.font)?.name : S.lastFont ? S.blobs.get(S.lastFont)?.name : "";
   m.innerHTML = `<div class="mh">${a.id ? "Edit text box" : "Add text box"}</div><div class="lpick"><textarea id="tbText" rows="4" style="width:100%;font:inherit;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg)" aria-label="Text">${esc(a.text || "")}</textarea>
-    <div class="lrow" style="margin-top:6px"><button type="button" class="btn" id="tbFont">${fname ? "Font: " + esc(fname) : "Choose font file…"}</button></div>
+    <div class="lrow" style="margin-top:6px"><button type="button" class="btn" id="tbFont">${fname ? "Font: " + esc(fname) + " ▾" : "Choose a font ▾"}</button></div>
     <div class="need" style="font-size:11px;margin-top:4px">Size, spacing, alignment and color are in Edit tools once it's placed.</div>
     <div class="need" style="font-size:11px;margin-top:4px">The font file is built into the PDF so screen readers and printers get the real text. Use a .ttf or .otf from your computer.</div>
     <div class="lrow" style="margin-top:8px"><button type="button" class="btn primary" id="tbOk">${a.id ? "Update" : "Add"}</button><button type="button" class="btn" id="tbNo">Cancel</button></div></div>`;
-  m.hidden = false; const r = $("pagesBox").getBoundingClientRect(); m.style.left = Math.max(8, r.left + r.width / 2 - 160) + "px"; m.style.top = Math.max(8, r.top + 80) + "px"; let font = a.font || S.lastFont || null;
+  m.hidden = false; const r = $("pagesBox").getBoundingClientRect(); m.style.left = Math.max(8, r.left + r.width / 2 - 160) + "px"; m.style.top = Math.max(8, r.top + 80) + "px"; let font = a.pfont ? null : a.font || S.lastFont || null;
   m.querySelectorAll("textarea,input").forEach(x => x.addEventListener("keydown", e => e.stopPropagation())); $("tbText").focus();
-  $("tbFont").onclick = async () => { const b = await pickFontFile(true); if (!b) return; try { ttfMetrics(b); font = b; S.lastFont = b; $("tbFont").textContent = "Font: " + S.blobs.get(b).name; } catch (e){ toast("Can't use that font: " + e.message + "."); } };
+  $("tbFont").onclick = async () => { const b = await pickFont($("tbFont")); if (!b) return; try { ttfMetrics(b); font = b; a.pfont = null; S.lastFont = b; $("tbFont").textContent = "Font: " + S.blobs.get(b).name + " ▾"; } catch (e){ toast("Can't use that font: " + e.message + "."); } };
   $("tbNo").onclick = closeMenu;
-  $("tbOk").onclick = () => { const text = $("tbText").value.replace(/\s+$/, ""); if (!text){ toast("Type some text first."); return; } if (!font){ toast("Choose a font file for the text."); return; }
-    const mt = ttfMetrics(font); const bad = [...new Set([...text.replace(/\n/g, "")].filter(ch => winCode(ch) == null || !mt.gid(ch)))]; if (bad.length){ toast(`Can't use these characters with this font: ${bad.join(" ")}`, 5000); return; }
+  $("tbOk").onclick = () => { const text = $("tbText").value.replace(/\s+$/, ""); if (!text){ toast("Type some text first."); return; } if (!font && !a.pfont){ toast("Choose a font file for the text."); return; }
+    const fm = a.pfont && !font ? boxFont(a) : boxFont({ font }); const bad = [...new Set([...text.replace(/\n/g, "")].filter(ch => ch !== " " && !fm.has(ch)))];
+    if (bad.length){ toast(`${a.pfont ? "This text's font" : "This font"} doesn't have: ${bad.join(" ")}. Choose a font file that does.`, 5000); return; }
     closeMenu(); onDone({ text, font, size:a.size || 12, color:a.color || "#222222" }); }; }
-function addTextBox(){ if (!S.pages.length) return; tboxDialog({}, v => { const pg = S.cur; const [, , W, H] = S.pages[pg].vp1.viewBox; const a = { id:`${pg}:txt:${Date.now().toString(36)}`, page:pg, kind:"text", x:W / 2 - 120, y:H / 2, w:240, align:"l", ...v };
-  a.rect = tboxRect(a); (S.opts.adds ||= []).push(a); after(); S.esel = [a.id]; S.sel = new Set([a.id]); renderAll(); toast("Added a text box. Drag to move it, double-click to edit it, and tag it like any text."); }); }
-function editTextBox(a){ tboxDialog(a, v => { Object.assign(a, v); a.rect = tboxRect(a); after(); }); }
+/* type right in the text box, like a layout editor. Click away or Cmd+Enter to finish, Esc to cancel */
+const webFonts = new Map();
+function cssFont(a){ if (a.font && S.blobs.has(a.font)){ if (!webFonts.has(a.font)){ const fam = "tsf_" + a.font; try { const ff = new FontFace(fam, S.blobs.get(a.font).bytes); document.fonts.add(ff); ff.load(); } catch {} webFonts.set(a.font, fam); } return `"${webFonts.get(a.font)}", sans-serif`; }
+  const b = a.pfont ? fontBaseOf(S.units.get(a.pfont)) : ""; const fam = b.replace(/[-,](Bold|Italic|Oblique|Regular|Medium|Light|Semibold|Black).*$/i, "").replace(/([a-z])([A-Z])/g, "$1 $2");
+  return `"${fam}", ${/serif|times|georgia|garamond|minion|caslon/i.test(b) && !/sans/i.test(b) ? "serif" : "sans-serif"}`; }
+function editTextBox(a, isNew, converted){ const v = S.views[a.page]; if (!v?.sheet) return; const k = v.svg.getBoundingClientRect().width / S.pages[a.page].vp1.viewBox[2]; const sv = v.svg.getBoundingClientRect(), sh = v.sheet.getBoundingClientRect();
+  const [x, y, w, h] = vrect(a.rect, v.vp); /* a live text area: Enter starts a new paragraph, Shift+Enter breaks the line inside it */
+  const ta = document.createElement("div"); ta.className = "tbedit"; ta.contentEditable = "true"; ta.setAttribute("role", "textbox"); ta.setAttribute("aria-multiline", "true"); ta.setAttribute("aria-label", "Text box text");
+  ta.innerHTML = (a.text || "").split("\n").map(p2 => `<div>${p2 ? esc(p2).split("\u2028").join("<br>") : "<br>"}</div>`).join("");
+  const readText = () => { const walk = n => [...n.childNodes].map(c => c.nodeType === 3 ? c.nodeValue.replace(/\n/g, "\u2028") : c.nodeName === "BR" ? "\u2028" : walk(c)).join(""); const paras = []; let lead = "";
+    for (const c of ta.childNodes){ if (/^(DIV|P)$/.test(c.nodeName)){ if (lead){ paras.push(lead); lead = ""; } paras.push(walk(c)); } else lead += c.nodeType === 3 ? c.nodeValue.replace(/\n/g, "\u2028") : c.nodeName === "BR" ? "\u2028" : walk(c); }
+    if (lead) paras.push(lead); return paras.map(p2 => p2.replace(/\u00a0/g, " ").replace(/\u2028$/, "")).join("\n"); };
+  ta.addEventListener("paste", e => { e.preventDefault(); document.execCommand("insertText", false, (e.clipboardData?.getData("text/plain") || "").replace(/\r/g, "")); });
+  const b = S.pages[a.page].vp1.viewBox[3]; const unit = sv.width / v.vp.width;
+  Object.assign(ta.style, { left:(sv.left - sh.left + x * unit - 3) + "px", top:(sv.top - sh.top + y * unit - 3) + "px", width:((a.w || (a.rect[2] - a.rect[0])) * k + 8) + "px", minHeight:(h * unit + 8) + "px",
+    fontFamily:cssFont(a), fontSize:(a.size * k) + "px", lineHeight:((a.lead || a.size * 1.2) * k) + "px", letterSpacing:((a.track || 0) / 1000) + "em", textAlign:{ c:"center", r:"right", j:"justify" }[a.align] || "left", color:S.fix[a.id] || a.color || "#222", fontWeight:a.b ? "700" : "400", fontStyle:a.i ? "italic" : "normal", textDecoration:a.u ? "underline" : "none" }); ta.style.setProperty("--pa", ((a.after || 0) * k) + "px");
+  v.sheet.appendChild(ta); ta.focus(); try { document.execCommand("defaultParagraphSeparator", false, "div"); } catch {} if (isNew) document.execCommand("selectAll"); else { const r2 = document.createRange(); r2.selectNodeContents(ta); r2.collapse(false); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r2); } let done = false;
+  const finish = ok => { if (done) return; done = true; ta.remove(); document.removeEventListener("pointerdown", away, true); if (!ok){ if (isNew){ S.opts.adds = S.opts.adds.filter(z => z !== a); after(); } else if (converted) undo(); return; }
+    const text = readText().replace(/[\s\u2028]+$/, ""); if (!text){ S.opts.adds = S.opts.adds.filter(z => z !== a); stripUnits([a.id]); prune(); after(); return; }
+    const fm = boxFont(a); const bad = [...new Set([...text.replace(/[\n\u2028]/g, "")].filter(ch => ch !== " " && !fm.has(ch)))];
+    if (bad.length){ a.text = text; toast(`${a.pfont ? "This text's font" : "This font"} doesn't have: ${bad.join(" ")}. Pick a font that does.`, 5000);
+      pickFont(ta).then(bl => { if (!bl) return; try { const m = ttfMetrics(bl); const still = [...text].filter(ch => ch.trim() && (!m.gid(ch) || winCode(ch) == null)); if (still.length){ toast(`That font can't show: ${still.join(" ")}.`); return; } } catch { return; } a.font = bl; delete a.pfont; a.rect = tboxRect(a); after(); }); return; }
+    a.text = text; a.rect = tboxRect(a); after(); };
+  const away = e => { if (!ta.contains(e.target)) finish(true); }; setTimeout(() => document.addEventListener("pointerdown", away, true), 0);
+  ta.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Escape"){ e.preventDefault(); finish(false); return; } if (e.key === "Enter" && (e.metaKey || e.ctrlKey)){ e.preventDefault(); finish(true); return; }
+    if (e.key === "Enter"){ e.preventDefault(); document.execCommand(e.shiftKey ? "insertLineBreak" : "insertParagraph"); } }); }
+async function addTextBox(){ if (!S.pages.length) return; let font = S.lastFont && S.blobs.has(S.lastFont) ? S.lastFont : null; if (!font){ font = await pickFont($("addTextBtn")); if (!font) return; } S.lastFont = font;
+  const pg = S.cur; const [, , W, H] = S.pages[pg].vp1.viewBox; const a = { id:`${pg}:txt:${Date.now().toString(36)}`, page:pg, kind:"text", x:W / 2 - 120, y:H / 2, w:240, align:"l", text:"Type here", font, size:12, color:"#222222" };
+  a.rect = tboxRect(a); (S.opts.adds ||= []).push(a); after(); S.esel = [a.id]; S.sel = new Set([a.id]); renderAll(); editTextBox(a, true); }
 /* export: the font file as a simple TrueType (or OpenType) font with WinAnsi encoding, and the text drawn line by line */
 function embedTboxFont(ctx, blob){ const m = ttfMetrics(blob); const b = S.blobs.get(blob); const k = 1000 / m.upm; const name = (b.name || "Font").replace(/\.[^.]+$/, "").replace(/[^A-Za-z0-9-]/g, "") || "Font";
   const widths = []; for (let c = 32; c <= 255; c++){ const ch = WINR[c] || String.fromCharCode(c); widths.push(Math.round(m.w(ch) * 1000)); }
@@ -1807,18 +2007,95 @@ function embedCIDFont(ctx, blob, chars){ const m = ttfMetrics(blob); const b = S
   return ctx.register(ctx.obj({ Type:"Font", Subtype:"Type0", BaseFont:PDFName.of(name), Encoding:PDFName.of("Identity-H"), DescendantFonts:[ctx.register(cid)], ToUnicode:ctx.register(ctx.flateStream(fromLatin1(cmap))) })); }
 /* can our own embedding show these characters in this font file? */
 const fitsOwn = (m, t) => [...t].every(ch => !ch.trim() || m.gid(ch)) && (!m.cff || [...t].every(ch => winCode(ch) != null));
-function tboxBody(a, fname){ const c = hexRgb(a.color || "#222222").map(fmtNum).join(" "); const L = tboxLayout(a); const hex = l => [...l].map(ch => winCode(ch).toString(16).padStart(2, "0")).join("");
-  return [`BT`, `/${fname} ${fmtNum(a.size)} Tf`, `${c} rg`, `${fmtNum((a.track || 0) / 1000 * a.size)} Tc`, ...L.lines.map(l => `${fmtNum(l.tw)} Tw 1 0 0 1 ${fmtNum(l.x)} ${fmtNum(l.y)} Tm <${hex(l.t)}> Tj`), `ET`].join("\n"); }
+function tboxBody(a, fname){ const c = hexRgb(a.color || "#222222").map(fmtNum).join(" "); const L = tboxLayout(a); const fm = boxFont(a);
+  const code = ch => fm.fe ? (fm.fe.inv.get(ch) ?? fm.fe.inv.get("?") ?? 32).toString(16).padStart(fm.fe.bytes * 2, "0") : winCode(ch).toString(16).padStart(2, "0");
+  const tj = l => "[" + [...l.t].map(ch => `<${code(ch)}>` + (ch === " " && l.tw ? ` ${fmtNum(-l.tw * 1000 / a.size)} ` : "")).join("") + "] TJ";
+  const sk = a.i ? 0.21 : 0; const out = [`BT`, `/${fname} ${fmtNum(a.size)} Tf`, `${c} rg`, `${fmtNum((a.track || 0) / 1000 * a.size)} Tc 0 Tw`];
+  if (a.b) out.push(`${c} RG`, `${fmtNum(a.size * 0.035)} w`, `2 Tr`);
+  out.push(...L.lines.map(l => `1 0 ${fmtNum(sk)} 1 ${fmtNum(l.x)} ${fmtNum(l.y)} Tm ${tj(l)}`), `ET`);
+  if (a.u){ const wOf = t => [...t].reduce((s2, ch) => s2 + fm.w(ch) * a.size + (a.track || 0) / 1000 * a.size, 0) + (t.match(/ /g) || []).length * 0; out.push(`${c} RG`, `${fmtNum(Math.max(0.5, a.size * 0.06))} w`);
+    L.lines.forEach(l => { if (!l.t.trim()) return; const w = wOf(l.t) + (l.tw ? (l.t.match(/ /g) || []).length * l.tw : 0); out.push(`${fmtNum(l.x)} ${fmtNum(l.y - a.size * 0.12)} m ${fmtNum(l.x + w)} ${fmtNum(l.y - a.size * 0.12)} l S`); }); }
+  return out.join("\n"); }
+
+/* ---------- color picker: the browser's picker can't hold a hex field, so this one does. Opens below any color swatch ---------- */
+const rgbHsv = (r, g, b) => { r /= 255; g /= 255; b /= 255; const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn; let h = 0;
+  if (d){ h = mx === r ? ((g - b) / d) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4; h *= 60; if (h < 0) h += 360; } return [h, mx ? d / mx : 0, mx]; };
+const hsvRgb = (h, s, v) => { const f = n => { const k = (n + h / 60) % 6; return Math.round((v - v * s * Math.max(0, Math.min(k, 4 - k, 1))) * 255); }; return [f(5), f(3), f(1)]; };
+const toHex = rgb => "#" + rgb.map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, "0")).join("").toUpperCase();
+let cpk = null;
+function openPicker(inp){ closePicker(); const box = document.createElement("div"); box.className = "cpk"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Pick a color");
+  const start = parseColor(inp.value) || "#000000"; let [h, sv, vv] = rgbHsv(...hexRgb(start).map(x => x * 255)); const orig = inp.value;
+  box.innerHTML = `<canvas class="cpk-sv" width="232" height="140" aria-label="Saturation and brightness"></canvas><canvas class="cpk-h" width="232" height="12" aria-label="Hue"></canvas>
+    <div class="cpk-row">${window.EyeDropper ? `<button type="button" class="btn cpk-eye" title="Pick a color from the screen" aria-label="Eyedropper">⌖</button>` : ""}<span class="cpk-sw"></span>
+      <label>R<input type="number" min="0" max="255" data-c="0"></label><label>G<input type="number" min="0" max="255" data-c="1"></label><label>B<input type="number" min="0" max="255" data-c="2"></label></div>
+    <input type="text" class="cpk-hex" aria-label="Hex, name or rgb()" title="Hex like #4A5560, a name like navy, or rgb(74, 85, 96)" placeholder="#000000 or navy">`;
+  document.body.appendChild(box); const r = inp.getBoundingClientRect(); box.style.left = Math.max(8, Math.min(r.left, innerWidth - 256)) + "px"; box.style.top = Math.min(r.bottom + 6, innerHeight - box.offsetHeight - 8) + "px";
+  const svc = box.querySelector(".cpk-sv"), hc = box.querySelector(".cpk-h"), hex = box.querySelector(".cpk-hex"), sw = box.querySelector(".cpk-sw"), rgbIn = [...box.querySelectorAll("[data-c]")];
+  const paint = (fire = true, from = "") => { const x = svc.getContext("2d"); const base = hsvRgb(h, 1, 1); x.fillStyle = `rgb(${base})`; x.fillRect(0, 0, 232, 140);
+    let gr = x.createLinearGradient(0, 0, 232, 0); gr.addColorStop(0, "#fff"); gr.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = gr; x.fillRect(0, 0, 232, 140);
+    gr = x.createLinearGradient(0, 0, 0, 140); gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(1, "#000"); x.fillStyle = gr; x.fillRect(0, 0, 232, 140);
+    x.beginPath(); x.arc(sv * 232, (1 - vv) * 140, 6, 0, 7); x.lineWidth = 3; x.strokeStyle = "#fff"; x.stroke(); x.lineWidth = 1.5; x.strokeStyle = "#000"; x.stroke();
+    const y = hc.getContext("2d"); const hg = y.createLinearGradient(0, 0, 232, 0); for (let i = 0; i <= 6; i++) hg.addColorStop(i / 6, `rgb(${hsvRgb(i * 60, 1, 1)})`); y.fillStyle = hg; y.fillRect(0, 0, 232, 12);
+    y.fillStyle = "#fff"; y.fillRect(h / 360 * 232 - 2, 0, 4, 12); y.strokeStyle = "#000"; y.strokeRect(h / 360 * 232 - 2, 0, 4, 12);
+    const rgb = hsvRgb(h, sv, vv), hx = toHex(rgb); sw.style.background = hx; if (from !== "rgb") rgbIn.forEach((i2, k) => { i2.value = rgb[k]; }); if (from !== "hex") hex.value = hx;
+    if (fire){ inp.value = hx.toLowerCase(); inp.dispatchEvent(new Event("input", { bubbles:true })); } };
+  const setHex = (v, from = "") => { const c = parseColor(v); if (!c) return false; [h, sv, vv] = rgbHsv(...hexRgb(c).map(x => x * 255)); paint(true, from); return true; };
+  const drag = (el, fn) => el.addEventListener("pointerdown", e => { el.setPointerCapture(e.pointerId); const mv = ev => { const b = el.getBoundingClientRect(); fn(Math.max(0, Math.min(1, (ev.clientX - b.left) / b.width)), Math.max(0, Math.min(1, (ev.clientY - b.top) / b.height))); paint(); };
+    mv(e); el.onpointermove = mv; el.onpointerup = () => { el.onpointermove = null; }; });
+  drag(svc, (x, y) => { sv = x; vv = 1 - y; }); drag(hc, x => { h = Math.min(359.9, x * 360); });
+  rgbIn.forEach(i2 => i2.addEventListener("input", () => { const rgb = rgbIn.map(x => Math.max(0, Math.min(255, +x.value || 0))); [h, sv, vv] = rgbHsv(...rgb); paint(true, "rgb"); }));
+  hex.addEventListener("input", () => { const ok = parseColor(hex.value); hex.classList.toggle("bad", !ok && hex.value.trim().length > 6); if (ok) setHex(hex.value, "hex"); });
+  box.querySelectorAll("input").forEach(i2 => i2.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") closePicker(true); if (e.key === "Escape"){ inp.value = orig; inp.dispatchEvent(new Event("input", { bubbles:true })); closePicker(false); } }));
+  box.querySelector(".cpk-eye")?.addEventListener("click", async () => { try { const r2 = await new EyeDropper().open(); setHex(r2.sRGBHex); } catch {} });
+  cpk = { box, inp, orig }; paint(false); hex.focus(); hex.select(); }
+function closePicker(commit = true){ if (!cpk) return; const { box, inp, orig } = cpk; cpk = null; box.remove(); if (commit && inp.value !== orig) inp.dispatchEvent(new Event("change", { bubbles:true })); }
+document.addEventListener("click", e => { const inp = e.target.closest?.('input[type="color"]'); if (inp){ e.preventDefault(); if (cpk?.inp === inp){ closePicker(); return; } openPicker(inp); return; } }, true);
+document.addEventListener("pointerdown", e => { if (cpk && !e.target.closest(".cpk") && !e.target.closest('input[type="color"]')) closePicker(true); }, true);
+
+/* ---------- font chooser: fonts installed on this computer (Chrome and Edge ask once), fonts you've used, or a font file ---------- */
+let localFonts = null;
+async function loadLocalFonts(){ if (localFonts) return localFonts; if (!window.queryLocalFonts) return null; try { const all = await window.queryLocalFonts(); if (!all.length) return null; localFonts = all.filter(f => !/^\./.test(f.family)); return localFonts; } catch (e){ console.warn(e); return null; } }
+/* common fonts first; "More fonts" lists everything on this computer. The font you pick is read from your computer and built into the PDF */
+const BASIC_FONTS = ["Arial", "Helvetica", "Helvetica Neue", "Verdana", "Tahoma", "Trebuchet MS", "Calibri", "Segoe UI", "Times New Roman", "Georgia", "Garamond", "Cambria", "Palatino", "Courier New"];
+function pickFont(anchor){ return new Promise(res => { document.querySelector(".fmenu")?.remove(); const box = document.createElement("div"); box.className = "fmenu cpk"; box.setAttribute("role", "dialog"); box.setAttribute("aria-label", "Choose a font");
+  const used = [...S.blobs].filter(([, b]) => b.type === "font"); let done = false, more = false; const finish = v => { if (done) return; done = true; box.remove(); document.removeEventListener("pointerdown", away, true); res(v); };
+  const away = e => { if (!box.contains(e.target)) finish(null); }; setTimeout(() => document.addEventListener("pointerdown", away, true), 0);
+  /* some pages (like a preview inside another app) aren't allowed to read fonts; say so up front instead of failing on click */
+  const api = !!window.queryLocalFonts && !(document.featurePolicy && !document.featurePolicy.allowsFeature("local-fonts"));
+  box.innerHTML = `<input type="search" class="cpk-hex fsearch" placeholder="Search fonts" aria-label="Search fonts"><div class="flist" role="listbox" aria-label="Fonts"></div>
+    <div class="cpk-row" style="justify-content:space-between">${api ? `<button type="button" class="btn fmore">More fonts…</button>` : `<span class="need" style="font-size:11px">${window.queryLocalFonts ? "This view can't read your computer's fonts. Open the app in its own tab, or use Load a font…" : "This browser can't read your fonts. Chrome and Edge can."}</span>`}<button type="button" class="btn ffile" title="Load a .ttf or .otf file, like a font that is missing from the PDF">Load a font…</button></div>`;
+  document.body.appendChild(box); const r = anchor?.getBoundingClientRect?.() || { left:innerWidth / 2 - 130, bottom:120 }; box.style.left = Math.max(8, Math.min(r.left, innerWidth - 270)) + "px"; box.style.top = Math.min(r.bottom + 6, innerHeight - 380) + "px";
+  const list = box.querySelector(".flist"), q = box.querySelector(".fsearch"); let fonts = null;
+  /* regular style of a family, from what's installed */
+  const regular = fam => { const fs = (fonts || []).filter(f => f.family.toLowerCase() === fam.toLowerCase()); return fs.find(f => /^(regular|roman|book|normal)$/i.test(f.style)) || fs.find(f => !/bold|italic|oblique|light|black|thin|condensed|narrow/i.test(f.style)) || fs[0]; };
+  const draw = () => { const t = q.value.trim().toLowerCase(); const rows = [];
+    used.filter(([, b]) => !t || b.name.toLowerCase().includes(t)).forEach(([k, b]) => rows.push(`<button type="button" class="mi" data-b="${k}">${esc(b.name.replace(/\.(ttf|otf)$/i, ""))} <span class="need" style="font-size:10px">in use</span></button>`));
+    if (!more && api) BASIC_FONTS.filter(f => !t || f.toLowerCase().includes(t)).forEach(f => rows.push(`<button type="button" class="mi" data-fam="${esc(f)}" style="font-family:'${esc(f)}'">${esc(f)}</button>`));
+    else (fonts || []).filter(f => !t || f.fullName.toLowerCase().includes(t)).slice(0, 400).forEach(f => rows.push(`<button type="button" class="mi" data-f="${fonts.indexOf(f)}">${esc(f.fullName)}</button>`));
+    list.innerHTML = rows.join("") || `<div class="need" style="padding:6px;font-size:12px">${!api ? "Pick a .ttf or .otf font file below." : more && !fonts ? "Loading your fonts…" : "No match."}</div>`; };
+  const take = async f => { try { const bytes = new Uint8Array(await (await f.blob()).arrayBuffer()); const name = f.fullName + (bytes[0] === 0x4F && bytes[1] === 0x54 ? ".otf" : ".ttf");
+      for (const [k, b] of S.blobs) if (b.type === "font" && b.name === name && b.bytes.length === bytes.length) return finish(k);
+      const id = "f" + Date.now().toString(36); S.blobs.set(id, { bytes, type:"font", name }); try { ttfMetrics(id); } catch (err){ S.blobs.delete(id); toast("Can't use that font: " + err.message + "."); return; } finish(id); } catch { toast("Couldn't read that font."); } };
+  q.addEventListener("input", draw); q.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Escape") finish(null); });
+  list.addEventListener("click", async e => { const x = e.target.closest("button"); if (!x) return; if (x.dataset.b) return finish(x.dataset.b);
+    if (x.dataset.fam){ if (!api){ toast("This browser can't read your fonts. Use Chrome or Edge, or pick a font file."); return; } fonts ||= await loadLocalFonts();
+      if (!fonts){ toast("The browser didn't let the app read your fonts here. Allow font access if it asks, or use Load a font…", 6000); return; } const f = regular(x.dataset.fam); if (!f){ toast(`${x.dataset.fam} isn't installed on this computer. Pick another, or use Load a font…`, 5000); return; } return take(f); }
+    if (x.dataset.f) take(fonts[+x.dataset.f]); });
+  box.querySelector(".fmore")?.addEventListener("click", async () => { more = true; draw(); fonts ||= await loadLocalFonts(); if (!fonts){ toast("Couldn't read your fonts. Allow font access when the browser asks."); more = false; } draw(); q.focus(); });
+  box.querySelector(".ffile")?.addEventListener("click", async () => { const b = await pickFontFile(true); finish(b); });
+  draw(); q.focus(); }); }
 
 /* ---------- welded images: several image pieces become one image ---------- */
 S.blobs = new Map();
 const b64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 8192) s += String.fromCharCode(...u8.subarray(i, i + 8192)); return btoa(s); };
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+function syncDups(){ if (!S.pages.length) return; for (const id of [...S.units.keys()]) if (S.units.get(id).dup) S.units.delete(id); for (const P of S.pages) P.units = P.units.filter(u => !u.dup);
+  for (const d of S.opts?.dups || []){ const src = S.units.get(d.src); if (!src) continue; const u = { ...src, id:d.id, dup:d.src, bbox0:(src.bbox0 || src.bbox).slice(), seq:src.seq + 0.5, _fe:undefined }; S.pages[src.page].units.push(u); S.units.set(u.id, u); } }
 function syncAdds(){
   if (!S.pages.length) return;
   for (const id of [...S.units.keys()]) if (S.units.get(id).add) S.units.delete(id);
   for (const P of S.pages) P.units = P.units.filter(u => !u.add);
-  (S.opts?.adds || []).forEach((a, i) => { const P = S.pages[a.page]; if (!P) return; const u = { id:a.id, page:a.page, inst:0, kind:SHAPES.has(a.kind) ? "path" : a.kind === "text" ? "text" : "image", add:true, seq:a.seq ?? 1e6 + i, bbox:a.kind === "line" ? normR(a.rect).map((v, k) => v + (k < 2 ? -2 : 2)) : a.rect.slice(), fill:a.fill ? hexRgb(a.fill) : a.kind === "text" ? hexRgb(a.color || "#222222") : null, tbox:a.kind === "text" ? a : null, gl:a.kind === "text" ? [] : undefined }; P.units.push(u); S.units.set(u.id, u); });
+  (S.opts?.adds || []).forEach((a, i) => { const P = S.pages[a.page]; if (!P) return; if (a.kind === "text") try { a.rect = tboxRect(a); } catch {} const u = { id:a.id, page:a.page, inst:0, kind:SHAPES.has(a.kind) ? "path" : a.kind === "text" ? "text" : "image", add:true, seq:a.seq ?? 1e6 + i, bbox:(() => { const b0 = a.kind === "line" ? normR(a.rect).map((v, k) => v + (k < 2 ? -2 : 2)) : a.rect.slice(); const am = addMatrix(a); return am ? rectXf(b0, am) : b0; })(), fill:a.fill ? hexRgb(a.fill) : a.kind === "text" ? hexRgb(a.color || "#222222") : null, tbox:a.kind === "text" ? a : null, gl:a.kind === "text" ? [] : undefined }; P.units.push(u); S.units.set(u.id, u); });
 }
 /* save an image as it looks on the page, at print resolution */
 async function renderUnitsPNG(ids, box){ const pg = S.units.get(ids[0]).page; const saved = S.opts.del; S.opts.del = { ...(saved || {}) }; for (const u of S.pages[pg].units) if (!ids.includes(u.id)) S.opts.del[u.id] = 1;
@@ -3289,11 +3566,18 @@ async function buildOutput(opts = {}){
     if (cur === 0) for (const a of (S.opts.adds || []).filter(a => a.page === pi && (SHAPES.has(a.kind) || a.kind === "text" || blobRef.has(a.blob)))){ const u = S.units.get(a.id); if (!u) continue; const r = rank.get(a.id);
       const [x0, y0, x1, y1] = a.rect; let body;
       if (SHAPES.has(a.kind)) body = shapeBody(a, S.fix[a.id] || null);
-      else if (a.kind === "text"){ if (!tboxFonts.has(a.font)) tboxFonts.set(a.font, embedTboxFont(ctx, a.font)); const ref = tboxFonts.get(a.font); let fd = lk(res, "Font"); if (!(fd instanceof PDFDict)){ fd = ctx.obj({}); res.set(N("Font"), fd); }
-        let nm2 = null; for (const [k, v] of fd.entries()) if (v === ref) nm2 = k.asString().slice(1); if (!nm2){ let i = 1; while (fd.get(N("TBF" + i))) i++; nm2 = "TBF" + i; fd.set(N(nm2), ref); }
+      else if (a.kind === "text"){ let ref;
+        if (a.pfont){ const u0 = S.units.get(a.pfont); const r0 = lk(u0.fres, "Font")?.get?.(N(u0.fname)); ref = r0 instanceof L.PDFRef ? L.PDFRef.of(r0.objectNumber, r0.generationNumber) : null; if (!ref) continue; }
+        else { if (!tboxFonts.has(a.font)) tboxFonts.set(a.font, embedTboxFont(ctx, a.font)); ref = tboxFonts.get(a.font); } let fd = lk(res, "Font"); if (!(fd instanceof PDFDict)){ fd = ctx.obj({}); res.set(N("Font"), fd); }
+        let nm2 = null; for (const [k, v] of fd.entries()) if (v === ref || (v instanceof L.PDFRef && ref instanceof L.PDFRef && v.objectNumber === ref.objectNumber && v.generationNumber === ref.generationNumber)) nm2 = k.asString().slice(1); if (!nm2){ let i = 1; while (fd.get(N("TBF" + i))) i++; nm2 = "TBF" + i; fd.set(N(nm2), ref); }
         body = tboxBody(S.fix[a.id] ? { ...a, color:S.fix[a.id] } : a, nm2); }
       else { let xd = lk(res, "XObject"); if (!(xd instanceof PDFDict)){ xd = ctx.obj({}); res.set(N("XObject"), xd); } const nm2 = "Weld" + (++imgN); xd.set(N(nm2), blobRef.get(a.blob));
         body = `${fmtNum(x1 - x0)} 0 0 ${fmtNum(y1 - y0)} ${fmtNum(x0)} ${fmtNum(y0)} cm\n/${nm2} Do`; }
+      { const am = addMatrix(a); if (am) body = `${mtx(am)} cm\n` + body; }
+      /* transparency: the item's opacity times its fill and stroke opacity */
+      { const cl = v => Math.max(0, Math.min(1, v)); const o = cl(a.opacity ?? 1), fo = cl((a.fillOp ?? 1) * o), so = cl((a.strokeOp ?? 1) * o);
+        if (fo < 1 || so < 1){ let eg = lk(res, "ExtGState"); if (!(eg instanceof PDFDict)){ eg = ctx.obj({}); res.set(N("ExtGState"), eg); } const gn = "TSG" + Math.round(fo * 100) + "_" + Math.round(so * 100);
+          if (!eg.get(N(gn))) eg.set(N(gn), ctx.obj({ Type:"ExtGState", ca:fo, CA:so })); body = `/${gn} gs\n` + body; } }
       items.push({ type:"own", chunk:{ id:a.id, res, pre:"", body, oc:[] }, prio:reorderOn() ? r ?? -1 : u.seq, bbox:u.bbox, seq:u.seq, art:r == null, ids:[a.id] }); }
     for (const c of chunks){
       if (c.form){
@@ -3360,10 +3644,14 @@ async function buildOutput(opts = {}){
       out.push(`BT\n${mtx(mul([1, 0, 0, 1, base.gl[p.g0].a0, 0], Tm))} Tm\n[${parts.join(" ")}] TJ\nET`, "Q", "EMC"); c.oc.forEach(() => out.push("EMC")); }
     return out;
   };
+  const dupBodies = (c, key, pi, stm) => { const ds = (S.opts.dups || []).filter(d => d.src === c.id && !S.opts.del?.[d.id]); if (!ds.length) return []; const o = [];
+    for (const d of ds){ const node = nodeOfUnit.get(d.id); if (node){ const m = counts.get(key) || 0; counts.set(key, m + 1); unitStream.set(d.id, { key, m, pi, stm }); o.push(`/${contentTag(node.tag)} <</MCID ${m}>> BDC`); } else o.push("/Artifact BMC");
+      o.push("q"); { const gp = geomPrefix(d.id); if (gp) o.push(gp); } if (c.pre) o.push(c.pre); if (S.fix[d.id] || S.fix[c.id]) o.push(fixOp(S.fix[d.id] ? d.id : c.id)); o.push(c.body, "Q", "EMC"); }
+    return o; };
   const emitPieces = (pieces, key, pi, stm) => {
     const out = [];
     for (const pc of pieces){
-      if (pc.type === "own"){
+      if (pc.type === "own"){ const c0 = pc.chunk; try {
         const c = pc.chunk; if (S.opts.del?.[c.id]) continue;
         { const lg = lgrp.get(c.id); if (lg && !lg.bad){ if (lg.done) continue;
             const cmap = new Map(pieces.filter(x => x.type === "own").map(x => [x.chunk.id, x.chunk])); const blk = layoutBlock(lg, cmap, c);
@@ -3383,8 +3671,8 @@ async function buildOutput(opts = {}){
         const act = S.actual[c.id] ? ` /ActualText ${hexText(S.actual[c.id])}` : "";
         if (node && !pc.art){ const m = counts.get(key) || 0; counts.set(key, m + 1); unitStream.set(c.id, { key, m, pi, stm }); out.push(`/${contentTag(node.tag)} <</MCID ${m}${act}>> BDC`); }
         else out.push(act ? `/Artifact <<${act.trim()}>> BDC` : "/Artifact BMC");
-        out.push("q"); { const gp = geomPrefix(c.id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); out.push(fontBody(c) || editedBody(c)); out.push("Q"); out.push("EMC");
-        c.oc.forEach(() => out.push("EMC"));
+        out.push("q"); { const gp = geomPrefix(c.id); if (gp) out.push(gp); } if (c.pre) out.push(c.pre); if (S.fix[c.id]) out.push(fixOp(c.id)); { const sw2 = S.opts.lw?.[c.id], sc2 = S.opts.sfix?.[c.id]; if (sw2 != null) out.push(`${fmtNum(sw2)} w`); if (sc2) out.push(`${hexRgb(sc2).map(fmtNum).join(" ")} RG`); } out.push(fontBody(c) || editedBody(c)); out.push("Q"); out.push("EMC");
+        c.oc.forEach(() => out.push("EMC")); } finally { out.push(...dupBodies(c0, key, pi, stm)); }
       } else {
         const fc = pc.form.c; const ref = ctx.nextRef(); const ckey = "C" + (++cloneN);
         const body = emitPieces(pc.pieces, ckey, pi, ref);
@@ -3796,8 +4084,8 @@ async function checkContrast(){
     const bgShape = g => { const u = g.u; const cx = (u.bbox[0] + u.bbox[2]) / 2, cy = (u.bbox[1] + u.bbox[3]) / 2;
       const under = S.pages[u.page].units.filter(p => (p.kind === "path" && !p.stroke || p.kind === "shade" || p.kind === "image" || p.kind === "form") && p.bbox && p.seq < u.seq && inside(p.bbox, cx, cy, 0)).sort((a, b) => b.seq - a.seq);
       return under.find(p => p.kind === "path" && near(S.fix[p.id] ? hexRgb(S.fix[p.id]) : p.fill, g.bg)) || under[0]; };
-    S.contrast = [...groups.values()].map(g => { const o = { ...g, fix:suggestColor(g.fg, g.bg, g.target) };
-      { const sh = bgShape(g); o.bgFix = suggestColor(g.bg, g.fg, g.target); o.lightText = lumOf(g.fg) > lumOf(g.bg); if (sh?.kind === "path") o.bgUnit = sh.id; else if (sh) o.bgKind = sh.kind === "image" ? "picture" : sh.kind === "form" ? "grouped graphic" : "gradient"; }
+    S.contrast = [...groups.values()].map(g => { const o = { ...g, fix:suggestColor(g.fg, g.bg, g.target), fix3:suggestColor(g.fg, g.bg, g.target === 3 ? 4.5 : 7) };
+      { const sh = bgShape(g); o.bgFix = suggestColor(g.bg, g.fg, g.target); o.bgFix3 = suggestColor(g.bg, g.fg, g.target === 3 ? 4.5 : 7); o.lightText = lumOf(g.fg) > lumOf(g.bg); if (sh?.kind === "path") o.bgUnit = sh.id; else if (sh) o.bgKind = sh.kind === "image" ? "picture" : sh.kind === "form" ? "grouped graphic" : "gradient"; }
       return o; }).sort((a, b) => a.u.page - b.u.page || b.u.bbox[3] - a.u.bbox[3]);
     try { S.unusedForms = await unusedForms(); } catch (e){ console.error(e); S.unusedForms = []; }
     try { S.fileChk = await fileCheck(); } catch (e){ console.error(e); S.fileChk = { err:e.message || String(e) }; }
@@ -3880,8 +4168,12 @@ async function fileCheck(given){
 }
 /* ---------- color of the selection ---------- */
 const colorable = () => selIds().map(id => S.units.get(id)).filter(u => (u.kind === "text" || u.kind === "path") && (u.fill || S.fix[u.id]));
-function renderColorRow(){
-  const us = colorable(); const row = $("colorRow"); row.hidden = !us.length; if (!us.length) return;
+function renderColorRow(){ /* a color you were previewing goes back unless you pressed Change */
+  if (S.cprev){ const pv = S.cprev; S.cprev = null; pv.ids.forEach(id => { if (pv.fix[id] == null) delete S.fix[id]; else S.fix[id] = pv.fix[id]; }); changed(); }
+  const us = colorable(); const row = $("colorRow");
+  /* shapes you added get their fill and stroke in Appearance, so the color box steps aside for them */
+  const onlyShapes = S.editMode && us.length && us.every(u => u.add && !u.tbox && (S.opts.adds || []).some(a => a.id === u.id && SHAPES.has(a.kind)));
+  row.hidden = !us.length || onlyShapes; if (!us.length || onlyShapes) return;
   const cur = S.fix[us[0].id] || hexOf(us[0].fill); const mixed = us.some(u => (S.fix[u.id] || hexOf(u.fill)) !== cur);
   if (document.activeElement !== $("colorHex")) $("colorHex").value = mixed ? "" : cur;
   $("colorPick").value = cur.toLowerCase();
@@ -3905,13 +4197,17 @@ function liveContrast(){
     out.className = "cinfo " + (ok ? "pass" : "failc");
     const aaa = ms.every(m => m.r >= (m.large ? 4.5 : 7));
     out.textContent = `Contrast ${worst.r.toFixed(1)}:1 · ${ok ? (aaa ? "passes AA and AAA" : `passes AA · AAA needs ${worst.large ? 4.5 : 7}:1`) : `fails AA, needs ${worst.target}:1`}`;
-    if (!ok){
-      const sug = isShape ? suggestColor(worst.bg, worst.fg, worst.target) : suggestColor(worst.fg, worst.bg, worst.target);
-      if (sug){ const hx = hexOf(sug); const b = document.createElement("button"); b.type = "button"; b.className = "btn primary sugg";
-        b.innerHTML = `<i class="dot" style="background:${hx}"></i>Use ${hx}`; b.title = `Closest ${isShape ? "background" : "text"} color in the same hue that passes AA`;
-        b.addEventListener("click", () => setColor(hx, true)); out.append(" ", b); }
-      else out.append(" · No color in this hue passes. Try a different color.");
-    }
+    /* suggestions: the closest color in the same hue for AA and, when it differs, for AAA. Pick the one you want */
+    if (!aaa){ const t3 = worst.large ? 4.5 : 7; const sg = t => isShape ? suggestColor(worst.bg, worst.fg, t) : suggestColor(worst.fg, worst.bg, t);
+      const s2 = ok ? null : sg(worst.target), s3 = sg(t3); const rowS = document.createElement("div"); rowS.className = "sugrow"; const add = (sug, lvl, primary) => { const hx = hexOf(sug); const b = document.createElement("button"); b.type = "button"; b.className = "btn sugg" + (primary ? " primary" : "");
+        b.innerHTML = `<i class="dot" style="background:${hx}"></i>${lvl}: ${hx}`; b.title = `Closest ${isShape ? "background" : "text"} color in the same hue that passes ${lvl}`; b.dataset.hx = hx; b.setAttribute("aria-pressed", "false"); b.addEventListener("click", () => { const was = b.classList.contains("on"); rowS.querySelectorAll(".sugg").forEach(x => { const on = !was && x === b; x.classList.toggle("on", on); x.setAttribute("aria-pressed", on); }); go.disabled = was;
+        /* preview on the page right away; Change keeps it */
+        const ids = colorable().map(u => u.id); if (!S.cprev) S.cprev = { ids, fix:Object.fromEntries(ids.map(id => [id, S.fix[id]])) };
+        ids.forEach(id => { if (was){ const o = S.cprev.fix[id]; if (o == null) delete S.fix[id]; else S.fix[id] = o; } else S.fix[id] = hx.toUpperCase(); }); changed(); }); rowS.append(b); };
+      /* pick AA or AAA, then Change: the choices stay put until you apply one */
+      const go = document.createElement("button"); go.type = "button"; go.className = "btn primary"; go.textContent = "Change"; go.disabled = true; go.addEventListener("click", () => { const b = rowS.querySelector(".sugg.on"); if (!b) return; S.cprev = null; setColor(b.dataset.hx, true); });
+      if (s2) add(s2, "AA", false); if (s3 && (!s2 || hexOf(s3) !== hexOf(s2))) add(s3, "AAA", false); if (rowS.children.length){ rowS.append(go); out.append(rowS); }
+      if (!s2 && !ok) out.append(" · No color in this hue passes AA. Try a different color."); }
   }, 350);
 }
 function setColor(hex, commit){
@@ -4036,12 +4332,13 @@ function renderContrast(){
       <div class="pair"><span class="sw"><i style="background:${hexOf(g.fg)}"></i></span><span class="need">text on</span><span class="sw"><i style="background:${hexOf(g.bg)}"></i></span><span class="need">background ·</span>
         <span class="need">${fixed ? `now ${bgFixed ? "background " + S.fix[g.bgUnit] : S.fix[g.units[0]]}, ${cratio(nowFg, nowBg).toFixed(1)}:1` : `needs ${g.target}:1`}</span></div>
       <div class="acts">${fixed ? `<button type="button" class="btn undoFix">Undo fix</button>`
-        : `<div class="cxopt"><span class="need">Text</span>${g.fix ? `<button type="button" class="btn ${g.lightText && g.bgFix ? "" : "primary"} doFix"><i class="dot" style="background:${hexOf(g.fix)}"></i>Use ${hexOf(g.fix)}</button>` : `<span class="need">no color in this hue passes</span>`}<input type="color" class="cxpick" data-w="fg" value="${S.fix[g.units[0]] || hexOf(g.fg)}" title="Pick a text color"><input type="text" class="cxhex" data-w="fg" value="${S.fix[g.units[0]] || hexOf(g.fg)}" maxlength="7" spellcheck="false" aria-label="Text color hex" title="Type a hex color, then press Enter"></div>
-          <div class="cxopt"><span class="need">Background</span>${g.bgFix ? `<button type="button" class="btn ${g.lightText ? "primary" : ""} doBg"><i class="dot" style="background:${hexOf(g.bgFix)}"></i>Use ${hexOf(g.bgFix)}</button>` : `<span class="need">no color in this hue passes</span>`}<input type="color" class="cxpick" data-w="bg" value="${(g.bgUnit && S.fix[g.bgUnit]) || hexOf(g.bg)}" title="Pick a background color"><input type="text" class="cxhex" data-w="bg" value="${(g.bgUnit && S.fix[g.bgUnit]) || hexOf(g.bg)}" maxlength="7" spellcheck="false" aria-label="Background color hex" title="Type a hex color, then press Enter"></div>
+        : `<div class="cxopt"><span class="need">Text</span>${g.fix ? `<button type="button" class="btn ${g.lightText && g.bgFix ? "" : "primary"} doFix" title="Closest color that passes AA"><i class="dot" style="background:${hexOf(g.fix)}"></i>AA: ${hexOf(g.fix)}</button>` : `<span class="need">no color in this hue passes</span>`}${g.fix3 && (!g.fix || hexOf(g.fix3) !== hexOf(g.fix)) ? `<button type="button" class="btn doFix3" title="Closest color that passes AAA"><i class="dot" style="background:${hexOf(g.fix3)}"></i>AAA: ${hexOf(g.fix3)}</button>` : ""}<input type="color" class="cxpick" data-w="fg" value="${S.fix[g.units[0]] || hexOf(g.fg)}" title="Pick a text color"><input type="text" class="cxhex" data-w="fg" value="${S.fix[g.units[0]] || hexOf(g.fg)}" maxlength="7" spellcheck="false" aria-label="Text color hex" title="Type a hex color, then press Enter"></div>
+          <div class="cxopt"><span class="need">Background</span>${g.bgFix ? `<button type="button" class="btn ${g.lightText ? "primary" : ""} doBg" title="Closest background that passes AA"><i class="dot" style="background:${hexOf(g.bgFix)}"></i>AA: ${hexOf(g.bgFix)}</button>` : `<span class="need">no color in this hue passes</span>`}${g.bgFix3 && (!g.bgFix || hexOf(g.bgFix3) !== hexOf(g.bgFix)) ? `<button type="button" class="btn doBg3" title="Closest background that passes AAA"><i class="dot" style="background:${hexOf(g.bgFix3)}"></i>AAA: ${hexOf(g.bgFix3)}</button>` : ""}<input type="color" class="cxpick" data-w="bg" value="${(g.bgUnit && S.fix[g.bgUnit]) || hexOf(g.bg)}" title="Pick a background color"><input type="text" class="cxhex" data-w="bg" value="${(g.bgUnit && S.fix[g.bgUnit]) || hexOf(g.bg)}" maxlength="7" spellcheck="false" aria-label="Background color hex" title="Type a hex color, then press Enter"></div>
           ${g.bgUnit ? "" : `<span class="need" style="font-size:11px">${g.bgKind ? `The background is a ${g.bgKind}, which can't be recolored here. This adds a solid box behind the text instead.` : "The background is the blank page. This adds a solid box behind the text."}</span>`}`}
         <span class="need cxnow"></span></div>`;
     d.querySelector(".snp").textContent = (textOf(g.units) || "(text)") + ` · p. ${g.u.page + 1}`;
     d.querySelector(".cxshow").addEventListener("click", ev => { ev.stopPropagation(); S.sel = new Set(g.units); syncRowsFromSel(); S.focus = S.rows.size === 1 ? [...S.rows][0] : null; renderAll(); scrollToUnit(g.u); });
+    d.querySelector(".doFix3")?.addEventListener("click", ev => { ev.stopPropagation(); g.units.forEach(id => S.fix[id] = hexOf(g.fix3)); after(); renderContrast(); });
     d.querySelector(".doFix")?.addEventListener("click", ev => { ev.stopPropagation(); g.units.forEach(id => S.fix[id] = hexOf(g.fix)); after(); renderContrast(); });
     /* pick any color: the ratio updates as you pick, and it's saved when you let go */
     d.querySelectorAll(".cxpick").forEach(pk => { const show = () => { const [nf, nb] = nowOf(g); const fg = pk.dataset.w === "fg" ? hexRgb(pk.value) : nf, bg = pk.dataset.w === "bg" ? hexRgb(pk.value) : nb; const r = cratio(fg, bg); d.querySelector(".cxnow").textContent = `${r.toFixed(1)}:1 ${r >= g.target ? "✓ passes" : "· needs " + g.target + ":1"}`; };
@@ -4053,6 +4350,7 @@ function renderContrast(){
       hx.addEventListener("keydown", ev => { if (ev.key === "Enter"){ ev.preventDefault(); hx.blur(); } });
       hx.addEventListener("change", () => { const v = norm(); if (!v){ toast("Type a hex color like #1F4E79, a name like navy, or rgb(31, 78, 121)."); return; } pk.value = v.toLowerCase(); pk.dispatchEvent(new Event("change")); }); });
     d.querySelector(".doBg")?.addEventListener("click", ev => { ev.stopPropagation(); setBg(g, hexOf(g.bgFix)); });
+    d.querySelector(".doBg3")?.addEventListener("click", ev => { ev.stopPropagation(); setBg(g, hexOf(g.bgFix3)); });
     d.querySelector(".undoFix")?.addEventListener("click", ev => { ev.stopPropagation(); g.units.forEach(id => delete S.fix[id]); if (g.bgUnit) delete S.fix[g.bgUnit]; after(); renderContrast(); });
     d.addEventListener("click", () => { body.querySelectorAll(".ci.on").forEach(x => x.classList.remove("on")); d.classList.add("on"); S.sel = new Set(g.units); S.rows.clear(); renderAll(); scrollToUnit(g.u); });
     body.appendChild(d);
@@ -4290,9 +4588,9 @@ $("oclose").addEventListener("click", () => { $("opanel").hidden = true; });
 /* ---------- right-click menu ---------- */
 /* right-click: the Tag selection panel, right where you are */
 /* the actions for what's selected: the sidebar and the right-click menu show the same list */
-const EDIT_ACTS = new Set(["outline", "unoutline", "saveimg", "repimg", "weld", "del", "mergebox", "join", "unjoin", "group", "ungroup2", "gaps", "explode"]);
+const EDIT_ACTS = new Set(["link", "unlink", "unlinkul", "totbox", "outline", "unoutline", "saveimg", "repimg", "weld", "del", "mergebox", "join", "unjoin", "group", "ungroup2", "gaps", "explode"]);
 /* welding, joining, outlines and image swaps belong to Edit PDF; tagging mode keeps to tagging */
-const EDIT_ONLY = new Set(["outline", "unoutline", "saveimg", "repimg", "weld", "mergebox", "join", "unjoin", "group", "ungroup2", "gaps", "explode"]);
+const EDIT_ONLY = new Set(["totbox", "outline", "unoutline", "saveimg", "repimg", "weld", "mergebox", "join", "unjoin", "group", "ungroup2", "gaps", "explode"]);
 /* several text boxes become one: the top one keeps its spot and style, the words follow in page order */
 function mergeBoxes(){ const bs = selBoxes().sort((a, b) => b.rect[3] - a.rect[3] || a.rect[0] - b.rect[0]); if (bs.length < 2) return; const [first, ...rest] = bs;
   first.text = bs.map(a => a.text).join("\n"); if (!first.w) first.w = Math.max(...bs.map(a => a.rect[2] - a.rect[0])); first.rect = tboxRect(first);
@@ -4302,14 +4600,17 @@ function selActions(){
   const add = (act, label, title, run, o = {}) => A.push({ act, label, title, run, ...o });
   const at = e => { const r = e.currentTarget.getBoundingClientRect(); return [e.clientX || r.left, (e.clientY || r.bottom) + 4]; };
   if (canCombine(pt)) add("comb", `⧉ Combine into one ${pt[0].tag}`, "Join the selected tags into one tag, like a paragraph or list split across pages or columns", mergeRows, { side:true });
-  if (gapBases().length) add("gaps", "⫼ Split at gaps", "Split text spaced out into a row, like captions under images, into separate pieces", splitGaps);
+  if (gapBases().length && !S.editMode) add("gaps", "⫼ Split at gaps", "Split text spaced out into a row, like captions under images, into separate pieces", splitGaps);
   { const tx = (S.editMode ? S.esel : sel).filter(id => S.units.get(id)?.kind === "text"); if (tx.length){ if (tx.every(id => S.opts.outline?.[id])) add("unoutline", "Back to live text", "Undo the conversion to shapes", unoutlineSel); else add("outline", "Convert text to outlines", "Turn the selected text into shapes, welded together when they share a color. Screen readers still get the words", outlineSel); } }
-  if (joinable()) add("join", "⧉ Join into one item", "Make these pieces of untagged text select and tag as one. The page doesn't change", joinText);
+  if (joinable() && !S.editMode) add("join", "⧉ Join into one item", "Make these pieces of untagged text select and tag as one. The page doesn't change", joinText);
   if (sel.some(id => joinOf(id))) add("unjoin", "Unjoin text", "Make joined text separate pieces again", unjoinText);
   { const im = sel.map(id => S.units.get(id)).filter(u => u?.kind === "image"); if (im.length === 1 && sel.length === 1){ add("saveimg", "⤓ Save image…", "Save this image as a PNG", () => saveImage(im[0].id)); add("repimg", "Replace image…", "Swap in a different image file, sized to fit the same frame, keeping its tag", () => replaceImage(im[0].id)); } }
+  if (S.editMode && selText().length > 1) add("totbox", "¶ Join as text box", "Join the selected letters, words or lines into one text box you can type in, in the same font. Its tag stays", () => { const box = toTextBox(); if (box) editTextBox(box, false, true); });
   if (S.editMode && editObjs().length > 1) add("group", "⧉ Group", "Make these select and move together (Cmd+G)", groupSel);
   if (S.editMode && S.esel.some(id => (S.opts.egroups || []).some(g => g.includes(id)))) add("ungroup2", "Ungroup", "Take the group apart (Shift+Cmd+G)", ungroupSel);
-  if (S.editMode && S.esel.some(id => S.units.get(id)?.kind === "text" && !S.units.get(id).add)) add("explode", "Split into words", "Break the selected lines into one piece per word", explodeWords);
+  if (S.editMode && S.esel.some(id => S.units.get(id)?.kind === "text" && !S.units.get(id).add)) add("explode", "✂ Split text…", "Break the selected text into pieces: at wide gaps, or one per word", e => { const m = $("cmenu"); const r = e.currentTarget.getBoundingClientRect?.() || { left:e.clientX, bottom:e.clientY };
+    m.dataset.kind = "split"; m.style.width = "200px"; m.innerHTML = `<div class="mh">Split text</div><button class="mi" data-s="gaps" ${gapBases().length ? "" : "disabled"}>At wide gaps</button><button class="mi" data-s="words">Into words</button>`;
+    m.onclick = ev => { const b = ev.target.closest("button[data-s]"); if (!b || b.disabled) return; closeMenu(); b.dataset.s === "gaps" ? splitGaps() : explodeWords(); }; m.hidden = false; m.style.left = r.left + "px"; m.style.top = r.bottom + 4 + "px"; }, { keep:true });
   if (S.editMode && selBoxes().length > 1) add("mergebox", "⧉ Merge text boxes", "Make the selected text boxes one text box, in page order", mergeBoxes);
   if (sel.filter(id => S.units.get(id)?.kind === "image").length > 1) add("weld", "⧉ Weld images", "Join the selected image pieces into one image, in the same spot and tag", weldImages);
   if (colSelBox()) add("cola", "▥ Create column from selection", "Keep these tags together in the Tags list (N)", () => addColumn("after"), { menu:true });
@@ -4358,7 +4659,7 @@ function openMenu(x, y){
   m.querySelector(".tag-btn:not(:disabled)")?.focus();
 }
 function closeMenu(){ const m = $("cmenu"); if (m.dataset.kind === "meta") m.querySelectorAll(".mf").forEach(l => $("metaHold").appendChild(l)); m.hidden = true; m.style.width = ""; m.dataset.kind = ""; }
-document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#zoomMode") && !e.target.closest("#alignBtn") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
+document.addEventListener("pointerdown", e => { if (!e.target.closest("#cmenu") && !e.target.closest(".fmenu") && $("cmenu").dataset.kind === "tbox" && !$("cmenu").hidden){ $("tbOk")?.click(); if (!$("cmenu").hidden) closeMenu(); return; } if (!e.target.closest("#cmenu") && !e.target.closest(".fmenu") && !e.target.closest(".cpk") && !e.target.closest("#optBtn") && !e.target.closest("#linkLink") && !e.target.closest("#anchorLink") && !e.target.closest("#metaBtn") && !e.target.closest("#zoomFitMenu") && !e.target.closest("#zoomMode") && !e.target.closest("#alignBtn") && !e.target.closest("#fileBtn") && !e.target.closest("#stackBtn")) closeMenu(); }, true);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("cmenu").hidden){ e.stopImmediatePropagation(); closeMenu(); } }, true);
 $("stage").addEventListener("scroll", closeMenu, { passive:true });
 $("pagesBox").addEventListener("contextmenu", e => {
@@ -4387,18 +4688,41 @@ $("fileName").addEventListener("click", () => { if (!S.pages.length) return; con
   inp.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") fin(true); if (e.key === "Escape") fin(false); }); inp.addEventListener("blur", () => fin(true)); });
 $("fileName").addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); $("fileName").click(); } });
 $("alignBtn").addEventListener("click", openAlignMenu);
-document.querySelectorAll(".abtn").forEach(b => b.addEventListener("click", () => alignObjs(b.dataset.a)));
+document.querySelectorAll(".abtn[data-a]").forEach(b => b.addEventListener("click", () => alignObjs(b.dataset.a)));
+document.querySelectorAll(".zbtn").forEach(b => b.addEventListener("click", () => stack(b.dataset.z)));
 document.querySelectorAll(".alignto button").forEach(b => b.addEventListener("click", () => { S.alignTo = b.dataset.to; document.querySelectorAll(".alignto button").forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); }); updAlign(); }));
 $("addImgBtn").addEventListener("click", () => $("addImg").click());
 $("addTextBtn").addEventListener("click", addTextBox);
-document.querySelectorAll(".shapebtns [data-shape]").forEach(b => b.addEventListener("click", () => addBox(b.dataset.shape)));
+/* number boxes in Edit tools apply as you type (after a short pause), not only when you leave the box */
+$("editSec").addEventListener("input", e => { const el = e.target; if (el.type !== "number" || el.value === "" || isNaN(+el.value)) return; clearTimeout(el._live); el._live = setTimeout(() => el.dispatchEvent(new Event("change")), 300); });
+document.querySelectorAll(".rbtn").forEach(b => b.addEventListener("click", () => rotateSel(b.dataset.r)));
+$("eRot").addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter"){ const v = +$("eRot").value; if (v) rotateSel(String(v)); $("eRot").value = ""; } });
+/* each Edit tools section folds closed and pops out, like the other panels */
+document.querySelectorAll(".egrp").forEach((g, i) => { const h = g.querySelector(".eh"); const title = h.textContent.trim(); const key = "pts:eg:" + title;
+  h.innerHTML = `<span class="car" aria-hidden="true">▾</span><span class="ehT">${esc(title)}</span><button type="button" class="gear epop" aria-pressed="false" aria-label="Pop out ${esc(title)}" title="Pop out ${esc(title)}">⧉</button>`;
+  h.setAttribute("role", "button"); h.tabIndex = 0; h.setAttribute("aria-expanded", "true");
+  const fold = c => { g.classList.toggle("ecoll", c); h.querySelector(".car").textContent = c ? "▸" : "▾"; h.setAttribute("aria-expanded", !c); try { localStorage.setItem(key, c ? "1" : ""); } catch {} };
+  h.addEventListener("click", e => { if (e.target.closest(".gear") || g.dataset.dragged){ delete g.dataset.dragged; return; } fold(!g.classList.contains("ecoll")); });
+  h.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fold(!g.classList.contains("ecoll")); } });
+  try { if (localStorage.getItem(key)) fold(true); } catch {}
+  makePop(g, h, h.querySelector(".epop"), "pts:egp:" + title, title.toLowerCase() + " tools", 380 + i * 24); });
+const setFrames = on => { S.showFrames = on; $("eFrames").checked = on; };
+$("eFrames").addEventListener("change", e => { setFrames(e.target.checked); try { localStorage.setItem("pts:frames", S.showFrames ? "1" : ""); } catch {} drawOverlays(); });
+try { setFrames(!!localStorage.getItem("pts:frames")); } catch {}
+document.querySelectorAll(".etool").forEach(b => b.addEventListener("click", () => setTool(b.dataset.tool)));
+/* clicking anywhere off the page (the sidebar, the toolbar) puts the drawing tool down */
+document.addEventListener("pointerdown", e => { if (S.etool && !e.target.closest(".sheet") && !e.target.closest(".etool")){ v0Clear(draw?.v); draw = null; setTool(S.etool); } }, true);
 document.querySelectorAll(".tal").forEach(b => b.addEventListener("click", () => setTextAlign(b.dataset.al))); $("eFont").addEventListener("click", setTextFont);
+$("eAfterQ").addEventListener("click", () => { const bs = selBoxes(); const on = !(bs.length && bs.every(a => a.after)); const lead = bs[0] ? (bs[0].lead || bs[0].size * 1.2) : (selText()[0] ? curSize(selText()[0]) * 1.2 : 14); paraSpace("after", on ? Math.round(lead * 0.5 * 2) / 2 : 0); });
+document.querySelectorAll(".tsty").forEach(b => b.addEventListener("click", () => { const bs = selBoxes(); if (!bs.length){ toast("Bold, italic and underline work on text boxes. Double-click text to make it one."); return; } const on = !bs.every(a => a[b.dataset.st]); bs.forEach(a => { a[b.dataset.st] = on; }); after(); }));
 $("sFill").addEventListener("change", e => setShape("fill", e.target.value)); $("sFillNo").addEventListener("change", e => setShape("fill", e.target.checked ? null : $("sFill").value));
 $("sStroke").addEventListener("change", e => setShape("stroke", e.target.value)); $("sStrokeNo").addEventListener("change", e => setShape("stroke", e.target.checked ? null : $("sStroke").value));
-$("sW").addEventListener("change", e => setShape("sw", Math.max(0, +e.target.value || 0))); $("sW").addEventListener("keydown", e => e.stopPropagation());
+$("sW").addEventListener("change", e => setShape("sw", Math.max(0, +e.target.value || 0)));
+[["sFillOp", "fillOp"], ["sStrokeOp", "strokeOp"]].forEach(([id, k]) => { $(id).addEventListener("change", e => setShape(k, Math.max(0, Math.min(100, +e.target.value)) / 100)); $(id).addEventListener("keydown", e => e.stopPropagation()); }); $("sTri").addEventListener("change", e => setShape("tri", e.target.value));
+$("eOp").addEventListener("change", e => { const v = Math.max(0, Math.min(100, +e.target.value)); selAdds().forEach(a => { a.opacity = v / 100; }); after(); }); $("eOp").addEventListener("keydown", e => e.stopPropagation()); $("sW").addEventListener("keydown", e => e.stopPropagation());
 $("cropReset").addEventListener("click", () => { S.esel.forEach(id => delete S.opts.crop?.[id]); after(); });
 document.querySelectorAll(".ezseg button").forEach(b => b.addEventListener("click", () => { S.edit = b.dataset.m; document.querySelectorAll(".ezseg button").forEach(x => { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); }); }));
-[["eSize", setTextSize], ["eTrack", setTracking], ["eLead", setLeading], ["eAfter", setAfter], ["gX", v => setGeo("x", v)], ["gY", v => setGeo("y", v)], ["gW", v => setGeo("w", v)], ["gH", v => setGeo("h", v)]].forEach(([id, fn]) => { const i = $(id); i.addEventListener("change", () => fn(i.value)); i.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") i.blur(); }); });
+[["eSize", setTextSize], ["eTrack", setTracking], ["eLead", setLeading], ["eAfter", setAfter],  ["gX", v => setGeo("x", v)], ["gY", v => setGeo("y", v)], ["gW", v => setGeo("w", v)], ["gH", v => setGeo("h", v)]].forEach(([id, fn]) => { const i = $(id); i.addEventListener("change", () => fn(i.value)); i.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") i.blur(); }); });
 /* the page's language, for screen readers */
 if (!document.documentElement.lang) document.documentElement.lang = "en";
 /* the pop-up is a menu when it holds only menu items, otherwise a small dialog; screen readers get the right role either way */
@@ -4542,7 +4866,7 @@ $("targetClear").addEventListener("click", () => { S.focus = null; S.rows.clear(
 
 $("fileMain").addEventListener("click", saveWork);
 $("fileBtn").addEventListener("click", () => { if (!$("cmenu").hidden && $("cmenu").dataset.kind === "file") closeMenu(); else openFileMenu(); });
-$("editBtn").addEventListener("click", () => setEditMode(!S.editMode));
+$("editBtn").addEventListener("click", () => setEditMode(!S.editMode)); $("editCancel").addEventListener("click", cancelEdits);
 $("addImg").addEventListener("change", e => { insertImage(e.target.files[0]); e.target.value = ""; });
 let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { if (S.fit && S.pages.length) rezoom(); }, 150); });
 document.addEventListener("keydown", e => {
@@ -4553,6 +4877,10 @@ document.addEventListener("keydown", e => {
     if (k === "k" && (S.trange || selIds().length)){ e.preventDefault(); const r = $("linkLink")?.getBoundingClientRect() || {}; openLinkMenu(r.left || innerWidth / 2, (r.bottom || innerHeight / 3) + 4); return; }
     if (k === "s"){ e.preventDefault(); saveWork(); return; }
     if (k === "g" && S.editMode){ e.preventDefault(); e.shiftKey ? ungroupSel() : groupSel(); return; }
+    if (S.editMode && k === "a"){ e.preventDefault(); S.esel = S.pages[S.cur].units.filter(u => u.bbox && !isDel(u)).map(u => u.id); S.sel = new Set(S.esel); renderAll(); return; }
+    if (S.editMode && k === "c" && !S.trange){ e.preventDefault(); copySel(); return; }
+    if (S.editMode && k === "v"){ e.preventDefault(); pasteClip(); return; }
+    if (S.editMode && k === "d"){ e.preventDefault(); copySel(); pasteClip(); return; }
   }
   if (e.target.closest("input,select,textarea,.snip") || e.metaKey || e.ctrlKey) return;
   if (e.altKey) return;
@@ -4562,8 +4890,14 @@ document.addEventListener("keydown", e => {
   else if (k === "v"){ togglePreview(); }
   else if (k === "z" && S.pages.length){ setZoomTool(!S.zoomTool); }
   else if (k === "e" && S.pages.length){ setEditMode(!S.editMode); }
+  else if (k === "f" && S.editMode){ $("eFrames").click(); }
+  /* editor: arrow keys nudge 1 pt, Shift for 10 */
+  else if (S.editMode && S.esel.length && /^arrow(up|down|left|right)$/.test(k)){ e.preventDefault(); const d = e.shiftKey ? 10 : 1; const dx = k === "arrowleft" ? -d : k === "arrowright" ? d : 0, dy = k === "arrowup" ? d : k === "arrowdown" ? -d : 0;
+    editObjs().forEach(o => moveObj(o, dx, dy)); clearTimeout(S.nudgeT); changed(); renderAll(); S.nudgeT = setTimeout(record, 400); }
   else if (k === "s" && !e.shiftKey && !S.editMode){ const c = $("eachChk"); c.checked = !c.checked; renderSel(); toast(c.checked ? "Tag each item separately: on" : "Tag each item separately: off", 1500); }
   else if (k === "n" && !S.editMode && colSelBox()){ e.preventDefault(); addColumn("after"); }
+  else if (S.editMode && S.etool && (k === "enter" || k === "escape")){ e.preventDefault(); if (k === "enter") finishPen(true); else { v0Clear(draw?.v); draw = null; setTool(S.etool); } }
+  else if (k === "escape" && S.editMode && S.ptEdit){ S.ptEdit = null; drawOverlays(); }
   else if (k === "escape" && S.editMode){ if (S.esel.length){ S.esel = []; S.sel.clear(); renderAll(); } else setEditMode(false); }
   else if (k === "escape" && S.linkSrc){ S.linkSrc = null; document.body.classList.remove("picking"); toast("Link canceled."); }
   else if (k === "escape" && S.zoomTool){ setZoomTool(false); }
@@ -4581,7 +4915,7 @@ window.addEventListener("dragenter", e => { if ([...(e.dataTransfer?.types || []
 window.addEventListener("dragleave", () => { if (--dragDepth <= 0){ dragDepth = 0; $("drop").hidden = true; } });
 window.addEventListener("dragover", e => { if ([...(e.dataTransfer?.types || [])].includes("Files")) e.preventDefault(); });
 window.addEventListener("drop", async e => { if (!e.dataTransfer?.files?.length) return; e.preventDefault(); dragDepth = 0; $("drop").hidden = true; const f = e.dataTransfer.files[0]; if (!/pdf$/i.test(f.type) && !/\.pdf$/i.test(f.name)) return toast("That file isn't a PDF."); await loadPDF(new Uint8Array(await f.arrayBuffer()), f.name); });
-window.__S = S; window.__dbg = { emptyArts, syncRowsFromSel, openMenu, applyTag, wrapRows, loadSample, after, groupColumns, leaveColumns, nodeOfUnit, indexUnits, textOf, fileCheck, openOpt, divergence0, readingRank, pageItems, orderItems, buildOutput, flat, renderAll, itemsOf };
+window.__S = S; window.__dbg = { emptyArts, syncRowsFromSel, openMenu, applyTag, wrapRows, loadSample, after, groupColumns, leaveColumns, nodeOfUnit, indexUnits, textOf, fileCheck, openOpt, divergence0, readingRank, pageItems, orderItems, buildOutput, flat, renderAll, itemsOf, editTextBox };
 /* start screen, and closing a document */
 const showStart = () => { $("startScr").hidden = !!S.pages.length; $("closeBtn").disabled = !S.pages.length; };
 
